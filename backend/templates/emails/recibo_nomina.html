@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Restablecer contraseña</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      background-color: #059669; /* verde agua */
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .content {
+      padding: 30px;
+      text-align: center;
+    }
+    .content p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #059669;
+      color: #fff !important;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #047857;
+    }
+    .footer {
+      background: #f1f5f9;
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Encabezado -->
+    <div class="header">
+      <h1>Sistema de Nómina IS2</h1>
+    </div>
+
+    <!-- Contenido -->
+    <div class="content">
+      <p>Hola <strong>{{ user.first_name }} {{ user.last_name }}</strong>,</p>
+      <p>Recibimos una solicitud para restablecer tu contraseña.</p>
+      <p>Haz clic en el siguiente botón para crear una nueva contraseña:</p>
+
+      <a href="{{ reset_url }}" class="btn">🔑 Restablecer contraseña</a>
+
+      <p style="margin-top: 20px; font-size: 14px; color: #555;">
+        Si no solicitaste este cambio, puedes ignorar este correo.
+      </p>
+    </div>
+
+    <!-- Pie -->
+    <div class="footer">
+      © {{ year }} Sistema de Nómina IS2 · Universidad Nacional de Asunción
+    </div>
+  </div>
+</body>
+</html>

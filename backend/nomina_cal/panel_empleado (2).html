@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Empleado</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .header { background-color: #0d6efd; color: white; padding: 1rem; border-radius: 8px; }
+    .badge { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <div class="header mb-4 text-center">
+    <h2>🧾 Panel Personal - {{ empleado.nombre }}</h2>
+    <p>Cédula: {{ empleado.cedula }}</p>
+  </div>
+
+  <div class="row">
+    {% for liq in liquidaciones %}
+      <div class="col-md-6 mb-3">
+        <div class="card p-3">
+          <h5>💼 Liquidación {{ liq.mes }}/{{ liq.anio }}</h5>
+          <p><strong>Sueldo Base:</strong> {{ liq.sueldo_base|floatformat:0 }} Gs</p>
+          <p><strong>Total Ingresos:</strong> {{ liq.total_ingresos|floatformat:0 }} Gs</p>
+          <p><strong>Total Descuentos:</strong> {{ liq.total_descuentos|floatformat:0 }} Gs</p>
+          <p><strong>Neto a Cobrar:</strong> <span class="text-success fw-bold">{{ liq.neto_cobrar|floatformat:0 }} Gs</span></p>
+          <p><strong>IPS:</strong>
+            {% if liq.detalles_ips %}
+              <span class="badge bg-success">✔ Aplicado</span>
+            {% else %}
+              <span class="badge bg-danger">✖ No aplicado</span>
+            {% endif %}
+          </p>
+          <p><strong>Bonificación por hijos:</strong>
+            {% if liq.detalles_bonificacion %}
+              <span class="badge bg-primary">✔ Sí</span>
+            {% else %}
+              <span class="badge bg-secondary">✖ No</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">No tenés liquidaciones registradas aún.</p>
+    {% endfor %}
+  </div>
+</div>
+</body>
+</html>

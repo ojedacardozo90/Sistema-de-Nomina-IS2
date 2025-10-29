@@ -1,0 +1,70 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "gerente_rrhh"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "asistente_rrhh"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "empleado"
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "password": "pbkdf2_sha256$600000$...HASH...",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 2,
+    "fields": {
+      "username": "gerente",
+      "password": "pbkdf2_sha256$600000$...HASH...",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 3,
+    "fields": {
+      "username": "asistente",
+      "password": "pbkdf2_sha256$600000$...HASH...",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "groups": [2]
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 4,
+    "fields": {
+      "username": "empleado",
+      "password": "pbkdf2_sha256$600000$...HASH...",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "groups": [3]
+    }
+  }
+]

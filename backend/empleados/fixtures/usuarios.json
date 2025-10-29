@@ -1,0 +1,29 @@
+[
+  {
+    "model": "usuarios.usuario",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "password": "pbkdf2_sha256$260000$...",
+      "rol": "admin"
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 2,
+    "fields": {
+      "username": "carlos",
+      "password": "pbkdf2_sha256$260000$...",
+      "rol": "empleado"
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 3,
+    "fields": {
+      "username": "ana",
+      "password": "pbkdf2_sha256$260000$...",
+      "rol": "asistente_rrhh"
+    }
+  }
+]

@@ -1,0 +1,68 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen General de Liquidaciones</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .resumen {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px 40px;
+            text-align: center;
+            min-width: 250px;
+        }
+        .card h2 {
+            margin: 10px 0;
+        }
+        .ingresos { color: #16a085; }
+        .descuentos { color: #e74c3c; }
+        .neto { color: #2980b9; }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Resumen General de Liquidaciones</h1>
+    <div class="resumen">
+        <div class="card ingresos">
+            <h2>Total Ingresos</h2>
+            <p><b>{{ total_ingresos|floatformat:0|intcomma }} Gs</b></p>
+        </div>
+        <div class="card descuentos">
+            <h2>Total Descuentos</h2>
+            <p><b>{{ total_descuentos|floatformat:0|intcomma }} Gs</b></p>
+        </div>
+        <div class="card neto">
+            <h2>Neto a Cobrar</h2>
+            <p><b>{{ total_general|floatformat:0|intcomma }} Gs</b></p>
+        </div>
+    </div>
+
+    <footer>
+        Generado automáticamente por el módulo Nómina – {{ now|default:"{{ now }}" }}
+    </footer>
+</body>
+</html>

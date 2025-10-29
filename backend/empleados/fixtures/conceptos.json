@@ -1,0 +1,35 @@
+[
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Sueldo Base",
+      "tipo": "credito",
+      "es_recurrente": true,
+      "afecta_ips": true,
+      "afecta_aguinaldo": true
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Bonificación Familiar por Hijo",
+      "tipo": "credito",
+      "es_recurrente": true,
+      "afecta_ips": false,
+      "afecta_aguinaldo": false
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Préstamo",
+      "tipo": "debito",
+      "es_recurrente": false,
+      "afecta_ips": false,
+      "afecta_aguinaldo": false
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "model": "nomina_cal.nomina",
+    "pk": 1,
+    "fields": {
+      "empleado": 1,
+      "fecha": "2025-09-01",
+      "total": 5200000,
+      "detalle": [
+        {"concepto": "Salario base", "monto": 5000000},
+        {"concepto": "Bonificación", "monto": 200000}
+      ]
+    }
+  },
+  {
+    "model": "nomina_cal.nomina",
+    "pk": 2,
+    "fields": {
+      "empleado": 2,
+      "fecha": "2025-09-01",
+      "total": 3800000,
+      "detalle": [
+        {"concepto": "Salario base", "monto": 3800000}
+      ]
+    }
+  },
+  {
+    "model": "nomina_cal.nomina",
+    "pk": 3,
+    "fields": {
+      "empleado": 3,
+      "fecha": "2025-09-01",
+      "total": 3200000,
+      "detalle": [
+        {"concepto": "Salario base", "monto": 3000000},
+        {"concepto": "Horas extras", "monto": 200000}
+      ]
+    }
+  }
+]

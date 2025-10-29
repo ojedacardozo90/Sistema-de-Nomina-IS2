@@ -1,0 +1,5 @@
+[
+  { "model": "auth.group", "pk": 1, "fields": { "name": "gerente_rrhh" } },
+  { "model": "auth.group", "pk": 2, "fields": { "name": "asistente_rrhh" } },
+  { "model": "auth.group", "pk": 3, "fields": { "name": "empleado" } }
+]

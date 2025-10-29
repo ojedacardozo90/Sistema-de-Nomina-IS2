@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen Mensual de Asistencia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-blue-700 text-white py-4 shadow-md">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">📅 Resumen Mensual de Asistencia</h1>
+            <p class="text-sm">Periodo: {{ mes }}/{{ anio }}</p>
+        </div>
+    </header>
+
+    <!-- KPI Summary Cards -->
+    <section class="container mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-5 rounded-2xl shadow text-center border-t-4 border-green-500">
+            <h2 class="text-xl font-semibold text-green-700">Presentes</h2>
+            <p class="text-3xl font-bold mt-2">{{ totales.presentes }}</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow text-center border-t-4 border-yellow-400">
+            <h2 class="text-xl font-semibold text-yellow-600">Tardanzas</h2>
+            <p class="text-3xl font-bold mt-2">{{ totales.tardanzas }}</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow text-center border-t-4 border-red-500">
+            <h2 class="text-xl font-semibold text-red-600">Ausencias</h2>
+            <p class="text-3xl font-bold mt-2">{{ totales.ausencias }}</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow text-center border-t-4 border-indigo-500">
+            <h2 class="text-xl font-semibold text-indigo-700">Minutos Trabajados</h2>
+            <p class="text-3xl font-bold mt-2">{{ totales.minutos_trabajados }}</p>
+        </div>
+    </section>
+
+    <!-- Tabla de detalle -->
+    <section class="container mx-auto px-6 pb-10">
+        <div class="bg-white shadow-md rounded-xl overflow-hidden">
+            <table class="min-w-full text-sm text-left border-collapse">
+                <thead class="bg-gray-50 border-b">
+                    <tr>
+                        <th class="px-6 py-3 font-semibold text-gray-700">Empleado</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700">Cédula</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 text-center">Presentes</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 text-center">Tardanzas</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 text-center">Ausencias</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 text-center">Incompletos</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 text-center">Minutos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in registros %}
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="px-6 py-3">{{ r.empleado__nombre }}</td>
+                        <td class="px-6 py-3">{{ r.empleado__cedula }}</td>
+                        <td class="px-6 py-3 text-center text-green-700 font-semibold">{{ r.presentes }}</td>
+                        <td class="px-6 py-3 text-center text-yellow-600 font-semibold">{{ r.tardanzas }}</td>
+                        <td class="px-6 py-3 text-center text-red-600 font-semibold">{{ r.ausencias }}</td>
+                        <td class="px-6 py-3 text-center text-gray-600">{{ r.incompletos }}</td>
+                        <td class="px-6 py-3 text-center">{{ r.minutos_trabajados|default:0 }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-6 text-gray-500">
+                            No hay registros de asistencia para este periodo.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-200 text-center py-4 text-sm">
+        Generado el {{ now|date:"d/m/Y H:i" }} — Sistema de Nómina IS2 © 2025
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+[
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 1,
+    "fields": {
+      "descripcion": "Salario Base",
+      "es_debito": false,
+      "afecta_ips": true,
+      "para_aguinaldo": true
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 2,
+    "fields": {
+      "descripcion": "Bonificación por hijos",
+      "es_debito": false,
+      "afecta_ips": false,
+      "para_aguinaldo": false
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 3,
+    "fields": {
+      "descripcion": "Aporte IPS (Empleado)",
+      "es_debito": true,
+      "afecta_ips": true,
+      "para_aguinaldo": false
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 4,
+    "fields": {
+      "descripcion": "Aguinaldo (Proporcional)",
+      "es_debito": false,
+      "afecta_ips": false,
+      "para_aguinaldo": false
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 5,
+    "fields": {
+      "descripcion": "Vacaciones Pagadas",
+      "es_debito": false,
+      "afecta_ips": false,
+      "para_aguinaldo": false
+    }
+  },
+  {
+    "model": "nomina_cal.concepto",
+    "pk": 6,
+    "fields": {
+      "descripcion": "Retenciones / Anticipos",
+      "es_debito": true,
+      "afecta_ips": false,
+      "para_aguinaldo": false
+    }
+  }
+]

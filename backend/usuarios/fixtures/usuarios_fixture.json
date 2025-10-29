@@ -1,0 +1,54 @@
+[
+  {
+    "model": "usuarios.usuario",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "email": "admin@test.com",
+      "password": "pbkdf2_sha256$600000$abc123$SruZ0qkzF8DEe8q0g7Sh8LzXG5I3fPpWbOY3LgPWRyE=", 
+      "rol": "admin",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 2,
+    "fields": {
+      "username": "gerente",
+      "email": "gerente@test.com",
+      "password": "pbkdf2_sha256$600000$abc123$SruZ0qkzF8DEe8q0g7Sh8LzXG5I3fPpWbOY3LgPWRyE=", 
+      "rol": "gerente_rrhh",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 3,
+    "fields": {
+      "username": "asistente",
+      "email": "asistente@test.com",
+      "password": "pbkdf2_sha256$600000$abc123$SruZ0qkzF8DEe8q0g7Sh8LzXG5I3fPpWbOY3LgPWRyE=", 
+      "rol": "asistente_rrhh",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 4,
+    "fields": {
+      "username": "empleado",
+      "email": "empleado@test.com",
+      "password": "pbkdf2_sha256$600000$abc123$SruZ0qkzF8DEe8q0g7Sh8LzXG5I3fPpWbOY3LgPWRyE=", 
+      "rol": "empleado",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  }
+]

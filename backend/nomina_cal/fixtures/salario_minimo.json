@@ -1,0 +1,10 @@
+[
+  {
+    "model": "nomina_cal.salariominimo",
+    "pk": 1,
+    "fields": {
+      "monto": "2500000.00",
+      "vigente_desde": "2025-01-01"
+    }
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "model": "usuarios.usuario",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$8QhRk6QOTJ4ZtHhD9KJ7P7$+fV9XQ4gwdpzrsqvBnm0RbFqSz3okT7dxKsnQl7WzT8=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Raúl",
+      "last_name": "Ojeda",
+      "email": "admin@nomina.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-01-01T00:00:00Z",
+      "rol": "admin",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$wT3ZDnD6u2Fsdlq5WcP6Ot$3yYOi3cT/7gTpFSZbAJyq4V7N7ZkD0ZgF3RVe7T1jGE=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "gerente",
+      "first_name": "María",
+      "last_name": "González",
+      "email": "gerente@nomina.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-01-02T00:00:00Z",
+      "rol": "gerente_rrhh",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$9QhQd6LOTJ4ZtHhD9KJ7P8$9aT9VQ4gwdpzrsqvBnm0RbFqSz3okT7dxKsnQl7WzT8=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "asistente",
+      "first_name": "Carlos",
+      "last_name": "López",
+      "email": "asistente@nomina.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-03T00:00:00Z",
+      "rol": "asistente_rrhh",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$4m4JtB9T2Xw7y9jT8nPkB$C6bxxU9p2Xh6zAdKeI3HVmZKUz63H5btPL4KaxfT7iQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "empleado1",
+      "first_name": "Ana",
+      "last_name": "Martínez",
+      "email": "empleado1@nomina.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-04T00:00:00Z",
+      "rol": "empleado",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

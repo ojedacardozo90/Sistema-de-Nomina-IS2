@@ -1,0 +1,32 @@
+[
+  {
+    "model": "empleados.empleado",
+    "pk": 1,
+    "fields": {
+      "usuario": 2,
+      "nombre": "Carlos",
+      "apellido": "Ramírez",
+      "cedula": "1234567",
+      "cargo": "Analista",
+      "fecha_ingreso": "2022-05-01",
+      "salario_base": "3500000.00",
+      "fecha_nacimiento": "1990-01-01",
+      "estado_civil": "Soltero"
+    }
+  },
+  {
+    "model": "empleados.empleado",
+    "pk": 2,
+    "fields": {
+      "usuario": 3,
+      "nombre": "Ana",
+      "apellido": "Gómez",
+      "cedula": "9876543",
+      "cargo": "Asistente RRHH",
+      "fecha_ingreso": "2023-03-15",
+      "salario_base": "2800000.00",
+      "fecha_nacimiento": "1995-07-20",
+      "estado_civil": "Casada"
+    }
+  }
+]

@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1 style="text-align:center; color:#1a73e8;">🧮 Panel del Empleado</h1>
+<p><b>Usuario:</b> {{ request.user.username }}</p>
+<p><b>Empleado:</b> {{ empleado.nombre }} {{ empleado.apellido }}</p>
+<p><b>Cédula:</b> {{ empleado.cedula }}</p>
+
+<h3>💵 Últimas Liquidaciones</h3>
+<table border="1" cellspacing="0" cellpadding="6">
+  <tr style="background-color:#f0f0f0;">
+    <th>Mes</th>
+    <th>Año</th>
+    <th>Sueldo Base</th>
+    <th>Total Ingresos</th>
+    <th>Total Descuentos</th>
+    <th>Neto a Cobrar</th>
+  </tr>
+  {% for liq in liquidaciones %}
+  <tr>
+    <td>{{ liq.mes }}</td>
+    <td>{{ liq.anio }}</td>
+    <td>{{ liq.sueldo_base }}</td>
+    <td>{{ liq.total_ingresos }}</td>
+    <td>{{ liq.total_descuentos }}</td>
+    <td><b>{{ liq.neto_cobrar }}</b></td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">No hay liquidaciones registradas.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,10 @@
+[
+  {
+    "model": "empleados.salariominimo",
+    "pk": 1,
+    "fields": {
+      "monto": 2681262,
+      "fecha_vigencia": "2025-01-01"
+    }
+  }
+]

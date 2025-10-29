@@ -1,0 +1,38 @@
+[
+  {
+    "model": "empleados.empleado",
+    "pk": 1,
+    "fields": {
+      "nombre": "Juan Pérez",
+      "cedula": "1234567",
+      "fecha_nacimiento": "1985-05-10",
+      "estado_civil": "Casado",
+      "cargo": "Analista de RRHH",
+      "salario_base": "3500000.00",
+      "fecha_ingreso": "2015-03-15",
+      "usuario": 1
+    }
+  },
+  {
+    "model": "empleados.hijo",
+    "pk": 1,
+    "fields": {
+      "empleado": 1,
+      "nombre": "María Pérez",
+      "fecha_nacimiento": "2010-07-22",
+      "certificado_nacimiento": "hijos/certificados/maria.pdf",
+      "comprobante_residencia": "hijos/residencia/maria_residencia.pdf"
+    }
+  },
+  {
+    "model": "empleados.hijo",
+    "pk": 2,
+    "fields": {
+      "empleado": 1,
+      "nombre": "Carlos Pérez",
+      "fecha_nacimiento": "2015-12-05",
+      "certificado_nacimiento": null,
+      "comprobante_residencia": null
+    }
+  }
+]

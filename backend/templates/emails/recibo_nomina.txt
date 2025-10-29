@@ -1,0 +1,18 @@
+Hola {{ empleado.nombre }} {{ empleado.apellido }},
+
+Adjunto encontrarás tu recibo de sueldo correspondiente a la fecha {{ nomina.fecha }}.
+
+📊 Detalles:
+- Salario Base: {{ nomina.salario_base }} Gs
+- Bonificación por Hijos: {{ nomina.bonificacion_hijos }} Gs
+- Aporte IPS: {{ nomina.ips_empleado }} Gs
+- Aguinaldo Proporcional: {{ nomina.aguinaldo }} Gs
+- Vacaciones: {{ nomina.vacaciones }} Gs
+- Retenciones: {{ nomina.retenciones }} Gs
+
+💵 Total Neto a cobrar: {{ nomina.total }} Gs
+
+Este recibo se genera automáticamente por el sistema de nómina.
+
+Atentamente,  
+Sistema de Nómina IS2

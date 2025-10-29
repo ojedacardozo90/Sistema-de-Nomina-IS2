@@ -1,0 +1,16 @@
+[
+  {
+    "model": "empleados.empleado",
+    "pk": 1,
+    "fields": {
+      "usuario": 2,
+      "nombre": "Carlos López",
+      "cedula": "9876543",
+      "fecha_nacimiento": "1990-05-05",
+      "estado_civil": "Casado",
+      "cargo": "Analista",
+      "salario_base": "3000000.00",
+      "fecha_ingreso": "2020-03-01"
+    }
+  }
+]
