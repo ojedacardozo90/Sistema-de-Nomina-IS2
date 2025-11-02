@@ -4,7 +4,8 @@
 // ======================================================
 import Logout from "./pages/Logout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import AdminPanel from "./pages/admin/AdminPanel";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 // 🖼️ Layout principal
 import Layout from "./components/Layout";
 import Sidebar from "./components/Sidebar";
@@ -38,6 +39,7 @@ import CalcularTodasNominas from "./pages/CalcularTodasNominas";
 
 // 🕒 Asistencia
 import Asistencia from "./pages/Asistencia";
+import FichadasList from "./pages/FichadasList";
 import NoAutorizado from "./pages/NoAutorizado";
 
 // 🧾 Otros módulos
@@ -46,11 +48,16 @@ import Auditoria from "./pages/Auditoria";
 import UsuariosList from "./pages/UsuariosList";
 import UsuarioForm from "./pages/UsuarioForm";
 import ImportarDatos from "./pages/ImportarDatos";
-
-
-import FichadasList from "./pages/FichadasList";
 import DashboardGestion from "./pages/DashboardGestion";
+import EmpleadosAdmin from "./pages/admin/EmpleadosAdmin";
+import ConceptosAdmin from "./pages/admin/ConceptosAdmin";
+import LiquidacionesAdmin from "./pages/admin/LiquidacionesAdmin";
+
+import EmpleadosAdmin from "./pages/admin/EmpleadosAdmin";
+import ConceptosAdmin from "./pages/admin/ConceptosAdmin";
+import LiquidacionesAdmin from "./pages/admin/LiquidacionesAdmin";
 // ======================================================
+
 export default function App() {
   return (
     <Router>
@@ -59,18 +66,29 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
-
+        <Route path="/admin/empleados" element={<EmpleadosAdmin />} />
+        <Route path="/admin/conceptos" element={<ConceptosAdmin />} />
+        <Route path="/admin/liquidaciones" element={<LiquidacionesAdmin />} />
+        
+        
         {/* 🌐 Rutas protegidas con Layout */}
         <Route element={<Layout sidebar={<Sidebar />} />}>
           {/* Redirección automática por rol */}
           <Route path="/" element={<RoleRouter />} />
 
+          {/* 🛠️ Panel de administración */}
+          <Route path="/admin" element={<AdminPanel />} /> {/* ⬅️ añadido */}
+          
+          <Route path="/admin/empleados" element={<EmpleadosAdmin />} />
+          <Route path="/admin/conceptos" element={<ConceptosAdmin />} />
+          <Route path="/admin/liquidaciones" element={<LiquidacionesAdmin />} />
           {/* Dashboards */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/admin" element={<DashboardAdmin />} />
           <Route path="/dashboard/gerente" element={<DashboardGerente />} />
           <Route path="/dashboard/asistente" element={<DashboardAsistente />} />
           <Route path="/dashboard/empleado" element={<DashboardEmpleado />} />
+          <Route path="/dashboard/gestion" element={<DashboardGestion />} />
 
           {/* Empleados */}
           <Route path="/empleados" element={<EmpleadosList />} />
@@ -91,6 +109,7 @@ export default function App() {
 
           {/* Asistencia */}
           <Route path="/asistencia" element={<Asistencia />} />
+          <Route path="/asistencia/fichadas" element={<FichadasList />} />
 
           {/* Usuarios */}
           <Route path="/usuarios" element={<UsuariosList />} />
@@ -103,14 +122,10 @@ export default function App() {
 
           {/* Importar datos */}
           <Route path="/importar" element={<ImportarDatos />} />
-
+          <Route path="/dashboard/admin" element={<AdminDashboard />} />
           {/* Configuración */}
           <Route path="/no-autorizado" element={<NoAutorizado />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/dashboard/gestion" element={<DashboardGestion />} />
-          
-          <Route path="/asistencia/fichadas" element={<FichadasList />} />
-          
         </Route>
 
         {/* Fallback a login */}
@@ -119,3 +134,21 @@ export default function App() {
     </Router>
   );
 }
+
+
+// ============================================================
+// Rutas del panel administrativo (equivalente al Django Admin)
+// ============================================================
+import UsuariosAdmin from "./pages/admin/UsuariosAdmin";
+import AsistenciasAdmin from "./pages/admin/AsistenciasAdmin";
+
+// ...
+
+<Routes>
+  {/* Otros módulos */}
+  <Route path="/admin/empleados" element={<EmpleadosAdmin />} />
+  <Route path="/admin/conceptos" element={<ConceptosAdmin />} />
+  <Route path="/admin/liquidaciones" element={<LiquidacionesAdmin />} />
+  <Route path="/admin/usuarios" element={<UsuariosAdmin />} />
+  <Route path="/admin/asistencias" element={<AsistenciasAdmin />} />
+</Routes>

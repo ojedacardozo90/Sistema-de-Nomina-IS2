@@ -19,6 +19,7 @@ from .utils_email import generar_recibo_pdf
 # 🔹 MODELO BASE DE AUDITORÍA
 # ============================================================
 class AuditoriaModel(models.Model):
+    
     """Registra trazabilidad de creación y modificación."""
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -109,7 +110,11 @@ class Liquidacion(AuditoriaModel):
     class Meta:
         unique_together = ("empleado", "mes", "anio")
         ordering = ["-anio", "-mes"]
+        ordering = ["-anio", "-mes"]
+        verbose_name = "Liquidación"
+        verbose_name_plural = "Liquidaciones"
 
+        
     def __str__(self):
         return f"Liquidación {self.mes}/{self.anio} - {self.empleado}"
 
@@ -126,8 +131,9 @@ class Liquidacion(AuditoriaModel):
         if not (1 <= self.mes <= 12):
             raise ValueError("El campo 'mes' debe estar entre 1 y 12.")
         # calcular_totales():
-        if self.enviado_email:
-            raise ValueError("No se puede recalcular una liquidación ya enviada por correo.")
+        if self.enviado_email and not kwargs.get("force_update"):
+            raise ValueError("No se puede recalcular una liquidación ya enviada.")
+    
         if not self.sueldo_base or self.sueldo_base == 0:
             self.sueldo_base = self.empleado.salario_base or Decimal("0.00")
         super().save(*args, **kwargs)

@@ -43,6 +43,8 @@ class Usuario(AbstractUser):
         unique=True,
         blank=False,
         help_text="Correo electrónico único para cada usuario (login preferido)"
+    
+    
     )
 
     created_at = models.DateTimeField(default=timezone.now, editable=False)
@@ -71,3 +73,11 @@ class Usuario(AbstractUser):
 
     def is_empleado(self):
         return self.rol == self.EMPLEADO
+
+    # ----------------------------
+    # Configuración Meta
+    # ----------------------------
+    class Meta:
+        ordering = ["username"]
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"

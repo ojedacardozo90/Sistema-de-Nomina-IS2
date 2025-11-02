@@ -12,12 +12,13 @@ from rest_framework.views import APIView
 from .models import Concepto, Liquidacion
 from .serializers import ConceptoSerializer, LiquidacionSerializer
 from usuarios.permissions import IsAdmin, IsGerenteRRHH, IsAsistenteRRHH, ReadOnly
-
+from rest_framework import filters
 # Django core
 from django.db.models import Sum, Avg
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from usuarios.permissions import IsAdminOrGerente
 
 # Utilidades / estándar
 from datetime import date, datetime
@@ -43,6 +44,7 @@ from .serializers import (
     LiquidacionSerializer,
     DetalleLiquidacionSerializer,
     DescuentoSerializer,
+    
 )
 from usuarios.permissions import (
     IsAdmin,
@@ -321,7 +323,12 @@ class LiquidacionViewSet(AuditoriaMixin, viewsets.ModelViewSet):
     """
     queryset = Liquidacion.objects.all().order_by("-anio", "-mes")
     serializer_class = LiquidacionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrGerente]
+
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["empleado__nombre", "empleado__apellido", "empleado__cedula"]
+    ordering_fields = ["anio", "mes", "neto_cobrar"]
+    ordering = ["-anio", "-mes"]  # orden por defecto
 
     def get_queryset(self):
         """
@@ -849,3 +856,122 @@ def resumen_visual(request):
         "total_general": resumen["total_general"] or 0,
     }
     return render(request, "nomina_cal/resumen_visual.html", contexto)
+
+
+# ============================================================
+# 📅 CierreNominaView — Cierre mensual de la nómina
+# ============================================================
+
+from django.db import transaction
+from .models import Liquidacion
+from nomina_cal.utils_email import generar_recibo_pdf  # o de donde venga tu función
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class CierreNominaView(APIView):
+    """
+    Cierra todas las liquidaciones abiertas del mes y año indicados,
+    marcándolas como cerradas y generando los recibos PDF.
+    """
+
+    def post(self, request, *args, **kwargs):
+        mes = request.data.get("mes")
+        anio = request.data.get("anio")
+
+        if not mes or not anio:
+            return Response(
+                {"error": "Debe especificar el mes y el año."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        with transaction.atomic():
+            liquidaciones = Liquidacion.objects.filter(mes=mes, anio=anio, cerrada=False)
+            count = liquidaciones.count()
+
+            for liq in liquidaciones:
+                liq.cerrada = True
+                liq.save()
+                try:
+                    generar_recibo_pdf(liq)
+                except Exception as e:
+                    print(f"⚠️ Error generando recibo: {e}")
+
+        return Response(
+            {"mensaje": f"Cierre completado. {count} liquidaciones cerradas."},
+            status=status.HTTP_200_OK,
+        )
+
+# ============================================================
+# 📄 NominaPDFView — Genera PDF individual de una liquidación
+# ============================================================
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+import io
+from .models import Liquidacion
+
+
+class NominaPDFView(APIView):
+    """
+    Genera el PDF del recibo de salario para una liquidación específica.
+    Endpoint: GET /api/nomina_cal/pdf/<id>/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            liq = Liquidacion.objects.get(pk=pk)
+        except Liquidacion.DoesNotExist:
+            return Response({"error": "Liquidación no encontrada."}, status=404)
+
+        buffer = io.BytesIO()
+        p = canvas.Canvas(buffer)
+        p.setFont("Helvetica-Bold", 14)
+        p.drawString(200, 800, "Recibo de Salario")
+
+        y = 760
+        p.setFont("Helvetica", 11)
+        p.drawString(50, y, f"Empleado: {liq.empleado.nombre}")
+        y -= 20
+        p.drawString(50, y, f"Cédula: {liq.empleado.cedula}")
+        y -= 20
+        p.drawString(50, y, f"Periodo: {liq.mes}/{liq.anio}")
+        y -= 20
+        p.drawString(50, y, f"Sueldo Base: {liq.empleado.salario_base} Gs")
+        y -= 20
+        p.drawString(50, y, f"Total Ingresos: {liq.total_ingresos} Gs")
+        y -= 20
+        p.drawString(50, y, f"Total Descuentos: {liq.total_descuentos} Gs")
+        y -= 20
+        p.drawString(50, y, f"Neto a Cobrar: {liq.neto_cobrar} Gs")
+
+        p.line(50, y - 10, 550, y - 10)
+        y -= 40
+        p.setFont("Helvetica-Bold", 12)
+        p.drawString(50, y, "Detalle de Conceptos:")
+
+        y -= 20
+        p.setFont("Helvetica", 10)
+        for detalle in liq.detalles.all():
+            if y < 80:
+                p.showPage()
+                y = 780
+                p.setFont("Helvetica", 10)
+            p.drawString(
+                60,
+                y,
+                f"{detalle.concepto.descripcion}: {detalle.monto} Gs",
+            )
+            y -= 18
+
+        p.showPage()
+        p.save()
+        buffer.seek(0)
+
+        response = HttpResponse(buffer, content_type="application/pdf")
+        response["Content-Disposition"] = f'inline; filename="recibo_{liq.id}.pdf"'
+        return response

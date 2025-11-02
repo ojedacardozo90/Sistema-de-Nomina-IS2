@@ -1,5 +1,5 @@
 # ============================================================
-# ⚙️ CONFIGURACIÓN DJANGO - Sistema de Nómina IS2
+#  CONFIGURACIÓN DJANGO - Sistema de Nómina IS2
 # ============================================================
 import os
 from pathlib import Path
@@ -8,23 +8,23 @@ from dotenv import load_dotenv
 import smtplib
 
 # ------------------------------------------------------------
-# 🔹 RUTAS BASE Y VARIABLES DE ENTORNO
+#  RUTAS BASE Y VARIABLES DE ENTORNO
 # ------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 👇 Cargar archivo .env desde la raíz del backend
+#  Cargar archivo .env desde la raíz del backend
 # (asegurate de que exista C:\Users\Ojeda\Is2-payroll-app\backend\.env)
 load_dotenv(BASE_DIR / ".env")
 
 # ------------------------------------------------------------
-# 🔹 CONFIGURACIÓN GENERAL DEL PROYECTO
+#  CONFIGURACIÓN GENERAL DEL PROYECTO
 # ------------------------------------------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-1234567890")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # ------------------------------------------------------------
-# 🔹 APLICACIONES INSTALADAS
+#  APLICACIONES INSTALADAS
 # ------------------------------------------------------------
 INSTALLED_APPS = [
     # Núcleo de Django
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "drf_yasg",  # Swagger / documentación API
 
     # Aplicaciones del sistema
     "usuarios",
@@ -49,7 +50,7 @@ INSTALLED_APPS = [
 ]
 
 # ------------------------------------------------------------
-# 🔹 MIDDLEWARE
+#  MIDDLEWARE
 # ------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -70,18 +71,18 @@ MIDDLEWARE = [
 ]
 
 # ------------------------------------------------------------
-# 🔹 CONFIGURACIÓN DE URLS Y WSGI
+#  CONFIGURACIÓN DE URLS Y WSGI
 # ------------------------------------------------------------
 ROOT_URLCONF = "sistema_nomina.urls"
 WSGI_APPLICATION = "sistema_nomina.wsgi.application"
 
 # ------------------------------------------------------------
-# 🔹 CONFIGURACIÓN DE PLANTILLAS
+#  CONFIGURACIÓN DE PLANTILLAS
 # ------------------------------------------------------------
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # 📁 Plantillas HTML y correos
+        "DIRS": [BASE_DIR / "templates"],  #  Plantillas HTML y correos
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -95,21 +96,21 @@ TEMPLATES = [
 ]
 
 # ------------------------------------------------------------
-# 🔹 BASE DE DATOS (PostgreSQL)
+#  BASE DE DATOS (PostgreSQL - obligatorio)
 # ------------------------------------------------------------
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DB_NAME", "nomina_db"),
-        "USER": os.getenv("DB_USER", "is2"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "teamis2"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 
 # ------------------------------------------------------------
-# 🔹 AUTENTICACIÓN Y PERMISOS
+#  AUTENTICACIÓN Y PERMISOS
 # ------------------------------------------------------------
 AUTH_USER_MODEL = "usuarios.Usuario"
 
@@ -120,13 +121,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
-    # Opcional: paginación tipo admin (50 por página)
+    # Paginación tipo admin (50 por página)
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 50,
 }
 
 # ------------------------------------------------------------
-# 🔹 CONFIGURACIÓN JWT (Tokens de sesión)
+#  CONFIGURACIÓN JWT (Tokens de sesión)
 # ------------------------------------------------------------
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
@@ -136,9 +137,8 @@ SIMPLE_JWT = {
 }
 
 # ------------------------------------------------------------
-# 🔹 CONFIGURACIÓN CORS / CSRF (Frontend con Vite)
+#  CONFIGURACIÓN CORS / CSRF (Frontend con Vite)
 # ------------------------------------------------------------
-# Permitimos http://localhost:5173 y http://127.0.0.1:5173
 _frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
 _frontend_host = _frontend_url
 
@@ -150,7 +150,6 @@ CORS_ALLOWED_ORIGINS = list({
 })
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF confiable para el frontend
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -158,7 +157,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # ------------------------------------------------------------
-# 🔹 VALIDADORES DE CONTRASEÑA
+#  VALIDADORES DE CONTRASEÑA
 # ------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -168,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ------------------------------------------------------------
-# 🔹 INTERNACIONALIZACIÓN Y ZONA HORARIA
+#  INTERNACIONALIZACIÓN Y ZONA HORARIA
 # ------------------------------------------------------------
 LANGUAGE_CODE = "es"
 TIME_ZONE = "America/Asuncion"
@@ -176,7 +175,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------------------------------------------
-# 🔹 ARCHIVOS ESTÁTICOS Y MEDIA
+#  ARCHIVOS ESTÁTICOS Y MEDIA
 # ------------------------------------------------------------
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
@@ -184,12 +183,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # ------------------------------------------------------------
-# 🔹 DEFAULT AUTO FIELD
+#  DEFAULT AUTO FIELD
 # ------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ------------------------------------------------------------
-# 🔹 LOGGING
+#  LOGGING
 # ------------------------------------------------------------
 LOGGING = {
     "version": 1,
@@ -204,7 +203,7 @@ LOGGING = {
 }
 
 # ============================================================
-# 💌 CONFIGURACIÓN DE CORREO ELECTRÓNICO (EMAIL BACKEND)
+# CONFIGURACIÓN DE CORREO ELECTRÓNICO (EMAIL BACKEND)
 # Sistema de Nómina IS2 — FP-UNA / FAP
 # ------------------------------------------------------------
 # Modos soportados (definí EMAIL_MODE en tu .env):
@@ -214,10 +213,7 @@ LOGGING = {
 #   smtp     → SMTP institucional
 #   sendgrid → SendGrid SMTP con API Key
 # ============================================================
-
-# 🌍 URL base del frontend (para enlaces de reseteo de contraseña)
 FRONTEND_URL = _frontend_url
-
 EMAIL_MODE = os.getenv("EMAIL_MODE", "gmail").lower()
 
 if EMAIL_MODE == "console":
@@ -229,8 +225,7 @@ elif EMAIL_MODE == "gmail":
     EMAIL_HOST = "smtp.gmail.com"
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "ojeda.cardozo90@gmail.com")
-    # Requiere "App Password" (2FA): https://myaccount.google.com/apppasswords
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tu_correo@gmail.com")
     EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
     DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 
@@ -248,7 +243,7 @@ elif EMAIL_MODE == "smtp":
     EMAIL_HOST = os.getenv("EMAIL_HOST", "mail.fap.mil.py")
     EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
     EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
-    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tuusuario@fap.mil.py")
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "usuario@fap.mil.py")
     EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
     DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 
@@ -262,10 +257,8 @@ elif EMAIL_MODE == "sendgrid":
     DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "notificaciones@nomina.com")
 
 else:
-    # Fallback seguro: consola (no intenta enviar)
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@nomina.local")
 
-# Nivel de depuración SMTP (0=off, 1=verbose)
 SMTP_DEBUG = int(os.getenv("SMTP_DEBUG", "0"))
 smtplib.SMTP.debuglevel = SMTP_DEBUG

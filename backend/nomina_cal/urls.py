@@ -1,6 +1,6 @@
 # backend/nomina_cal/urls.py
 # ============================================================
-# 🌐 Rutas completas del módulo Nómina / Liquidaciones (TP IS2 - FAP / FP-UNA)
+# 🌐 Rutas completas del módulo Nómina / Liquidaciones (TP IS2 / FP-UNA)
 # ------------------------------------------------------------
 # Cumple Sprints 3–6:
 #   • CRUD completo de conceptos, salarios mínimos, descuentos y liquidaciones
@@ -14,9 +14,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views_importacion import importar_empleados, importar_liquidaciones
-
+from rest_framework import routers
 
 from .views_dashboard import ReporteGeneralView
+from .views import CierreNominaView, NominaPDFView
 
 # 🔹 Vistas base (funcionales y API REST)
 from . import views
@@ -127,6 +128,9 @@ urlpatterns = [
     # --------------------------------------------------------
     # 📊 Alias directo para compatibilidad con frontend React
     # --------------------------------------------------------
+
+    path("cierres/", CierreNominaView.as_view(), name="nomina-cierres"),
+    path("pdf/<int:pk>/", NominaPDFView.as_view(), name="nomina-pdf"),
     path("reporte-general/", ReporteGeneralAdminView.as_view(), name="reporte_general_alias"),
 ]
 

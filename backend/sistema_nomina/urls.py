@@ -81,3 +81,42 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# ============================================================
+# 📘 DOCUMENTACIÓN API (Swagger / ReDoc)
+# ============================================================
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from django.urls import path, re_path
+
+# ============================================================
+# 🔹 CONFIGURACIÓN DE SWAGGER CON JWT
+# ============================================================
+schema_view = get_schema_view(
+    openapi.Info(
+        title="API - Sistema de Nómina IS2",
+        default_version="v1",
+        description=(
+            "Documentación interactiva del backend del Sistema de Nómina.\n\n"
+            "Utiliza autenticación JWT (Bearer token).\n"
+            "Para probar los endpoints protegidos:\n"
+            "1️⃣ Ejecuta /api/usuarios/login/ con tus credenciales.\n"
+            "2️⃣ Copia el campo 'access'.\n"
+            "3️⃣ Haz clic en Authorize 🔒 y pega: Bearer <tu_token>."
+        ),
+        contact=openapi.Contact(email="soporte@fap.mil.py"),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    authentication_classes=[],  # evita pedir BasicAuth
+)
+
+urlpatterns += [
+    path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    path("swagger.yaml", schema_view.without_ui(cache_timeout=0), name="schema-yaml"),
+    re_path(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+]

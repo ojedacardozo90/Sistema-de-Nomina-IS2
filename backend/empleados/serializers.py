@@ -1,4 +1,3 @@
-# backend/empleados/serializers.py
 # ============================================================
 # 🎯 Serializadores de Empleados e Hijos (TP IS2 - Nómina)
 # ============================================================
@@ -59,9 +58,13 @@ class EmpleadoSerializer(serializers.ModelSerializer):
             "direccion",
             "activo",
             "antiguedad",
+            "area",
+            "tipo_contrato",
+            "estado_civil",
             "hijos",
         ]
         read_only_fields = ["antiguedad", "hijos"]
+        depth = 1  # 🔹 Muestra los detalles del usuario vinculado
 
     def get_antiguedad(self, obj):
         return obj.antiguedad

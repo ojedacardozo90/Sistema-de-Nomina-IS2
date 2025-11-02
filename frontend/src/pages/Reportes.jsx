@@ -66,13 +66,13 @@ export default function Reportes() {
   // ============================================================
   const exportarPDF = () =>
     window.open(
-      `http://127.0.0.1:8000/api/nomina_cal/reportes/pdf/?mes=${mes}&anio=${anio}`,
+      `${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/nomina_cal/reportes/pdf/?mes=${mes}&anio=${anio}`,
       "_blank"
     );
 
   const exportarExcel = () =>
     window.open(
-      `http://127.0.0.1:8000/api/nomina_cal/reportes/excel/?mes=${mes}&anio=${anio}`,
+      `${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/nomina_cal/reportes/excel/?mes=${mes}&anio=${anio}`,
       "_blank"
     );
 

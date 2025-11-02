@@ -1,146 +1,164 @@
 # ============================================================
-# 🔐 Vistas de Autenticación y Roles (TP IS2 - Sistema de Nómina FAP)
+# 🔐 Gestión de Usuarios - Sistema de Nómina IS2 (FP-UNA / FAP)
 # ------------------------------------------------------------
-# Incluye:
-#   • Inicio / cierre de sesión con JWT (SimpleJWT)
-#   • Recuperación y restablecimiento de contraseña
-#   • Perfil del usuario autenticado
-#   • Control de roles para enrutamiento React
+# Autenticación JWT personalizada, recuperación de contraseña,
+# reseteo seguro, CRUD administrativo y endpoints de diagnóstico.
 # ============================================================
 
-from django.contrib.auth.models import update_last_login
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
+import csv
+import io
+import logging
+from typing import List
+
 from django.conf import settings
-
-from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import send_mail
+from django.db.models import Count
+from django.http import HttpResponse
+from django.utils import timezone
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from rest_framework import permissions, status, viewsets, filters
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-User = get_user_model()
+from empleados.models import Empleado
+from .serializers import UsuarioSerializer, CustomTokenObtainPairSerializer
+from nomina_cal.utils.notificaciones import notificar_pago
+
+logger = logging.getLogger(__name__)
+Usuario = get_user_model()
+token_generator = PasswordResetTokenGenerator()
 
 # ============================================================
-# 🧩 LOGIN - JWT Authentication
+# 🔑 1️⃣ Autenticación JWT Personalizada
 # ============================================================
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def login_view(request):
+class CustomTokenObtainPairView(TokenObtainPairView):
     """
-    Recibe credenciales (username, password)
-    y devuelve tokens JWT (access + refresh) + rol del usuario.
+    Retorna tokens de acceso y datos completos del usuario autenticado.
+    Compatible con React (login persistente vía localStorage).
     """
-    username = request.data.get("username")
-    password = request.data.get("password")
+    serializer_class = CustomTokenObtainPairSerializer
 
-    user = authenticate(request, username=username, password=password)
-    if user is None:
-        return Response({"error": "Credenciales inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception:
+            return Response({"error": "Credenciales inválidas o usuario inactivo."},
+                            status=status.HTTP_401_UNAUTHORIZED)
 
-    refresh = RefreshToken.for_user(user)
-    update_last_login(None, user)
+        tokens = serializer.validated_data
+        user = serializer.user
 
-    rol = getattr(user, "rol", "empleado")  # fallback
-    return Response({
-        "refresh": str(refresh),
-        "access": str(refresh.access_token),
-        "user": {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "rol": rol,
-        }
-    })
+        # Respuesta personalizada para frontend
+        return Response({
+            "access": tokens["access"],
+            "refresh": tokens["refresh"],
+            "usuario": {
+                "id": user.id,
+                "email": user.email,
+                "username": user.username,
+                "nombre": user.get_full_name() or user.username,
+                "rol": getattr(user, "rol", None),
+                "is_active": user.is_active,
+            },
+            "mensaje": f"Bienvenido {user.first_name or user.username} ✅",
+        }, status=200)
 
 
 # ============================================================
-# 🚪 LOGOUT (token blacklist opcional)
+# 📧 2️⃣ Recuperar contraseña (enviar correo)
 # ============================================================
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def logout_view(request):
+class ForgotPasswordView(APIView):
     """
-    Invalida el token de refresh (opcional).
+    Envía al correo del usuario un enlace con UID y token:
+      FRONTEND_URL/reset-password?uid=<uidb64>&token=<token>
     """
-    try:
-        token = RefreshToken(request.data.get("refresh"))
-        token.blacklist()
-        return Response({"message": "Sesión cerrada correctamente."}, status=200)
-    except Exception:
-        return Response({"message": "Token inválido o expirado."}, status=400)
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = (request.data.get("email") or "").strip().lower()
+        if not email:
+            return Response({"error": "Debe proporcionar un correo electrónico."}, status=400)
+
+        try:
+            user = Usuario.objects.get(email=email)
+        except Usuario.DoesNotExist:
+            logger.warning(f"[ForgotPassword] Correo no registrado: {email}")
+            return Response({"mensaje": "Si el correo existe, se enviará un enlace de recuperación."}, status=200)
+
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = token_generator.make_token(user)
+        frontend = getattr(settings, "FRONTEND_URL", "http://localhost:5173")
+        reset_link = f"{frontend}/reset-password?uid={uidb64}&token={token}"
+
+        subject = "Recuperación de contraseña - Sistema de Nómina"
+        message = (
+            f"Hola {user.first_name or user.username},\n\n"
+            f"Hacé clic en el siguiente enlace para restablecer tu contraseña:\n\n"
+            f"{reset_link}\n\n"
+            f"Si no solicitaste esto, ignorá este mensaje.\n\n"
+            f"— Sistema de Nómina IS2"
+        )
+
+        try:
+            send_mail(subject, message,
+                      getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@nomina.local"),
+                      [email], fail_silently=False)
+            logger.info(f"[ForgotPassword] Enlace enviado a {email}")
+            return Response({"mensaje": "Correo de recuperación enviado correctamente."}, status=200)
+        except Exception as e:
+            logger.exception(f"[ForgotPassword] Fallo de envío: {e}")
+            return Response({"error": "No se pudo enviar el correo."}, status=500)
 
 
 # ============================================================
-# 👤 PERFIL DEL USUARIO ACTUAL
+# 🔄 3️⃣ Validar y resetear contraseña
 # ============================================================
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def user_profile(request):
-    user = request.user
-    return Response({
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "rol": getattr(user, "rol", "empleado"),
-    })
+class ValidateResetTokenView(APIView):
+    """Valida UID/token antes del cambio de contraseña."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = Usuario.objects.get(pk=uid)
+        except Exception:
+            return Response({"valido": False, "detalle": "uid inválido."}, status=400)
+        if token_generator.check_token(user, token):
+            return Response({"valido": True}, status=200)
+        return Response({"valido": False, "detalle": "token inválido o expirado."}, status=400)
 
 
-# ============================================================
-# 📧 SOLICITUD DE RESETEO DE CONTRASEÑA
-# ============================================================
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def forgot_password(request):
+class ResetPasswordView(APIView):
     """
-    Envia un correo con enlace de restablecimiento de contraseña.
+    Restablece la contraseña desde el enlace de recuperación.
     """
-    email = request.data.get("email")
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        return Response({"error": "No existe un usuario con ese correo."}, status=404)
+    permission_classes = [permissions.AllowAny]
 
-    token = default_token_generator.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    reset_link = f"http://localhost:5173/reset-password/{uid}/{token}"
+    def post(self, request, uid=None, token=None):
+        uidb64 = uid or request.data.get("uid")
+        token = token or request.data.get("token")
+        nueva = request.data.get("password")
 
-    send_mail(
-        subject="Recuperación de contraseña - Sistema de Nómina",
-        message=f"Hola {user.username},\n\nPara restablecer tu contraseña hacé clic en el siguiente enlace:\n{reset_link}\n\nSi no solicitaste este correo, ignoralo.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email],
-        fail_silently=True,
-    )
+        if not (uidb64 and token and nueva):
+            return Response({"error": "Debe enviar uid, token y password."}, status=400)
+        try:
+            uid_decodificado = force_str(urlsafe_base64_decode(uidb64))
+            user = Usuario.objects.get(pk=uid_decodificado)
+        except Exception:
+            return Response({"error": "uid inválido."}, status=400)
+        if not token_generator.check_token(user, token):
+            return Response({"error": "token inválido o expirado."}, status=400)
+        if len(nueva) < 8:
+            return Response({"error": "La contraseña debe tener al menos 8 caracteres."}, status=400)
 
-    return Response({"message": "Correo de restablecimiento enviado correctamente."})
-
-
-# ============================================================
-# 🔁 RESETEO DE CONTRASEÑA (desde el link del correo)
-# ============================================================
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def reset_password(request, uidb64, token):
-    """
-    Cambia la contraseña del usuario si el token es válido.
-    """
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except Exception:
-        return Response({"error": "Enlace inválido o expirado."}, status=400)
-
-    if not default_token_generator.check_token(user, token):
-        return Response({"error": "Token inválido o expirado."}, status=400)
-
-    new_password = request.data.get("password")
-    if not new_password or len(new_password) < 4:
-        return Response({"error": "Contraseña no válida o demasiado corta."}, status=400)
-
-    user.set_password(new_password)
-    user.save()
-    return Response({"message": "Contraseña restablecida correctamente."})
+        user.set_password(nueva)
+        user.save(update_fields=["password"])
+        logger.info(f"[ResetPassword] Contraseña actualizada para {user.email}")
+        return Response({"mensaje": "Contraseña actualizada correctamente."}, status=200)

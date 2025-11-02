@@ -31,6 +31,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["rol"] = user.rol
         token["nombre_completo"] = user.get_full_name()
         token["username"] = user.username
+        token["id"] = user.id
         return token
 
     def validate(self, attrs):

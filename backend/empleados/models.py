@@ -1,4 +1,3 @@
-# backend/empleados/models.py
 # ============================================================
 # 👥 Modelos de Empleados y Familiares (TP IS2 - Nómina)
 # Cumple con la legislación MTESS sobre bonificación familiar.
@@ -37,6 +36,11 @@ class Empleado(models.Model):
     email = models.EmailField(blank=True, null=True)
     direccion = models.TextField(blank=True, null=True)
     activo = models.BooleanField(default=True)
+
+class Meta:
+    ordering = ["apellido", "nombre"]
+    verbose_name = "Empleado"
+    verbose_name_plural = "Empleados"
 
     # ============================================================
     # 🔹 NUEVOS CAMPOS Sprint 6 (para dashboards y reportes)
@@ -80,6 +84,14 @@ class Empleado(models.Model):
         """Retorna la antigüedad en años del empleado."""
         return (date.today().year - self.fecha_ingreso.year) if self.fecha_ingreso else 0
 
+    # ============================================================
+    # 🔸 Meta para orden y nombre legible
+    # ============================================================
+    class Meta:
+        ordering = ["apellido", "nombre"]
+        verbose_name = "Empleado"
+        verbose_name_plural = "Empleados"
+
 
 # ============================================================
 # 🔹 MODELO HIJO / DEPENDIENTE
@@ -104,8 +116,13 @@ class Hijo(models.Model):
     )
 
     activo = models.BooleanField(default=True)
+class Meta:
+    ordering = ["nombre"]
+    verbose_name = "Hijo"
+    verbose_name_plural = "Hijos"
 
     def __str__(self):
+        
         return f"{self.nombre} ({self.empleado.nombre})"
 
     # ============================================================
@@ -130,6 +147,27 @@ class Hijo(models.Model):
             return self.fecha_vencimiento_residencia >= timezone.now().date()
         return True  # si no tiene vencimiento cargado, se asume válida
 
+    # ============================================================
+    # 🔹 Propiedades para usar fuera del serializer
+    # ============================================================
+    @property
+    def edad_actual(self):
+        """Edad actual (propiedad accesible sin llamar al método)."""
+        return self.edad()
+
+    @property
+    def es_menor_edad(self):
+        """Propiedad booleana que indica si el hijo es menor de edad."""
+        return self.es_menor()
+
+    # ============================================================
+    # 🔸 Meta para orden y nombre legible
+    # ============================================================
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Hijo"
+        verbose_name_plural = "Hijos"
+
 
 # ============================================================
 # 🧾 HISTORIAL DE CARGOS/SALARIOS (para auditoría de cambios)
@@ -143,6 +181,8 @@ class HistorialCargoSalario(models.Model):
 
     class Meta:
         ordering = ["-fecha_inicio"]
+        verbose_name = "Historial de Cargo y Salario"
+        verbose_name_plural = "Historiales de Cargos y Salarios"
 
     def __str__(self):
         return f"{self.empleado} | {self.cargo} | {self.salario} | {self.fecha_inicio} - {self.fecha_fin or 'Actual'}"

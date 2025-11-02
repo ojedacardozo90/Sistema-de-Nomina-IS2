@@ -4,7 +4,6 @@
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-
 # ============================================================
 # 🔹 Función auxiliar
 # ============================================================
@@ -72,3 +71,17 @@ class IsGerenteOrAsistente(BasePermission):
     def has_permission(self, request, view):
         rol = get_user_role(request.user)
         return rol in ["gerente_rrhh", "asistente_rrhh"]
+
+
+# ============================================================
+# 🔹 Permiso combinado con lectura libre
+# ============================================================
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Permite acceso completo solo a ADMIN.
+    Los demás roles tienen acceso de solo lectura (GET, HEAD, OPTIONS).
+    """
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        return get_user_role(request.user) == "admin"

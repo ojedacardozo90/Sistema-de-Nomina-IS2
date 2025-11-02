@@ -8,6 +8,8 @@ from .models import Concepto, SalarioMinimo, Liquidacion, DetalleLiquidacion
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 
+from .models import Liquidacion, DetalleLiquidacion
+
 Usuario = get_user_model()
 
 # ============================================================
@@ -92,36 +94,51 @@ class SalarioMinimoSerializer(serializers.ModelSerializer):
 # ============================================================
 # 🔹 SERIALIZER: Detalle de Liquidación
 # ============================================================
-class DetalleLiquidacionSerializer(serializers.ModelSerializer):
-    concepto_descripcion = serializers.CharField(
-        source="concepto.descripcion", read_only=True
-    )
+# ============================================================
+# 💰 LiquidacionSerializer — Serializador principal de nómina
+# ------------------------------------------------------------
+# Incluye:
+#   • Datos básicos del empleado (nombre, cédula, salario base)
+#   • Totales automáticos (ingresos, descuentos, neto a cobrar)
+#   • Detalles de liquidación anidados
+# ============================================================
 
+
+
+class DetalleLiquidacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalleLiquidacion
-        fields = [
-            "id",
-            "liquidacion",
-            "concepto",
-            "concepto_descripcion",
-            "monto",
-            "created_at",
-            "updated_at",
-        ]
-        read_only_fields = ["created_at", "updated_at"]
+        fields = ["id", "concepto", "monto", "tipo"]
 
 
-# ============================================================
-# 🔹 SERIALIZER: Liquidación Mensual
-# ============================================================
 class LiquidacionSerializer(serializers.ModelSerializer):
+    # 🔹 Campos relacionados del empleado
     empleado_nombre = serializers.CharField(source="empleado.nombre", read_only=True)
     empleado_cedula = serializers.CharField(source="empleado.cedula", read_only=True)
-    empleado_salario_base = serializers.DecimalField(
-        source="empleado.salario_base", read_only=True, max_digits=12, decimal_places=2
-    )
+    empleado_salario_base = serializers.ReadOnlyField(source="empleado.salario_base")
+
+    # 🔹 Campos calculados
+    total_descuentos = serializers.SerializerMethodField()
+    total_neto = serializers.SerializerMethodField()
+
+    # 🔹 Detalles anidados
     detalles = DetalleLiquidacionSerializer(many=True, read_only=True)
 
+    # --------------------------------------------------------
+    # 📊 Métodos de cálculo
+    # --------------------------------------------------------
+    def get_total_descuentos(self, obj):
+        """Suma los descuentos asociados a la liquidación"""
+        return sum([d.monto for d in obj.descuentos.all()]) if hasattr(obj, "descuentos") else 0
+
+    def get_total_neto(self, obj):
+        """Calcula el total neto (ingresos - descuentos)"""
+        total_desc = self.get_total_descuentos(obj)
+        return float(obj.total_ingresos or 0) - float(total_desc)
+
+    # --------------------------------------------------------
+    # ⚙️ Configuración del serializador
+    # --------------------------------------------------------
     class Meta:
         model = Liquidacion
         fields = [
@@ -134,6 +151,7 @@ class LiquidacionSerializer(serializers.ModelSerializer):
             "anio",
             "total_ingresos",
             "total_descuentos",
+            "total_neto",
             "neto_cobrar",
             "cerrada",
             "detalles",
@@ -143,6 +161,7 @@ class LiquidacionSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "total_ingresos",
             "total_descuentos",
+            "total_neto",
             "neto_cobrar",
             "created_at",
             "updated_at",
