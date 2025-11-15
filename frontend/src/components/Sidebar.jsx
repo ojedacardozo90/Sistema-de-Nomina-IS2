@@ -1,11 +1,11 @@
-// ============================================================
-// 🧭 Sidebar — Estilo Admin Django con ícono de proceso (Workflow)
-// Sistema de Nómina IS2 - FPUNA / FAP
-// ------------------------------------------------------------
+
+// Sidebar — Estilo Admin Django con ícono de proceso (Workflow)
+// Sistema de Nómina IS2 -  / 
+
 // • Secciones colapsables tipo admin Django
 // • Ícono Workflow simboliza proceso y desarrollo
 // • Roles dinámicos (Admin, Gerente, Asistente, Empleado)
-// ============================================================
+
 
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ import {
   ShieldCheck,
   UserCog,
   LogOut,
-  Database, // 👈 agregado
+  Database, //  agregado
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -32,9 +32,9 @@ export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // ============================================================
-  // 📦 Secciones colapsables
-  // ============================================================
+  
+  // Secciones colapsables
+  
   const [openRRHH, setOpenRRHH] = useState(true);
   const [openAdmin, setOpenAdmin] = useState(true);
   const [openConfig, setOpenConfig] = useState(false);
@@ -44,9 +44,9 @@ export default function Sidebar() {
     navigate("/login");
   };
 
-  // ============================================================
-  // 🎨 Render principal
-  // ============================================================
+  
+  //  Render principal
+  
   return (
     <aside className="bg-[#111827] text-gray-100 w-64 min-h-screen flex flex-col border-r border-gray-700 shadow-lg">
       {/* Encabezado con ícono Workflow */}
@@ -64,7 +64,7 @@ export default function Sidebar() {
       
       {/* Contenido scrollable */}
       <nav className="flex-1 overflow-y-auto p-3 space-y-2">
-        {/* ========================== RRHH ========================== */}
+        {/* == RRHH == */}
         <div>
           <button
             onClick={() => setOpenRRHH(!openRRHH)}
@@ -91,7 +91,7 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* ========================== ADMINISTRACIÓN ========================== */}
+        {/* == ADMINISTRACIÓN == */}
         {["admin", "gerente_rrhh"].includes(rol) && (
           <div>
             <button
@@ -112,7 +112,7 @@ export default function Sidebar() {
                 <SidebarLink to="/auditoria" label="Auditoría" icon={ShieldCheck} />
                 <SidebarLink to="/importar" label="Importar Datos" icon={Upload} />
 
-                {/* 🔹 NUEVO BLOQUE - Panel Django solo visible para ADMIN */}
+                {/* # NUEVO BLOQUE - Panel Django solo visible para ADMIN */}
                 {user?.rol === "ADMIN" && (
                   <li>
                     <Link
@@ -129,7 +129,7 @@ export default function Sidebar() {
           </div>
         )}
 
-        {/* ========================== CONFIGURACIÓN ========================== */}
+        {/* == CONFIGURACIÓN == */}
         <div>
           <button
             onClick={() => setOpenConfig(!openConfig)}
@@ -168,9 +168,9 @@ export default function Sidebar() {
   );
 }
 
-// ============================================================
-// 🔹 Componente auxiliar para links del menú
-// ============================================================
+
+// # Componente auxiliar para links del menú
+
 function SidebarLink({ to, label, icon: Icon }) {
   const location = useLocation();
   const active = location.pathname === to;

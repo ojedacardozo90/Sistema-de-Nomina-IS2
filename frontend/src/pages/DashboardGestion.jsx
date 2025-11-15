@@ -1,13 +1,13 @@
-// ============================================================
-// 🧭 DashboardGestion.jsx — Panel administrativo tipo Django
-// ------------------------------------------------------------
+
+// DashboardGestion.jsx — Panel administrativo tipo Django
+
 // Permite gestionar todos los modelos vía API REST interna.
 // Soporta:
 //   • Listado dinámico de modelos
 //   • CRUD completo (crear, editar, eliminar)
 //   • Búsqueda y refresco
 //   • Interfaz similar al admin Django
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -22,7 +22,7 @@ import HeaderDashboard from "../components/HeaderDashboard";
 
 export default function DashboardGestion() {
   // -------------------------------
-  // 🔹 Estado principal
+  // # Estado principal
   // -------------------------------
   toast.success("Registro creado correctamente");
   toast.error("Error al eliminar");
@@ -38,7 +38,7 @@ export default function DashboardGestion() {
   const [pagina, setPagina] = useState(1);
 
   // -------------------------------
-  // 📦 Modelos administrables
+  // Modelos administrables
   // -------------------------------
   useEffect(() => {
     setModelos([
@@ -51,7 +51,7 @@ export default function DashboardGestion() {
   }, []);
 
   // -------------------------------
-  // 🔄 Cargar datos del modelo seleccionado
+  //  Cargar datos del modelo seleccionado
   // -------------------------------
   const cargarDatos = async (endpoint) => {
     try {
@@ -73,28 +73,28 @@ export default function DashboardGestion() {
   };
 
   // -------------------------------
-  // 🧩 Crear / Editar registro
+  //  Crear / Editar registro
   // -------------------------------
   const guardar = async () => {
     try {
       if (editando) {
         await api.put(`/admin-panel/${selected.endpoint}/${form.id}/`, form);
-        alert("✅ Registro actualizado correctamente");
+        alert(" Registro actualizado correctamente");
       } else {
         await api.post(`/admin-panel/${selected.endpoint}/`, form);
-        alert("✅ Registro creado correctamente");
+        alert(" Registro creado correctamente");
       }
       setForm({});
       setEditando(false);
       await cargarDatos(selected.endpoint);
     } catch (error) {
       console.error("Error guardando registro:", error);
-      alert("❌ Error al guardar: " + JSON.stringify(error.response?.data || {}));
+      alert(" Error al guardar: " + JSON.stringify(error.response?.data || {}));
     }
   };
 
   // -------------------------------
-  // ❌ Eliminar registro
+  //  Eliminar registro
   // -------------------------------
   const eliminar = async (id) => {
     if (!window.confirm("¿Seguro que deseas eliminar este registro?")) return;
@@ -103,12 +103,12 @@ export default function DashboardGestion() {
       await cargarDatos(selected.endpoint);
       alert("🗑️ Registro eliminado correctamente");
     } catch (error) {
-      alert("❌ Error al eliminar");
+      alert(" Error al eliminar");
     }
   };
 
   // -------------------------------
-  // 🔍 Filtrar por texto y paginación
+  // Filtrar por texto y paginación
   // -------------------------------
   const porPagina = 25;
   const arrayData = Array.isArray(data) ? data : [];
@@ -125,7 +125,7 @@ export default function DashboardGestion() {
   );
 
   // -------------------------------
-  // 🎨 Render
+  //  Render
   // -------------------------------
   return (
     <div className="p-6">
@@ -252,9 +252,9 @@ export default function DashboardGestion() {
               </tbody>
             </table>
 
-            {/* ============================ */}
-            {/* 🔹 FORMULARIO DINÁMICO NUEVO */}
-            {/* ============================ */}
+            {/* ==== */}
+            {/* # FORMULARIO DINÁMICO NUEVO */}
+            {/* ==== */}
             <div className="mt-6">
               {selected?.endpoint === "usuarios" && (
                 <UsuariosAdmin

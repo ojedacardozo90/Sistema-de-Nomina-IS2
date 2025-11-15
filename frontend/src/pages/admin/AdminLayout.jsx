@@ -48,7 +48,7 @@ export default function AdminLayout({ title, breadcrumb = [], children }) {
           </div>
           <div className="text-sm text-gray-600">
             {me ? (
-              <span>👤 {me?.username || me?.email} — <strong>{(me.rol||"").toUpperCase()}</strong></span>
+              <span> {me?.username || me?.email} — <strong>{(me.rol||"").toUpperCase()}</strong></span>
             ) : "Cargando…"}
           </div>
         </header>

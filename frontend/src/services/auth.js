@@ -2,12 +2,12 @@
 import { login as loginRequest, getProfile } from "../utils/api";
 
 /**
- * ============================================================
- * 🔑 Auth Service (JWT)
+
+ *  Auth Service (JWT)
  * - login(): guarda tokens + user en localStorage
  * - logout(): limpia sesión
  * - getUser(): devuelve usuario logueado (o null)
- * ============================================================
+
  */
 export async function login(username, password) {
   // Usamos el alias 'loginRequest' para evitar colisión

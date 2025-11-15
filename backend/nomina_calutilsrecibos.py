@@ -1,10 +1,10 @@
-# ============================================================
-# 📄 recibos.py — Generador de Recibos de Pago en PDF
-# Sistema de Nómina IS2 - FPUNA / FAP
-# ------------------------------------------------------------
+#
+#  recibos.py — Generador de Recibos de Pago en PDF
+# Sistema de Nómina IS2 -  
+
 # • Genera recibos PDF simples y legibles
 # • Guarda automáticamente en media/recibos/
-# ============================================================
+#
 
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
@@ -34,7 +34,7 @@ def generar_pdf_recibo(empleado, periodo, total):
     c.drawString(30 * mm, 220 * mm, f"Total Neto a Cobrar: {int(total):,} Gs.")
 
     c.setFont("Helvetica-Oblique", 9)
-    c.drawString(30 * mm, 40 * mm, "Generado automáticamente por el Sistema de Nómina IS2 - FPUNA/FAP")
+    c.drawString(30 * mm, 40 * mm, "Generado automáticamente por el Sistema de Nómina IS2 - ")
 
     c.showPage()
     c.save()

@@ -1,8 +1,8 @@
 // src/pages/admin/AdminHeader.jsx
-// ======================================================
-// 🧩 Encabezado del Panel Administrativo
+
+//  Encabezado del Panel Administrativo
 // Combina búsqueda, actualización y encabezado fijo
-// ======================================================
+
 
 export default function AdminHeader({ title, onRefresh, onSearch, search }) {
   return (
@@ -10,7 +10,7 @@ export default function AdminHeader({ title, onRefresh, onSearch, search }) {
       {/* 🔠 Título */}
       <h1 className="text-xl font-bold text-gray-700">{title}</h1>
 
-      {/* 🔍 Búsqueda + Actualizar */}
+      {/* Búsqueda + Actualizar */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -24,7 +24,7 @@ export default function AdminHeader({ title, onRefresh, onSearch, search }) {
           className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
           title="Actualizar"  // ⬅️ añadido del segundo fragmento
         >
-          🔄
+          
         </button>
       </div>
     </header>

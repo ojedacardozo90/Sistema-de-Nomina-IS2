@@ -15,7 +15,7 @@ export default function Nominas() {
       const res = await api.get("nomina_cal/liquidaciones/");
       setNominas(res.data);
     } catch (err) {
-      console.error("❌ Error al cargar nóminas", err);
+      console.error(" Error al cargar nóminas", err);
     }
   };
 
@@ -23,11 +23,11 @@ export default function Nominas() {
     if (!window.confirm("¿Seguro que deseas recalcular todas las nóminas?")) return;
     try {
       await api.post("nomina_cal/liquidaciones/calcular_todas/");
-      setMensaje("✅ Todas las nóminas recalculadas correctamente");
+      setMensaje(" Todas las nóminas recalculadas correctamente");
       cargarNominas();
     } catch (err) {
-      console.error("❌ Error al calcular todas", err);
-      setMensaje("❌ Error al calcular las nóminas");
+      console.error(" Error al calcular todas", err);
+      setMensaje(" Error al calcular las nóminas");
     }
   };
 
@@ -46,13 +46,13 @@ export default function Nominas() {
 
         <div className="flex gap-4 mb-6">
           <button onClick={calcularTodas} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500">
-            ⚡ Calcular Todas
+             Calcular Todas
           </button>
           <button onClick={descargarExcel} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
-            📊 Exportar Excel
+             Exportar Excel
           </button>
           <button onClick={descargarPDF} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-            📄 Exportar PDF
+             Exportar PDF
           </button>
         </div>
 

@@ -1,12 +1,12 @@
-📂 backend/README.md
-# 📌 Sistema de Gestión de Nómina – Backend
+ backend/README.md
+# Sistema de Gestión de Nómina – Backend
 
 Este es el **backend** del sistema de nómina desarrollado en **Django REST Framework** con PostgreSQL.  
 Incluye autenticación JWT, gestión de empleados, cálculo de nómina, reportes PDF y Excel.
 
 ---
 
-## 🚀 Tecnologías
+##  Tecnologías
 
 - Django 5.2.6  
 - Django REST Framework 3.16.1  
@@ -17,7 +17,7 @@ Incluye autenticación JWT, gestión de empleados, cálculo de nómina, reportes
 
 ---
 
-## ⚙️ Instalación
+##  Instalación
 
 1. Crear entorno virtual
    ```bash
@@ -54,7 +54,7 @@ Levantar servidor
 
 python manage.py runserver
 
-🔑 Autenticación
+ Autenticación
 
 Login:
 
@@ -71,7 +71,7 @@ Usar token:
 
 Authorization: Bearer <access_token>
 
-📊 Endpoints principales
+ Endpoints principales
 Usuarios
 
 POST /api/usuarios/token/
@@ -96,7 +96,7 @@ GET /api/nomina/exportar-reporte-pdf/
 
 GET /api/nomina/exportar-reporte-excel/
 
-🧪 Pruebas con Thunder Client
+ Pruebas con Thunder Client
 
 Crear colección Nómina API.
 
@@ -111,7 +111,7 @@ Usar en headers:
 
 Authorization: Bearer {{token}}
 
-✅ Estado
+ Estado
 
 Sprint 1 → Login JWT
 

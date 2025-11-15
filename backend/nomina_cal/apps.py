@@ -1,9 +1,9 @@
-# ============================================================
-# ⚙️ apps.py — Configuración de la aplicación Nómina
-# ------------------------------------------------------------
+#
+#  apps.py — Configuración de la aplicación Nómina
+
 # Se encarga de registrar las señales automáticas para el envío
 # de recibos PDF al cerrar una liquidación.
-# ============================================================
+#
 
 from django.apps import AppConfig
 
@@ -13,7 +13,7 @@ class NominaCalConfig(AppConfig):
     verbose_name = "Cálculo de Nómina"
 
     def ready(self):
-        # 🧩 Importa las señales al iniciar Django
+        #  Importa las señales al iniciar Django
         
 
         from . import signals  # noqa

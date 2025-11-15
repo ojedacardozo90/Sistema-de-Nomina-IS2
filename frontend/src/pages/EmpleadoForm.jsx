@@ -7,9 +7,9 @@ export default function EmpleadoForm() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // ============================
+  // ====
   // Estado principal
-  // ============================
+  // ====
   const [empleado, setEmpleado] = useState({
     nombre: "",
     apellido: "",
@@ -25,9 +25,9 @@ export default function EmpleadoForm() {
 
   const [usuarios, setUsuarios] = useState([]);
 
-  // ============================
+  // ====
   // Cargar datos iniciales
-  // ============================
+  // ====
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,9 +50,9 @@ export default function EmpleadoForm() {
     fetchData();
   }, [id]);
 
-  // ============================
+  // ====
   // Manejo de cambios
-  // ============================
+  // ====
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setEmpleado({
@@ -61,9 +61,9 @@ export default function EmpleadoForm() {
     });
   };
 
-  // ============================
+  // ====
   // Hijos: agregar/eliminar
-  // ============================
+  // ====
   const handleAddHijo = () => {
     setEmpleado({
       ...empleado,
@@ -84,9 +84,9 @@ export default function EmpleadoForm() {
     setEmpleado({ ...empleado, hijos: nuevos });
   };
 
-  // ============================
+  // ====
   // Guardar
-  // ============================
+  // ====
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -107,9 +107,9 @@ export default function EmpleadoForm() {
     }
   };
 
-  // ============================
+  // ====
   // Render
-  // ============================
+  // ====
   if (loading) return <p className="p-4">Cargando...</p>;
 
   return (

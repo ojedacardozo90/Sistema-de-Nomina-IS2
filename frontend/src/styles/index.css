@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🎨 estilos globales opcionales */
+/*  estilos globales opcionales */
 body {
   @apply bg-teal-50 text-gray-900;
   font-family: 'Inter', sans-serif;

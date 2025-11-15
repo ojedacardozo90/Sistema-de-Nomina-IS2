@@ -1,12 +1,12 @@
-# ============================================================
-# 🧪 Prueba real de nómina — 10 empleados
-# Sistema de Nómina IS2 - FPUNA / FAP
-# ------------------------------------------------------------
+#
+#  Prueba real de nómina — 10 empleados
+# Sistema de Nómina IS2 -  / 
+
 # • 10 empleados (5 con hijos, 5 sin hijos)
 # • Cálculo de sueldo, IPS (9%) y bonificación por hijo
 # • Generación de liquidaciones y recibos PDF reales
 # • Evidencia de Sprint 4–5
-# ============================================================
+#
 
 from django.test import TestCase
 from empleados.models import Empleado
@@ -21,9 +21,9 @@ IPS_TASA = Decimal("0.09")
 
 class TestNominaReal10(TestCase):
     def setUp(self):
-        # ----------------------------------------
-        # 🔹 Crear empleados de prueba (10 totales)
-        # ----------------------------------------
+        -----------
+        # # Crear empleados de prueba (10 totales)
+        -----------
         self.empleados = [
             Empleado.objects.create(nombre="Raúl", apellido="Irala", ci="100001", cargo="Administrador", salario_base=4500000, cantidad_hijos=2),
             Empleado.objects.create(nombre="Bianca", apellido="Benítez", ci="100002", cargo="RRHH", salario_base=2500000, cantidad_hijos=1),
@@ -37,9 +37,9 @@ class TestNominaReal10(TestCase):
             Empleado.objects.create(nombre="Marta", apellido="Fernández", ci="100010", cargo="Auxiliar", salario_base=2400000, cantidad_hijos=2),
         ]
 
-        # ----------------------------------------
-        # 🔹 Crear conceptos base de nómina
-        # ----------------------------------------
+        -----------
+        # # Crear conceptos base de nómina
+        -----------
         self.conceptos = [
             Concepto.objects.create(descripcion="Sueldo Básico", es_debito=False, afecta_ips=True, para_aguinaldo=True),
             Concepto.objects.create(descripcion="Bonificación por Hijo", es_debito=False, afecta_ips=True, para_aguinaldo=True),
@@ -47,7 +47,7 @@ class TestNominaReal10(TestCase):
         ]
 
     def test_liquidaciones_reales_10(self):
-        print("\n🧾 INICIO DE PRUEBA REAL DE NÓMINA (10 EMPLEADOS)\n")
+        print("\n INICIO DE PRUEBA REAL DE NÓMINA (10 EMPLEADOS)\n")
         total_general = Decimal(0)
 
         for empleado in self.empleados:
@@ -79,10 +79,10 @@ class TestNominaReal10(TestCase):
             path = generar_pdf_recibo(empleado, "Octubre 2025", float(total_pagado))
             self.assertTrue(os.path.exists(path))
 
-            print(f"✅ {empleado.nombre} {empleado.apellido} | Base: {salario:,.0f} | "
+            print(f" {empleado.nombre} {empleado.apellido} | Base: {salario:,.0f} | "
                   f"IPS: {int(descuento_ips)} | Bono: {int(bonificacion)} | Neto: {int(total_pagado)}")
-            print(f"📄 Recibo generado: {path}\n")
+            print(f" Recibo generado: {path}\n")
 
-        print(f"💰 Total general de nómina: {int(total_general)} Gs.\n")
+        print(f" Total general de nómina: {int(total_general)} Gs.\n")
         self.assertEqual(Liquidacion.objects.count(), 10)
-        print("✅ PRUEBA FINALIZADA CON ÉXITO\n")
+        print(" PRUEBA FINALIZADA CON ÉXITO\n")

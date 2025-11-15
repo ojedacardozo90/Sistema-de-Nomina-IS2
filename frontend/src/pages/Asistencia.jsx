@@ -1,7 +1,7 @@
-// ============================================================
-// 🕒 Control de Asistencia — Sistema de Nómina IS2 (FP-UNA / FAP)
+
+//  Control de Asistencia — Sistema de Nómina IS2 (FP-UNA / )
 // Integrado con backend Django mediante api.js
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import { listarAsistencias, marcarAsistencia } from "../utils/api";
@@ -10,14 +10,14 @@ export default function Asistencia() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Cargar asistencias desde el backend
+  // # Cargar asistencias desde el backend
   async function load() {
     setLoading(true);
     try {
       const data = await listarAsistencias({ page_size: 50 });
       setItems(data.results || data); // Soporte para paginación DRF
     } catch (error) {
-      console.error("❌ Error al cargar asistencias:", error);
+      console.error(" Error al cargar asistencias:", error);
       alert("Error al obtener la lista de asistencias.");
     } finally {
       setLoading(false);
@@ -28,14 +28,14 @@ export default function Asistencia() {
     load();
   }, []);
 
-  // 🔹 Marcar entrada o salida
+  // # Marcar entrada o salida
   async function handleMarcar(tipo) {
     try {
       await marcarAsistencia(tipo);
       await load();
-      alert(`✅ Asistencia ${tipo} registrada correctamente.`);
+      alert(` Asistencia ${tipo} registrada correctamente.`);
     } catch (e) {
-      console.error("❌ Error al marcar asistencia:", e);
+      console.error(" Error al marcar asistencia:", e);
       alert("Error al marcar asistencia. Revise la consola para más detalles.");
     }
   }
@@ -108,7 +108,7 @@ export default function Asistencia() {
   );
 }
 
-// 🎨 Colores de estado
+//  Colores de estado
 function colorEstado(est) {
   if (est === "presente") return "text-green-700 font-medium";
   if (est === "tardanza") return "text-yellow-600 font-medium";

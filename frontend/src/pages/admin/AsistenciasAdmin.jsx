@@ -1,10 +1,10 @@
-// ============================================================
-// 👥 UsuariosAdmin.jsx — Formulario de Usuarios
-// Sistema de Nómina IS2 (FP-UNA / FAP)
-// ------------------------------------------------------------
+
+//  UsuariosAdmin.jsx — Formulario de Usuarios
+// Sistema de Nómina IS2 (FP-UNA / )
+
 // - Crea y edita usuarios desde el panel React.
 // - Oculta el campo contraseña al editar.
-// ============================================================
+
 
 import { useState, useEffect } from "react";
 
@@ -19,7 +19,7 @@ export default function UsuariosAdmin({ form, setForm, editando, onGuardar, onCa
   return (
     <div className="mt-6 p-4 border rounded bg-gray-50">
       <h2 className="font-semibold mb-3">
-        {editando ? "✏️ Editar Usuario" : "🆕 Crear Usuario"}
+        {editando ? "✏️ Editar Usuario" : "Crear Usuario"}
       </h2>
 
       <div className="grid grid-cols-3 gap-3">
@@ -113,20 +113,20 @@ export default function UsuariosAdmin({ form, setForm, editando, onGuardar, onCa
   );
 }
 
-// ============================================================
-// 🕒 AsistenciasAdmin — Control de asistencia del personal
-// ------------------------------------------------------------
+
+//  AsistenciasAdmin — Control de asistencia del personal
+
 // Replica el módulo de "Fichadas" y "Asistencia" del Django Admin
 // Funcionalidades:
 //   • Listado de asistencias
 //   • Filtros por fecha, empleado y tipo (Entrada / Salida)
 //   • Exportaciones PDF / Excel
-// ------------------------------------------------------------
+
 // Endpoints:
 //   • GET /api/asistencia/asistencias/
 //   • GET /api/asistencia/exportar-excel/
 //   • GET /api/asistencia/exportar-pdf/
-// ============================================================
+
 
 import { useMemo, useState } from "react";
 import AdminLayout from "./AdminLayout";

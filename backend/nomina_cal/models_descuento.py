@@ -1,7 +1,7 @@
 # backend/nomina_cal/models_descuento.py
-# ============================================================
-# 💰 MODELO DE DESCUENTOS Y DÉBITOS (TP IS2 - Ingeniería de Software II)
-# ============================================================
+#
+#  MODELO DE DESCUENTOS Y DÉBITOS (TP IS2 - Ingeniería de Software II)
+#
 
 from django.db import models
 from django.conf import settings
@@ -10,9 +10,9 @@ from decimal import Decimal
 from empleados.models import Empleado
 
 
-# ============================================================
-# 🔹 MODELO: Descuento
-# ============================================================
+#
+# # MODELO: Descuento
+#
 class Descuento(models.Model):
     """
     Representa un descuento aplicado a un empleado:
@@ -57,9 +57,9 @@ class Descuento(models.Model):
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.empleado.nombre} ({self.monto} Gs)"
 
-    # ------------------------------------------------------------
-    # ⚙️ MÉTODOS DE LÓGICA DE NEGOCIO
-    # ------------------------------------------------------------
+    
+    #  MÉTODOS DE LÓGICA DE NEGOCIO
+    
     def es_vigente(self, mes, anio):
         """
         Determina si el descuento aplica para el mes/año actual.

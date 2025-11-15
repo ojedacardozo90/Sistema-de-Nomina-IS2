@@ -1,11 +1,11 @@
-# ============================================================
-# 🧩 Administración de Usuarios - Sistema de Nómina IS2
-# ------------------------------------------------------------
+#
+#  Administración de Usuarios - Sistema de Nómina IS2
+
 # Vistas para panel de administración interno:
 #   • Listado, creación y edición de usuarios
 #   • Exportación CSV
 #   • Resumen de roles y estadísticas
-# ============================================================
+#
 
 from django.contrib.auth import get_user_model
 from django.db.models import Count
@@ -19,9 +19,9 @@ from .permissions import IsAdmin, IsAdminOrGerente
 
 Usuario = get_user_model()
 
-# ============================================================
-# 🔹 1️⃣ Vista principal (CRUD completo)
-# ============================================================
+#
+# #  Vista principal (CRUD completo)
+#
 class UsuarioAdminViewSet(viewsets.ModelViewSet):
     """
     Gestiona usuarios desde el panel de administración (solo roles con permisos altos).
@@ -47,9 +47,9 @@ class UsuarioAdminViewSet(viewsets.ModelViewSet):
             return Response({"error": "Solo los administradores pueden eliminar usuarios."}, status=403)
         return super().destroy(request, *args, **kwargs)
 
-# ============================================================
-# 📊 2️⃣ Endpoint de estadísticas
-# ============================================================
+#
+#   Endpoint de estadísticas
+#
     @action(detail=False, methods=["get"], permission_classes=[IsAdmin])
     def resumen_roles(self, request):
         """
@@ -60,9 +60,9 @@ class UsuarioAdminViewSet(viewsets.ModelViewSet):
         resumen = {d["rol"]: d["total"] for d in data}
         return Response(resumen)
 
-# ============================================================
-# 📤 3️⃣ Exportación CSV
-# ============================================================
+#
+#   Exportación CSV
+#
     @action(detail=False, methods=["get"], permission_classes=[IsAdmin])
     def exportar_csv(self, request):
         """Exporta todos los usuarios a un archivo CSV descargable."""
@@ -78,9 +78,9 @@ class UsuarioAdminViewSet(viewsets.ModelViewSet):
             writer.writerow([u["id"], u["username"], u["email"], u["rol"], "Sí" if u["is_active"] else "No"])
         return response
 
-# ============================================================
-# 🔍 4️⃣ Diagnóstico rápido
-# ============================================================
+#
+# 4️⃣ Diagnóstico rápido
+#
     @action(detail=False, methods=["get"], permission_classes=[IsAdmin])
     def diagnostico(self, request):
         """

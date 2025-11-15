@@ -23,7 +23,7 @@ export default function Empleados() {
 
   return (
     <DashboardLayout>
-      <h1 className="text-xl font-semibold mb-4">👥 Empleados</h1>
+      <h1 className="text-xl font-semibold mb-4"> Empleados</h1>
       {loading ? (
         <div className="text-slate-400">Cargando...</div>
       ) : (

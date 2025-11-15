@@ -3,7 +3,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { getToken } from "../utils/auth";
 
-// 🔹 Este componente envuelve las rutas privadas
+// # Este componente envuelve las rutas privadas
 const ProtectedRoute = () => {
   const token = getToken();
 

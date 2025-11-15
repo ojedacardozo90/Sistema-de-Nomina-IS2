@@ -1,15 +1,15 @@
 # backend/usuarios/serializers.py
-# ============================================================
-# 🎯 Serializadores de Usuarios (TP IS2 - Nómina con JWT)
-# ============================================================
+#
+#  Serializadores de Usuarios (TP IS2 - Nómina con JWT)
+#
 
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
-# ============================================================
-# 🔐 Custom Token Serializer (JWT extendido)
-# ============================================================
+#
+#  Custom Token Serializer (JWT extendido)
+#
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
@@ -49,9 +49,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 User = get_user_model()
 
 
-# ============================================================
-# 🔹 SERIALIZER: Usuario
-# ============================================================
+#
+# # SERIALIZER: Usuario
+#
 class UsuarioSerializer(serializers.ModelSerializer):
     """
     Serializador principal para el modelo de Usuario.
@@ -78,9 +78,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id"]
 
-    # --------------------------------------------------------
-    # 🔹 Validaciones
-    # --------------------------------------------------------
+    
+    # # Validaciones
+    
     def validate_email(self, value):
         """El email debe ser único."""
         if User.objects.filter(email=value).exclude(
@@ -108,9 +108,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
         }
         return roles_map.get(obj.rol, "Desconocido")
 
-    # --------------------------------------------------------
-    # 🔹 Creación y actualización
-    # --------------------------------------------------------
+    
+    # # Creación y actualización
+    
     def create(self, validated_data):
         """Crea un usuario con contraseña encriptada."""
         validated_data.pop("password2")

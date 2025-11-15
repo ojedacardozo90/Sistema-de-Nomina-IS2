@@ -1,13 +1,13 @@
-// ============================================================
-// 🧭 HeaderDashboard.jsx — Encabezado global de los dashboards
-// ------------------------------------------------------------
+
+// HeaderDashboard.jsx — Encabezado global de los dashboards
+
 // Muestra:
 //   • Título del sistema
 //   • Rol actual del usuario
 //   • Botón de cierre de sesión
-// ------------------------------------------------------------
+
 // Usado por: todos los dashboards (Admin, Gerente, etc.)
-// ============================================================
+
 
 import { LogOut } from "lucide-react";
 import { getUser, clearSession } from "../utils/auth";

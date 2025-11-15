@@ -2,7 +2,7 @@ Hola {{ empleado.nombre }} {{ empleado.apellido }},
 
 Adjunto encontrarás tu recibo de sueldo correspondiente a la fecha {{ nomina.fecha }}.
 
-📊 Detalles:
+ Detalles:
 - Salario Base: {{ nomina.salario_base }} Gs
 - Bonificación por Hijos: {{ nomina.bonificacion_hijos }} Gs
 - Aporte IPS: {{ nomina.ips_empleado }} Gs
@@ -10,7 +10,7 @@ Adjunto encontrarás tu recibo de sueldo correspondiente a la fecha {{ nomina.fe
 - Vacaciones: {{ nomina.vacaciones }} Gs
 - Retenciones: {{ nomina.retenciones }} Gs
 
-💵 Total Neto a cobrar: {{ nomina.total }} Gs
+ Total Neto a cobrar: {{ nomina.total }} Gs
 
 Este recibo se genera automáticamente por el sistema de nómina.
 

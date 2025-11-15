@@ -1,7 +1,7 @@
-# ============================================================
-# 📦 Vistas de Nómina (TP IS2 - Sistema de Nómina con PostgreSQL)
+#
+# Vistas de Nómina (TP IS2 - Sistema de Nómina con PostgreSQL)
 # Cumple Sprints 2–5: Cálculo completo, roles, reportes, dashboards y auditoría
-# ============================================================
+#
 
 # DRF core
 from rest_framework import viewsets, status
@@ -28,13 +28,13 @@ import openpyxl
 import logging
 from reportlab.pdfgen import canvas
 
-# ⚠️ IMPORT DEL SERVICIO ALIAS: evitamos chocar con tu función local
+#  IMPORT DEL SERVICIO ALIAS: evitamos chocar con tu función local
 #from nomina_cal.services.calculo_individual import calcular_liquidacion as calcular_liquidacion_individual
 from nomina_cal.services.calculo_nomina import calcular_liquidaciones_periodo
 
-# ============================================================
-# 🔹 Importaciones internas (modelo de negocio)
-# ============================================================
+#
+# # Importaciones internas (modelo de negocio)
+#
 from empleados.models import Empleado
 from .models import Concepto, SalarioMinimo, Liquidacion, DetalleLiquidacion
 from .models_descuento import Descuento
@@ -54,9 +54,9 @@ from usuarios.permissions import (
     IsAdminOrAsistente,
 )
 
-# ============================================================
-# 🧾 LOGGING DE OPERACIONES (para auditoría interna)
-# ============================================================
+#
+#  LOGGING DE OPERACIONES (para auditoría interna)
+#
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     filename="logs_nomina.txt",
@@ -64,14 +64,14 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
-# ============================================================
-# 📊 Resumen general simple (conteos)
-# ============================================================
+#
+#  Resumen general simple (conteos)
+#
 @api_view(["GET"])
 def reporte_general(request):
     total_empleados = Empleado.objects.count()
     total_liquidaciones = Liquidacion.objects.count()
-    # ✅ campo correcto en tu modelo: neto_cobrar
+    #  campo correcto en tu modelo: neto_cobrar
     total_nomina = (
         Liquidacion.objects.aggregate(s=Sum("neto_cobrar"))["s"] or Decimal("0.00")
     )
@@ -83,7 +83,7 @@ def reporte_general(request):
         }
     )
 
-# 📨 Import tolerante del servicio de envío de recibos
+# Import tolerante del servicio de envío de recibos
 #try:
 #    from .models import enviar_recibo_email  # si está en models.py
 #except Exception:
@@ -92,10 +92,10 @@ def reporte_general(request):
 #    except Exception:
 #        from .utils import enviar_recibo_email  # fallback utils.py
 
-# ============================================================
-# 🔹 FUNCIÓN CENTRAL DE CÁLCULO (INDIVIDUAL, sobre una Liquidación)
+#
+# # FUNCIÓN CENTRAL DE CÁLCULO (INDIVIDUAL, sobre una Liquidación)
 #    Mantengo tu lógica tal cual, solo comentarios y guardado.
-# ============================================================
+#
 def calcular_liquidacion(liquidacion: Liquidacion):
     """
     Recalcula una liquidación individual del empleado asociado,
@@ -124,9 +124,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
     total_ingresos = Decimal("0.00")
     total_descuentos = Decimal("0.00")
 
-    # ------------------------------------------------------------
+    
     # 1) Sueldo base (imponible)
-    # ------------------------------------------------------------
+    
     concepto_base, _ = Concepto.objects.get_or_create(
         descripcion="Sueldo Base",
         defaults={
@@ -141,10 +141,10 @@ def calcular_liquidacion(liquidacion: Liquidacion):
     )
     total_ingresos += salario_base
 
-    # ------------------------------------------------------------
+    
     # 2) Bonificación familiar (usa tu método en el modelo)
     #    * Debe excluirse del IPS y del Aguinaldo.
-    # ------------------------------------------------------------
+    
     bonificacion = liquidacion.calcular_bonificacion_hijos()
     if bonificacion > 0:
         concepto_bono, _ = Concepto.objects.get_or_create(
@@ -161,9 +161,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
         )
         total_ingresos += bonificacion
 
-    # ------------------------------------------------------------
+    
     # 3) Descuento IPS (9% sobre imponibles)
-    # ------------------------------------------------------------
+    
     ips = liquidacion.calcular_ips(salario_base).quantize(
         Decimal("0.01"), rounding=ROUND_HALF_UP
     )
@@ -181,9 +181,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
     )
     total_descuentos += ips
 
-    # ------------------------------------------------------------
+    
     # 4) Descuentos adicionales (préstamos, embargos, etc.)
-    # ------------------------------------------------------------
+    
     descuentos_extra = Descuento.objects.filter(empleado=empleado, activo=True)
     for d in descuentos_extra:
         if d.es_vigente(liquidacion.mes, liquidacion.anio):
@@ -201,9 +201,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
             )
             total_descuentos += d.monto
 
-    # ------------------------------------------------------------
+    
     # 5) Aguinaldo + Vacaciones proporcionales (evidencia sprint)
-    # ------------------------------------------------------------
+    
     aguinaldo = (salario_base / Decimal("12")).quantize(Decimal("0.01"))
     vacaciones = (salario_base * Decimal("0.04")).quantize(Decimal("0.01"))
 
@@ -226,9 +226,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
             )
             total_ingresos += monto
 
-    # ------------------------------------------------------------
+    
     # 6) Persistencia de totales y auditoría
-    # ------------------------------------------------------------
+    
     liquidacion.total_ingresos = total_ingresos
     liquidacion.total_descuentos = total_descuentos
     liquidacion.neto_cobrar = total_ingresos - total_descuentos
@@ -242,9 +242,9 @@ def calcular_liquidacion(liquidacion: Liquidacion):
 
     return liquidacion
 
-# ============================================================
-# 🔹 AUDITORÍA AUTOMÁTICA (para crear/actualizar)
-# ============================================================
+#
+# # AUDITORÍA AUTOMÁTICA (para crear/actualizar)
+#
 class AuditoriaMixin:
     """Mixin reutilizable para registrar quién crea o actualiza registros."""
 
@@ -254,9 +254,9 @@ class AuditoriaMixin:
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
-# ============================================================
-# 🔹 CRUD VIEWSETS (API REST) — Conceptos / Salario Mínimo
-# ============================================================
+#
+# # CRUD VIEWSETS (API REST) — Conceptos / Salario Mínimo
+#
 class ConceptoViewSet(viewsets.ModelViewSet):
     queryset = Concepto.objects.all()
     serializer_class = ConceptoSerializer
@@ -309,13 +309,13 @@ class LiquidacionView(APIView):
             }
         ]
 
-        # 👉 Usa la función importada del servicio (alias)
+        #  Usa la función importada del servicio (alias)
         resultado = calcular_liquidacion_individual(empleado, conceptos)
         return Response(resultado, status=200)
 
-# ============================================================
-# 🔹 VIEWSET PRINCIPAL: LIQUIDACIÓN (CRUD + acciones)
-# ============================================================
+#
+# # VIEWSET PRINCIPAL: LIQUIDACIÓN (CRUD + acciones)
+#
 class LiquidacionViewSet(AuditoriaMixin, viewsets.ModelViewSet):
     """
     ViewSet principal que gestiona todas las liquidaciones.
@@ -395,7 +395,7 @@ class LiquidacionViewSet(AuditoriaMixin, viewsets.ModelViewSet):
             enviado = enviar_recibo_email(liquidacion)
             if enviado:
                 return Response(
-                    {"mensaje": "✅ Recibo enviado correctamente por correo."},
+                    {"mensaje": " Recibo enviado correctamente por correo."},
                     status=status.HTTP_200_OK,
                 )
             else:
@@ -410,19 +410,19 @@ class LiquidacionViewSet(AuditoriaMixin, viewsets.ModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-# ============================================================
-# 🔹 DETALLE LIQUIDACIÓN (CRUD)
-# ============================================================
+#
+# # DETALLE LIQUIDACIÓN (CRUD)
+#
 class DetalleLiquidacionViewSet(AuditoriaMixin, viewsets.ModelViewSet):
     queryset = DetalleLiquidacion.objects.select_related("concepto", "liquidacion")
     serializer_class = DetalleLiquidacionSerializer
     permission_classes = [IsAuthenticated]
 
-# ============================================================
-# 🔹 DESCUENTOS (CRUD)
+#
+# # DESCUENTOS (CRUD)
 #   * Permisos: autenticado + (Admin OR AsistenteRRHH)
 #   * DRF soporta OR bit a bit: IsAdmin | IsAsistenteRRHH
-# ============================================================
+#
 class DescuentoViewSet(viewsets.ModelViewSet):
     queryset = Descuento.objects.all().select_related("empleado")
     serializer_class = DescuentoSerializer
@@ -438,9 +438,9 @@ class DescuentoViewSet(viewsets.ModelViewSet):
         except TypeError:
             serializer.save(creado_por=self.request.user)
 
-# ============================================================
-# 🔹 REPORTES BÁSICOS (JSON) — evidencia sprints
-# ============================================================
+#
+# # REPORTES BÁSICOS (JSON) — evidencia sprints
+#
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def reporte_general_detallado(request):
@@ -474,9 +474,9 @@ def reporte_general_detallado(request):
     ]
     return Response({"total_general": str(total_general), "detalle": detalle})
 
-# ============================================================
-# 🔹 EXPORTACIÓN: EXCEL & PDF (descargables)
-# ============================================================
+#
+# # EXPORTACIÓN: EXCEL & PDF (descargables)
+#
 @api_view(["GET"])
 @permission_classes([IsAdmin])
 def exportar_reporte_excel(request):
@@ -537,9 +537,9 @@ def exportar_reporte_pdf(request):
     buffer.seek(0)
     return HttpResponse(buffer, content_type="application/pdf")
 
-# ============================================================
-# 🔹 CÁLCULO MASIVO: Recalcular TODAS las liquidaciones abiertas
-# ============================================================
+#
+# # CÁLCULO MASIVO: Recalcular TODAS las liquidaciones abiertas
+#
 @api_view(["POST"])
 @permission_classes([IsAuthenticated, (IsAdmin | IsAsistenteRRHH)])
 def calcular_todas(request):
@@ -564,9 +564,9 @@ def calcular_todas(request):
         status=200,
     )
 
-# ============================================================
-# 🔹 ENDPOINT MASIVO POR PERÍODO (mes/año)
-# ============================================================
+#
+# # ENDPOINT MASIVO POR PERÍODO (mes/año)
+#
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
 def recalcular_liquidaciones_periodo_view(request):
@@ -589,16 +589,16 @@ def recalcular_liquidaciones_periodo_view(request):
         return Response({"error": "El período especificado no existe."}, status=404)
 
     count = calcular_liquidaciones_periodo(periodo)
-    logger.info(f"✅ Recalculadas {count} liquidaciones para {mes}/{anio}")
+    logger.info(f" Recalculadas {count} liquidaciones para {mes}/{anio}")
 
     return Response(
         {"message": "Liquidaciones recalculadas correctamente.", "count": count},
         status=200,
     )
 
-# ============================================================
+#
 #  DASHBOARDS (ADMIN, GERENTE, ASISTENTE, EMPLEADO)
-# ============================================================
+#
 @api_view(["GET"])
 @permission_classes([IsAdmin])
 def dashboard_admin(request):
@@ -722,9 +722,9 @@ def dashboard_empleado(request):
         }
     )
 
-# ============================================================
-# 🔹 VISTAS HTML (panel empleado / resumen visual) — evidencia UI
-# ============================================================
+#
+# # VISTAS HTML (panel empleado / resumen visual) — evidencia UI
+#
 @login_required
 def panel_empleado(request):
     """
@@ -772,9 +772,9 @@ def obtener_salario_empleado(request):
             pass
     return JsonResponse({"salario": salario})
 
-# ============================================================
-# 📤 ENVÍO DE RECIBO INDIVIDUAL (por correo electrónico)
-# ============================================================
+#
+#  ENVÍO DE RECIBO INDIVIDUAL (por correo electrónico)
+#
 from django.core.mail import EmailMessage
 from nomina_cal.utils_email import generar_recibo_pdf
 from nomina_cal.models_envio import EnvioCorreo
@@ -794,7 +794,7 @@ class EnviarReciboView(APIView):
                 {"ok": False, "error": "Empleado sin email registrado."}, status=400
             )
 
-        # ✅ Generar PDF profesional (nuevo utils_email.py)
+        #  Generar PDF profesional (nuevo utils_email.py)
         pdf_bytes = generar_recibo_pdf(liq)
 
         msg = EmailMessage(
@@ -824,7 +824,7 @@ class EnviarReciboView(APIView):
                 estado="ENVIADO",
                 detalle_error=""
             )
-            return Response({"ok": True, "mensaje": "✅ Recibo enviado y registrado."})
+            return Response({"ok": True, "mensaje": " Recibo enviado y registrado."})
 
         except Exception as e:
             EnvioCorreo.objects.create(
@@ -858,9 +858,9 @@ def resumen_visual(request):
     return render(request, "nomina_cal/resumen_visual.html", contexto)
 
 
-# ============================================================
-# 📅 CierreNominaView — Cierre mensual de la nómina
-# ============================================================
+#
+#  CierreNominaView — Cierre mensual de la nómina
+#
 
 from django.db import transaction
 from .models import Liquidacion
@@ -895,16 +895,16 @@ class CierreNominaView(APIView):
                 try:
                     generar_recibo_pdf(liq)
                 except Exception as e:
-                    print(f"⚠️ Error generando recibo: {e}")
+                    print(f" Error generando recibo: {e}")
 
         return Response(
             {"mensaje": f"Cierre completado. {count} liquidaciones cerradas."},
             status=status.HTTP_200_OK,
         )
 
-# ============================================================
-# 📄 NominaPDFView — Genera PDF individual de una liquidación
-# ============================================================
+#
+#  NominaPDFView — Genera PDF individual de una liquidación
+#
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView

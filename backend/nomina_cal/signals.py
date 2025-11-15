@@ -1,6 +1,6 @@
-# ============================================================
+#
 # Señales de la app Nómina (envío automático de recibos)
-# ============================================================
+#
 
 import logging
 from django.db.models.signals import post_save

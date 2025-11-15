@@ -2,9 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 
-# =========================================================
-# 👤 MODELO USUARIO PERSONALIZADO
-# =========================================================
+# ===
+#  MODELO USUARIO PERSONALIZADO
+# ===
 class Usuario(AbstractUser):
     """
     Modelo de Usuario extendido para el sistema de nómina.
@@ -35,7 +35,7 @@ class Usuario(AbstractUser):
         max_length=20,
         choices=ROLES,
         default=EMPLEADO,
-        db_index=True,  # 👈 mejora: más rápido para búsquedas por rol
+        db_index=True,  #  mejora: más rápido para búsquedas por rol
         help_text="Rol asignado al usuario dentro del sistema"
     )
 
@@ -53,7 +53,7 @@ class Usuario(AbstractUser):
     # ----------------------------
     # Configuración de autenticación
     # ----------------------------
-    USERNAME_FIELD = "email"   # 👈 login con email
+    USERNAME_FIELD = "email"   #  login con email
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
     # ----------------------------

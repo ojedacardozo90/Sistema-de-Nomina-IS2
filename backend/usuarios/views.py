@@ -1,9 +1,9 @@
-# ============================================================
-# 🔐 Gestión de Usuarios - Sistema de Nómina IS2 (FP-UNA / FAP)
-# ------------------------------------------------------------
+#
+#  Gestión de Usuarios - Sistema de Nómina IS2 (FP-UNA / )
+
 # Autenticación, recuperación y reseteo de contraseñas,
 # CRUD administrativo, y endpoints de diagnóstico / dashboard.
-# ============================================================
+#
 
 import csv
 import io
@@ -42,9 +42,9 @@ def generar_recibo(request, id_empleado):
     notificar_pago(empleado, periodo)
     return Response({"ok": True, "msg": "Notificación enviada"})
 
-# ============================================================
-# 🔑 Autenticación JWT Personalizada
-# ============================================================
+#
+#  Autenticación JWT Personalizada
+#
 class CustomTokenObtainPairView(TokenObtainPairView):
     """
     Retorna access + refresh tokens y datos del usuario autenticado.
@@ -73,13 +73,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 "rol": getattr(user, "rol", None),
                 "is_active": user.is_active,
             },
-            "mensaje": f"Bienvenido {user.first_name or user.username} ✅",
+            "mensaje": f"Bienvenido {user.first_name or user.username} ",
         }, status=200)
 
 
-# ============================================================
-# 📧 Forgot Password — envío de enlace de recuperación
-# ============================================================
+#
+# Forgot Password — envío de enlace de recuperación
+#
 class ForgotPasswordView(APIView):
     """
     Envía al correo del usuario un enlace con UID y token:
@@ -126,9 +126,9 @@ class ForgotPasswordView(APIView):
             return Response({"error": "No se pudo enviar el correo."}, status=500)
 
 
-# ============================================================
-# ✅ Validar token (para ValidateToken.jsx)
-# ============================================================
+#
+#  Validar token (para ValidateToken.jsx)
+#
 class ValidateResetTokenView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -143,14 +143,14 @@ class ValidateResetTokenView(APIView):
         return Response({"valido": False, "detalle": "token inválido o expirado."}, status=400)
 
 
-# ============================================================
-# 🔄 Reset Password (acepta UID/token vía body o URL)
-# ============================================================
+#
+#  Reset Password (acepta UID/token vía body o URL)
+#
 class ResetPasswordView(APIView):
     """
     Restablece la contraseña de dos formas:
-      1️⃣ POST /api/usuarios/reset-password/<uid>/<token>/
-      2️⃣ POST /api/usuarios/reset-password/ (con body {uid, token, password})
+       POST /api/usuarios/reset-password/<uid>/<token>/
+       POST /api/usuarios/reset-password/ (con body {uid, token, password})
     """
     permission_classes = [permissions.AllowAny]
 
@@ -177,9 +177,9 @@ class ResetPasswordView(APIView):
         return Response({"mensaje": "Contraseña actualizada correctamente."}, status=200)
 
 
-# ============================================================
-# 👥 ViewSet de Usuarios — Panel Administrativo Interno
-# ============================================================
+#
+#  ViewSet de Usuarios — Panel Administrativo Interno
+#
 class UsuarioViewSet(viewsets.ModelViewSet):
     """
     Replica del admin de Django (CRUD completo con roles).
@@ -256,9 +256,9 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         return resp
 
 
-# ============================================================
-# 📊 Dashboard y perfil de empleado
-# ============================================================
+#
+#  Dashboard y perfil de empleado
+#
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def dashboard_usuarios(request):
@@ -290,9 +290,9 @@ def perfil_empleado(request):
     }, status=200)
 
 
-# ============================================================
+#
 # 🩺 Check Server (diagnóstico)
-# ============================================================
+#
 class CheckServerView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -300,6 +300,6 @@ class CheckServerView(APIView):
         now = timezone.localtime()
         return Response({
             "status": "ok",
-            "mensaje": "Servidor operativo y listo ✅",
+            "mensaje": "Servidor operativo y listo ",
             "hora": now.strftime("%Y-%m-%d %H:%M:%S"),
         }, status=200)

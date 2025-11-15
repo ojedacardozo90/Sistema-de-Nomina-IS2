@@ -1,6 +1,5 @@
 // frontend/src/Layout/AppLayout.jsx
-// ============================================================
-// 🎨 Plantilla Base - Sistema de Nómina (TP IS2)
+//  Plantilla Base - Sistema de Nómina (TP IS2)
 // Incluye:
 // - Sidebar (izquierda)
 // - Navbar (superior)
@@ -8,7 +7,6 @@
 // - Colores según Figma: 
 //    Sidebar = negro, Navbar = negro, 
 //    Botones = verde agua (#1ABC9C), rojo suave (#E74C3C)
-// ============================================================
 
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";

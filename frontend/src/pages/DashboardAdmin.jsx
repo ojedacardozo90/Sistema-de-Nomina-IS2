@@ -1,17 +1,17 @@
-// ============================================================
-// 📊 Dashboard Administrador (Sprint 6–7 Final Integrado)
-// ------------------------------------------------------------
+
+//  Dashboard Administrador (Sprint 6–7 Final Integrado)
+
 // Panel global con:
 //   • KPIs generales
 //   • Filtro por mes
 //   • Exportaciones PDF / Excel
 //   • Gráfico de barras y gráfico circular
-// ------------------------------------------------------------
+
 // Endpoints Django:
 //   • GET /api/nomina_cal/reporte-general/?mes=AAAA-MM
 //   • GET /api/nomina_cal/exportar-pdf/
 //   • GET /api/nomina_cal/exportar-excel/
-// ============================================================
+
 import HeaderDashboard from "../components/HeaderDashboard";
 
 import { useEffect, useState } from "react";
@@ -32,18 +32,18 @@ import {
 import Layout from "../components/Layout";
 
 export default function DashboardAdmin() {
-  // ==============================
-  // 🔹 Estados principales
-  // ==============================
+  // 
+  // # Estados principales
+  // 
   const [data, setData] = useState(null);
   const [detalle, setDetalle] = useState([]);
   const [mes, setMes] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ============================================================
-  // 🎯 Obtener datos del backend (reporte general)
-  // ============================================================
+  
+  //  Obtener datos del backend (reporte general)
+  
   const fetchData = async (filtroMes = "") => {
     setLoading(true);
     setError(null);
@@ -59,23 +59,23 @@ export default function DashboardAdmin() {
       });
       setDetalle(res.data.detalle || []);
     } catch (err) {
-      console.error("❌ Error cargando dashboard admin:", err);
+      console.error(" Error cargando dashboard admin:", err);
       setError("No se pudieron cargar los datos del reporte general.");
     } finally {
       setLoading(false);
     }
   };
 
-  // ============================================================
-  // 🔄 Cargar datos iniciales
-  // ============================================================
+  
+  //  Cargar datos iniciales
+  
   useEffect(() => {
     fetchData();
   }, []);
 
-  // ============================================================
-  // 📤 Exportar archivos PDF / Excel
-  // ============================================================
+  
+  //  Exportar archivos PDF / Excel
+  
   const exportarArchivo = async (tipo) => {
     try {
       const endpoint =
@@ -92,13 +92,13 @@ export default function DashboardAdmin() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
-      console.error(`❌ Error exportando ${tipo}:`, err);
+      console.error(` Error exportando ${tipo}:`, err);
     }
   };
 
-  // ============================================================
-  // ⏳ Indicadores de carga / error
-  // ============================================================
+  
+  //  Indicadores de carga / error
+  
   if (loading)
     return (
       <Layout>
@@ -122,9 +122,9 @@ export default function DashboardAdmin() {
       </Layout>
     );
 
-  // ============================================================
-  // 🎨 Render principal del Dashboard
-  // ============================================================
+  
+  //  Render principal del Dashboard
+  
   const COLORS = ["#1ABC9C", "#3498DB", "#9B59B6", "#E67E22", "#E74C3C"];
 
   return (
@@ -134,9 +134,9 @@ export default function DashboardAdmin() {
 
         {/* Contenido principal del dashboard */}
         <section className="mt-4 space-y-6">
-          {/* =====================================================
-               📅 Filtros temporales y exportación
-             ===================================================== */}
+          {/* =====
+                Filtros temporales y exportación
+             ===== */}
           <div className="flex flex-col sm:flex-row justify-between items-center bg-white shadow p-4 rounded gap-3">
             <div className="flex gap-2 items-center">
               <label className="text-sm text-gray-600">Mes:</label>
@@ -166,9 +166,9 @@ export default function DashboardAdmin() {
             </div>
           </div>
 
-          {/* =====================================================
-               🔹 KPIs principales
-             ===================================================== */}
+          {/* =====
+               # KPIs principales
+             ===== */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiCard
               titulo="Total Empleados"
@@ -181,9 +181,9 @@ export default function DashboardAdmin() {
             <KpiCard titulo="Reportes Exportables" valor="Excel / PDF" />
           </div>
 
-          {/* =====================================================
-               📊 Gráfico de barras (Totales por empleado)
-             ===================================================== */}
+          {/* =====
+                Gráfico de barras (Totales por empleado)
+             ===== */}
           <div className="bg-white shadow p-4 rounded h-80">
             <h2 className="font-semibold mb-2">Totales por Empleado</h2>
             <p className="text-gray-500 text-sm mb-2">
@@ -208,9 +208,9 @@ export default function DashboardAdmin() {
             )}
           </div>
 
-          {/* =====================================================
+          {/* =====
                🥧 Gráfico circular (Distribución de Liquidaciones)
-             ===================================================== */}
+             ===== */}
           <div className="bg-white shadow p-4 rounded h-80">
             <h2 className="font-semibold mb-2">
               Distribución de Liquidaciones
@@ -254,9 +254,9 @@ export default function DashboardAdmin() {
   );
 }
 
-// ============================================================
+
 // 🔸 Componente reutilizable para KPIs
-// ============================================================
+
 function KpiCard({ titulo, valor }) {
   return (
     <div className="bg-white shadow p-4 rounded text-center">

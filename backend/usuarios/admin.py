@@ -1,6 +1,6 @@
-# ============================================================
-# ⚙️ Configuración del panel de administración para Usuarios
-# ============================================================
+#
+#  Configuración del panel de administración para Usuarios
+#
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -9,9 +9,9 @@ from .models import Usuario
 
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
-    # --------------------------------------------------------
-    # 🧾 Configuración de vista en lista
-    # --------------------------------------------------------
+    
+    #  Configuración de vista en lista
+    
     list_display = (
         "username",
         "email",
@@ -26,9 +26,9 @@ class UsuarioAdmin(UserAdmin):
     search_fields = ("username", "email", "first_name", "last_name")
     ordering = ("rol", "username")
 
-    # --------------------------------------------------------
-    # 🧩 Campos mostrados al editar un usuario
-    # --------------------------------------------------------
+    
+    #  Campos mostrados al editar un usuario
+    
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (
@@ -50,9 +50,9 @@ class UsuarioAdmin(UserAdmin):
         ("Fechas importantes", {"fields": ("last_login", "date_joined")}),
     )
 
-    # --------------------------------------------------------
-    # 🧱 Campos al crear un nuevo usuario
-    # --------------------------------------------------------
+    
+    #  Campos al crear un nuevo usuario
+    
     add_fieldsets = (
         (
             None,

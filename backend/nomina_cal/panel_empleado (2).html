@@ -15,7 +15,7 @@
 <body>
 <div class="container mt-4">
   <div class="header mb-4 text-center">
-    <h2>🧾 Panel Personal - {{ empleado.nombre }}</h2>
+    <h2> Panel Personal - {{ empleado.nombre }}</h2>
     <p>Cédula: {{ empleado.cedula }}</p>
   </div>
 
@@ -23,7 +23,7 @@
     {% for liq in liquidaciones %}
       <div class="col-md-6 mb-3">
         <div class="card p-3">
-          <h5>💼 Liquidación {{ liq.mes }}/{{ liq.anio }}</h5>
+          <h5> Liquidación {{ liq.mes }}/{{ liq.anio }}</h5>
           <p><strong>Sueldo Base:</strong> {{ liq.sueldo_base|floatformat:0 }} Gs</p>
           <p><strong>Total Ingresos:</strong> {{ liq.total_ingresos|floatformat:0 }} Gs</p>
           <p><strong>Total Descuentos:</strong> {{ liq.total_descuentos|floatformat:0 }} Gs</p>

@@ -1,6 +1,6 @@
-# ============================================================
-# 📧 Envío de correos relacionados con usuarios
-# ============================================================
+#
+# Envío de correos relacionados con usuarios
+#
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -25,7 +25,7 @@ def enviar_reset_password_email(user, token_link):
         "year": now().year,
     }
 
-    subject = "🔐 Restablecer tu contraseña - Sistema de Nómina IS2"
+    subject = " Restablecer tu contraseña - Sistema de Nómina IS2"
     text_message = render_to_string("emails/reset_password.txt", context)
     html_message = render_to_string("emails/reset_password.html", context)
 
@@ -38,6 +38,6 @@ def enviar_reset_password_email(user, token_link):
         )
         email.attach_alternative(html_message, "text/html")
         email.send()
-        logger.info(f"📨 Correo de reset enviado a {user.email}")
+        logger.info(f"Correo de reset enviado a {user.email}")
     except Exception as e:
-        logger.error(f"❌ Error al enviar correo de reset a {user.email}: {e}")
+        logger.error(f" Error al enviar correo de reset a {user.email}: {e}")

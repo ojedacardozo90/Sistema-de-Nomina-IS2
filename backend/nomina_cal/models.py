@@ -1,7 +1,7 @@
-# ============================================================
+#
 # MODELOS DE NÓMINA (TP IS2 - Ingeniería de Software II)
 # Cumple los requisitos de los Sprint 2–5 y la rúbrica final
-# ============================================================
+#
 
 from django.db import models
 from django.conf import settings
@@ -15,9 +15,9 @@ from .utils_email import generar_recibo_pdf
 
 
 
-# ============================================================
-# 🔹 MODELO BASE DE AUDITORÍA
-# ============================================================
+#
+# # MODELO BASE DE AUDITORÍA
+#
 class AuditoriaModel(models.Model):
     
     """Registra trazabilidad de creación y modificación."""
@@ -40,9 +40,9 @@ class AuditoriaModel(models.Model):
         abstract = True
 
 
-# ============================================================
-# 🔹 SALARIO MÍNIMO HISTÓRICO
-# ============================================================
+#
+# # SALARIO MÍNIMO HISTÓRICO
+#
 class SalarioMinimo(models.Model):
     """Registro histórico del salario mínimo vigente."""
     monto = models.DecimalField(max_digits=12, decimal_places=2)
@@ -72,9 +72,9 @@ class SalarioMinimo(models.Model):
         return vigente
 
 
-# ============================================================
-# 🔹 CONCEPTO SALARIAL
-# ============================================================
+#
+# # CONCEPTO SALARIAL
+#
 class Concepto(AuditoriaModel):
     """Define un concepto salarial: crédito o débito."""
     descripcion = models.CharField(max_length=150, unique=True)
@@ -88,9 +88,9 @@ class Concepto(AuditoriaModel):
         return f"{self.descripcion} ({tipo})"
 
 
-# ============================================================
-# 🔹 LIQUIDACIÓN DE NÓMINA
-# ============================================================
+#
+# # LIQUIDACIÓN DE NÓMINA
+#
 class Liquidacion(AuditoriaModel):
     """
     Representa la liquidación mensual de un empleado.
@@ -118,9 +118,9 @@ class Liquidacion(AuditoriaModel):
     def __str__(self):
         return f"Liquidación {self.mes}/{self.anio} - {self.empleado}"
 
-    # ============================================================
-    # 🧮 MÉTODO SAVE: validaciones automáticas
-    # ============================================================
+    #
+    # MÉTODO SAVE: validaciones automáticas
+    #
     def save(self, *args, **kwargs):
         """
         Completa automáticamente el sueldo base al crear.
@@ -138,9 +138,9 @@ class Liquidacion(AuditoriaModel):
             self.sueldo_base = self.empleado.salario_base or Decimal("0.00")
         super().save(*args, **kwargs)
 
-    # ============================================================
-    # 💰 BONIFICACIÓN FAMILIAR (Cumple MTESS)
-    # ============================================================
+    #
+    #  BONIFICACIÓN FAMILIAR (Cumple MTESS)
+    #
     def calcular_bonificacion_hijos(self):
         """
         Bonificación familiar conforme al MTESS (Código Laboral):
@@ -154,11 +154,11 @@ class Liquidacion(AuditoriaModel):
         if not salario_minimo:
             return Decimal("0.00")
 
-        # 🔹 Tope legal: hasta 2 salarios mínimos (ajustado según MTESS)
+        # # Tope legal: hasta 2 salarios mínimos (ajustado según MTESS)
         if self.sueldo_base > salario_minimo.monto * Decimal("3"):
             return Decimal("0.00")
 
-        # 🔹 Filtrar hijos válidos según requisitos legales
+        # # Filtrar hijos válidos según requisitos legales
         hijos_validos = [
             h for h in self.empleado.hijos.all()
             if h.es_menor() and h.residente and hasattr(h, "residencia_valida") and h.residencia_valida() and h.activo
@@ -167,9 +167,9 @@ class Liquidacion(AuditoriaModel):
         bonificacion = salario_minimo.monto * Decimal("0.05") * Decimal(len(hijos_validos))
         return bonificacion.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-    # ============================================================
-    # 🧾 CÁLCULO DE IPS Y TOTALES
-    # ============================================================
+    #
+    #  CÁLCULO DE IPS Y TOTALES
+    #
     def calcular_ips(self, imponible):
         """Calcula el aporte IPS del empleado (9%)."""
         return (imponible * Decimal("0.09")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
@@ -191,18 +191,18 @@ class Liquidacion(AuditoriaModel):
         ingresos = Decimal(self.sueldo_base)
         descuentos = Decimal("0.00")
 
-        # ------------------------------------------------------------
-        # 💵 Sueldo Base
-        # ------------------------------------------------------------
+        
+        #  Sueldo Base
+        
         concepto_base, _ = Concepto.objects.get_or_create(
             descripcion="Sueldo Base",
             defaults={"es_debito": False, "afecta_ips": True, "para_aguinaldo": True},
         )
         DetalleLiquidacion.objects.create(liquidacion=self, concepto=concepto_base, monto=self.sueldo_base)
 
-        # ------------------------------------------------------------
-        # 👶 Bonificación Familiar (MTESS)
-        # ------------------------------------------------------------
+        
+        #  Bonificación Familiar (MTESS)
+        
         bonificacion = self.calcular_bonificacion_hijos()
         if bonificacion > 0:
             concepto_bono, _ = Concepto.objects.get_or_create(
@@ -212,9 +212,9 @@ class Liquidacion(AuditoriaModel):
             DetalleLiquidacion.objects.create(liquidacion=self, concepto=concepto_bono, monto=bonificacion)
             ingresos += bonificacion
 
-        # ------------------------------------------------------------
-        # 💸 Descuento IPS (9%)
-        # ------------------------------------------------------------
+        
+        #  Descuento IPS (9%)
+        
         descuento_ips = self.calcular_ips(self.sueldo_base)
         concepto_ips, _ = Concepto.objects.get_or_create(
             descripcion="Descuento IPS 9%",
@@ -223,9 +223,9 @@ class Liquidacion(AuditoriaModel):
         DetalleLiquidacion.objects.create(liquidacion=self, concepto=concepto_ips, monto=descuento_ips)
         descuentos += descuento_ips
 
-        # ------------------------------------------------------------
-        # 📉 Descuentos adicionales (Préstamos, embargos, etc.)
-        # ------------------------------------------------------------
+        
+        #  Descuentos adicionales (Préstamos, embargos, etc.)
+        
         descuentos_extra = Descuento.objects.filter(empleado=self.empleado, activo=True)
         for d in descuentos_extra:
             if d.es_vigente(self.mes, self.anio):
@@ -236,9 +236,9 @@ class Liquidacion(AuditoriaModel):
                 DetalleLiquidacion.objects.create(liquidacion=self, concepto=concepto_extra, monto=d.monto)
                 descuentos += d.monto
 
-        # ------------------------------------------------------------
-        # 🧾 Totales finales
-        # ------------------------------------------------------------
+        
+        #  Totales finales
+        
         self.total_ingresos = ingresos
         self.total_descuentos = descuentos
         self.neto_cobrar = ingresos - descuentos
@@ -264,9 +264,9 @@ class Liquidacion(AuditoriaModel):
     def neto(self):
         """Acceso rápido al neto."""
         return self.neto_cobrar
-# ============================================================
-# 🔹 DETALLE DE LIQUIDACIÓN
-# ============================================================
+#
+# # DETALLE DE LIQUIDACIÓN
+#
 class DetalleLiquidacion(AuditoriaModel):
     """Cada concepto aplicado en una liquidación."""
     liquidacion = models.ForeignKey(

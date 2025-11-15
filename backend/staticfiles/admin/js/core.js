@@ -23,10 +23,10 @@ function removeChildren(a) {
     }
 }
 
-// ----------------------------------------------------------------------------
+----------------
 // Find-position functions by PPK
 // See https://www.quirksmode.org/js/findpos.html
-// ----------------------------------------------------------------------------
+----------------
 function findPosX(obj) {
     let curleft = 0;
     if (obj.offsetParent) {
@@ -55,7 +55,7 @@ function findPosY(obj) {
 
 //-----------------------------------------------------------------------------
 // Date object extensions
-// ----------------------------------------------------------------------------
+----------------
 {
     Date.prototype.getTwelveHours = function() {
         return this.getHours() % 12 || 12;
@@ -144,9 +144,9 @@ function findPosY(obj) {
         return result;
     };
 
-    // ----------------------------------------------------------------------------
+    ----------------
     // String object extensions
-    // ----------------------------------------------------------------------------
+    ----------------
     String.prototype.strptime = function(format) {
         const split_format = format.split(/[.\-/]/);
         const date = this.split(/[.\-/]/);

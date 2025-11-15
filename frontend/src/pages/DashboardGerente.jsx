@@ -1,6 +1,6 @@
-// ============================================================
-// 📈 Dashboard Gerente RRHH (Sprint 6–7) — NóminaPro
-// ------------------------------------------------------------
+
+//  Dashboard Gerente RRHH (Sprint 6–7) — NóminaPro
+
 // Muestra:
 //  • Total empleados, total liquidaciones, promedio de nómina
 //  • Evolución últimos meses (línea)
@@ -8,7 +8,7 @@
 // Endpoints:
 //  • GET /nomina_cal/dashboard/gerente/
 //  • GET /nomina_cal/analytics/kpis/
-// ============================================================
+
 import HeaderDashboard from "../components/HeaderDashboard";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -86,7 +86,7 @@ export default function DashboardGerente() {
       </div>
     );
 
-  // ✅ Estructura con HeaderDashboard y sección principal
+  //  Estructura con HeaderDashboard y sección principal
   return (
     <div className="p-6">
       {/* Encabezado superior */}

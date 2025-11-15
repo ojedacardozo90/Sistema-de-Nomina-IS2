@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../../utils/api";
 
-// 🔍 Detectar tipo de input según el nombre o valor del campo
+// Detectar tipo de input según el nombre o valor del campo
 function guessType(key, value) {
   if (key.toLowerCase().includes("fecha")) return "date";
   if (key.startsWith("is_") || typeof value === "boolean") return "checkbox";
@@ -14,7 +14,7 @@ export default function AdminModal({ model, data, onClose, onSaved }) {
   const [form, setForm] = useState(data);
   const isNew = !data.id;
 
-  // 🧠 Manejador de cambios
+  //  Manejador de cambios
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
@@ -33,7 +33,7 @@ export default function AdminModal({ model, data, onClose, onSaved }) {
     }
   };
 
-  // 🧩 Render dinámico del campo según tipo
+  //  Render dinámico del campo según tipo
   const renderInput = (key, value) => {
     const type = guessType(key, value);
 
@@ -80,7 +80,7 @@ export default function AdminModal({ model, data, onClose, onSaved }) {
     );
   };
 
-  // 🎨 Render principal del modal
+  //  Render principal del modal
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">

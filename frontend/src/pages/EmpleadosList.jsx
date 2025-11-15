@@ -1,15 +1,15 @@
-// ============================================================
-// 👥 EmpleadosList — Gestión completa de empleados
-// ------------------------------------------------------------
+
+//  EmpleadosList — Gestión completa de empleados
+
 // Incluye:
 //   • Listado con filtros dinámicos
 //   • Búsqueda en tiempo real
 //   • Eliminación con confirmación
 //   • Navegación a edición y creación
 //   • Integración total con el backend Django
-// ------------------------------------------------------------
+
 // Endpoint base: /api/empleados/
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,16 +17,16 @@ import api from "../utils/api";
 import Layout from "../components/Layout";
 
 export default function EmpleadosList() {
-  // ===========================
-  // 🔹 Estados principales
-  // ===========================
+  // ===
+  // # Estados principales
+  // ===
   const [empleados, setEmpleados] = useState([]); // siempre array
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // ============================================================
-  // 🎯 Cargar empleados desde el backend
-  // ============================================================
+  
+  //  Cargar empleados desde el backend
+  
   const fetchEmpleados = async () => {
     setLoading(true);
     try {
@@ -34,7 +34,7 @@ export default function EmpleadosList() {
       const data = Array.isArray(res.data) ? res.data : [];
       setEmpleados(data);
     } catch (error) {
-      console.error("❌ Error al cargar empleados:", error);
+      console.error(" Error al cargar empleados:", error);
       setEmpleados([]); // evitar crash
     } finally {
       setLoading(false);
@@ -45,24 +45,24 @@ export default function EmpleadosList() {
     fetchEmpleados();
   }, []);
 
-  // ============================================================
+  
   // 🗑️ Eliminar empleado
-  // ============================================================
+  
   const handleDelete = async (id) => {
     if (!window.confirm("¿Seguro que deseas eliminar este empleado?")) return;
     try {
       await api.delete(`/empleados/${id}/`);
-      alert("✅ Empleado eliminado correctamente.");
+      alert(" Empleado eliminado correctamente.");
       fetchEmpleados();
     } catch (error) {
-      console.error("❌ Error eliminando empleado:", error);
+      console.error(" Error eliminando empleado:", error);
       alert("Hubo un error al eliminar el empleado.");
     }
   };
 
-  // ============================================================
-  // 🔍 Filtrado local por nombre, apellido o cédula
-  // ============================================================
+  
+  // Filtrado local por nombre, apellido o cédula
+  
   const empleadosFiltrados = Array.isArray(empleados)
     ? empleados.filter(
         (e) =>
@@ -72,15 +72,15 @@ export default function EmpleadosList() {
       )
     : [];
 
-  // ============================================================
-  // 🖼️ Render principal
-  // ============================================================
+  
+  //  Render principal
+  
   return (
     <Layout>
       <div className="p-6">
         {/* Título y botón superior */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">👥 Empleados</h1>
+          <h1 className="text-2xl font-bold"> Empleados</h1>
           <Link
             to="/empleados/nuevo"
             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
@@ -93,7 +93,7 @@ export default function EmpleadosList() {
         <div className="mb-4">
           <input
             type="text"
-            placeholder="🔍 Buscar por nombre, apellido o cédula..."
+            placeholder="Buscar por nombre, apellido o cédula..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="border w-full px-3 py-2 rounded-md shadow-sm focus:ring focus:ring-blue-200 outline-none"

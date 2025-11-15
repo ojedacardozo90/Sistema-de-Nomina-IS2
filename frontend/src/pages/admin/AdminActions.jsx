@@ -45,7 +45,7 @@ export default function AdminActions({ model, selected, onAction, onExport }) {
         onClick={onExport}
         className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
       >
-        📊 Exportar
+         Exportar
       </button>
     </div>
   );

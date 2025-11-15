@@ -1,9 +1,9 @@
-# ============================================================
-# 🔐 Gestión de Usuarios - Sistema de Nómina IS2 (FP-UNA / FAP)
-# ------------------------------------------------------------
+#
+#  Gestión de Usuarios - Sistema de Nómina IS2 (FP-UNA / )
+
 # Autenticación JWT personalizada, recuperación de contraseña,
 # reseteo seguro, CRUD administrativo y endpoints de diagnóstico.
-# ============================================================
+#
 
 import csv
 import io
@@ -34,9 +34,9 @@ logger = logging.getLogger(__name__)
 Usuario = get_user_model()
 token_generator = PasswordResetTokenGenerator()
 
-# ============================================================
-# 🔑 1️⃣ Autenticación JWT Personalizada
-# ============================================================
+#
+#   Autenticación JWT Personalizada
+#
 class CustomTokenObtainPairView(TokenObtainPairView):
     """
     Retorna tokens de acceso y datos completos del usuario autenticado.
@@ -67,13 +67,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 "rol": getattr(user, "rol", None),
                 "is_active": user.is_active,
             },
-            "mensaje": f"Bienvenido {user.first_name or user.username} ✅",
+            "mensaje": f"Bienvenido {user.first_name or user.username} ",
         }, status=200)
 
 
-# ============================================================
-# 📧 2️⃣ Recuperar contraseña (enviar correo)
-# ============================================================
+#
+#  Recuperar contraseña (enviar correo)
+#
 class ForgotPasswordView(APIView):
     """
     Envía al correo del usuario un enlace con UID y token:
@@ -117,9 +117,9 @@ class ForgotPasswordView(APIView):
             return Response({"error": "No se pudo enviar el correo."}, status=500)
 
 
-# ============================================================
-# 🔄 3️⃣ Validar y resetear contraseña
-# ============================================================
+#
+#   Validar y resetear contraseña
+#
 class ValidateResetTokenView(APIView):
     """Valida UID/token antes del cambio de contraseña."""
     permission_classes = [permissions.AllowAny]

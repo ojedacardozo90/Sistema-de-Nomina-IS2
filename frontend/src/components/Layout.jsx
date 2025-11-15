@@ -2,12 +2,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { getUser, logout } from "../services/auth";
 
 /**
- * ============================================================
- * 🧱 Layout principal del sistema
+
+ *  Layout principal del sistema
  * - Muestra nombre y rol
  * - Botón de logout
  * - Renderiza contenido dinámico (Outlet)
- * ============================================================
+
  */
 export default function Layout({ sidebar }) {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function Layout({ sidebar }) {
           {user && (
             <div className="flex items-center gap-4 text-sm text-gray-700">
               <span>
-                👤 {user.username} ({user.rol})
+                 {user.username} ({user.rol})
               </span>
               <button
                 onClick={handleLogout}

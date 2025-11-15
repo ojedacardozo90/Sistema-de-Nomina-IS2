@@ -1,6 +1,6 @@
-// ============================================================
-// 💵 Cálculo Masivo de Nóminas — Sistema de Nómina IS2 (FP-UNA / FAP)
-// ============================================================
+
+//  Cálculo Masivo de Nóminas — Sistema de Nómina IS2 (FP-UNA / )
+
 
 import { useState } from "react";
 import { calcularTodas } from "../utils/api";

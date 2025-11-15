@@ -2,11 +2,11 @@ import { Navigate } from "react-router-dom";
 import { getUser } from "../services/auth";
 
 /**
- * ============================================================
- * 🔒 PrivateRoute
+
+ *  PrivateRoute
  * - Verifica si hay usuario logueado
  * - Opcionalmente filtra por roles permitidos
- * ============================================================
+
  */
 export default function PrivateRoute({ children, allowedRoles }) {
   const user = getUser();

@@ -1,13 +1,13 @@
-# ============================================================
-# 🧪 TESTS DE INTEGRACIÓN AVANZADOS CON MOCKS (Sprint 6)
-# ------------------------------------------------------------
+#
+#  TESTS DE INTEGRACIÓN AVANZADOS CON MOCKS (Sprint 6)
+
 # Módulo: nomina_cal
 # Verifica:
 #   • Calcular totales correctamente
 #   • Cierre de liquidación bloqueando edición posterior
 #   • Disparo automático de señal post_save
 #   • Envío de correo simulado con mock.patch
-# ============================================================
+#
 
 from django.test import TestCase
 from unittest import mock
@@ -19,13 +19,13 @@ from nomina_cal import signals
 
 
 class LiquidacionIntegracionMockTests(TestCase):
-    """🔍 Pruebas integradas del ciclo completo de liquidación"""
+    """Pruebas integradas del ciclo completo de liquidación"""
 
     def setUp(self):
-        # 🧱 Datos base
+        #  Datos base
         self.empleado = Empleado.objects.create(
-            nombre="Raúl Catalino",
-            apellido="Irala Benítez",
+            nombre="Raúl",
+            apellido=" Benítez",
             cedula="1234567",
             salario_base=Decimal("4000000"),
             email="raul@test.com",
@@ -39,9 +39,9 @@ class LiquidacionIntegracionMockTests(TestCase):
             empleado=self.empleado, mes=10, anio=2025
         )
 
-    # --------------------------------------------------------
-    # ✅ 1. Prueba cálculo completo de totales
-    # --------------------------------------------------------
+    
+    #  1. Prueba cálculo completo de totales
+    
     def test_calcular_totales_ok(self):
         """Debe calcular ingresos, descuentos y neto correctamente"""
         self.liquidacion.calcular_totales()
@@ -54,9 +54,9 @@ class LiquidacionIntegracionMockTests(TestCase):
             self.liquidacion.neto_cobrar,
         )
 
-    # --------------------------------------------------------
-    # ✅ 2. Prueba cierre de liquidación
-    # --------------------------------------------------------
+    
+    #  2. Prueba cierre de liquidación
+    
     def test_cerrar_bloquea_edicion(self):
         """Debe impedir modificar una liquidación cerrada"""
         self.liquidacion.calcular_totales()
@@ -65,9 +65,9 @@ class LiquidacionIntegracionMockTests(TestCase):
         with self.assertRaises(ValueError):
             self.liquidacion.save()  # No puede modificarse una vez cerrada
 
-    # --------------------------------------------------------
-    # ✅ 3. Señal post_save con mock de envío de correo
-    # --------------------------------------------------------
+    
+    #  3. Señal post_save con mock de envío de correo
+    
     @mock.patch("nomina_cal.signals.enviar_recibo_email")
     def test_signal_envio_recibo_disparada(self, mock_enviar_recibo):
         """Debe ejecutarse la señal post_save al cerrar una liquidación"""
@@ -82,9 +82,9 @@ class LiquidacionIntegracionMockTests(TestCase):
         args, kwargs = mock_enviar_recibo.call_args
         self.assertEqual(kwargs["liquidacion"].empleado, self.empleado)
 
-    # --------------------------------------------------------
-    # ✅ 4. Generación PDF simulada sin crear archivo real
-    # --------------------------------------------------------
+    
+    #  4. Generación PDF simulada sin crear archivo real
+    
     @mock.patch("nomina_cal.utils_email.generar_recibo_pdf")
     def test_generacion_pdf_mock(self, mock_pdf):
         """Debe invocar la generación de PDF al cerrar la liquidación"""

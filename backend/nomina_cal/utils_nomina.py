@@ -1,16 +1,16 @@
-# ============================================================
-# ⚙️ UTILIDADES DE CÁLCULO DE NÓMINA
+#
+#  UTILIDADES DE CÁLCULO DE NÓMINA
 # Proyecto: Sistema de Nómina (IS2 - FP-UNA)
 # Autor: Raúl Catalino Irala Benítez
 # Cumple con el Código Laboral Paraguayo y requisitos MTESS
-# ============================================================
+#
 
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import date
 
-# ============================================================
-# 🔹 BONIFICACIÓN FAMILIAR (MTESS)
-# ============================================================
+#
+# # BONIFICACIÓN FAMILIAR (MTESS)
+#
 def calcular_bonificacion_familiar(empleado, mes, anio):
     """
     Calcula la bonificación familiar conforme a las normativas vigentes:
@@ -39,17 +39,17 @@ def calcular_bonificacion_familiar(empleado, mes, anio):
     return bonificacion.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
-# ============================================================
-# 🔹 CÁLCULO DE APORTES AL IPS (9 %)
-# ============================================================
+#
+# # CÁLCULO DE APORTES AL IPS (9 %)
+#
 def calcular_ips(monto_imponible):
     """Calcula el aporte del 9 % al IPS sobre el total imponible."""
     return (monto_imponible * Decimal("0.09")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
-# ============================================================
-# 🔹 RECÁLCULO TOTAL DE LIQUIDACIÓN
-# ============================================================
+#
+# # RECÁLCULO TOTAL DE LIQUIDACIÓN
+#
 def recalcular_totales(liquidacion):
     """
     Recalcula todos los totales de la liquidación:

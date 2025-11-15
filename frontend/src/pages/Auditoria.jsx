@@ -1,7 +1,7 @@
-// ============================================================
-// 🔎 Auditoría del Sistema — NóminaPro
+
+//  Auditoría del Sistema — NóminaPro
 // GET /auditoria/logs/?modelo=&accion=&usuario=&desde=&hasta=&q=
-// ============================================================
+
 import { useEffect, useState } from "react";
 import { listarAuditoria } from "../utils/api";
 
@@ -29,7 +29,7 @@ export default function Auditoria() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">🔎 Auditoría del Sistema</h1>
+      <h1 className="text-2xl font-bold"> Auditoría del Sistema</h1>
 
       <div className="bg-white p-4 rounded shadow grid grid-cols-2 md:grid-cols-6 gap-3">
         <input name="modelo" placeholder="Modelo (Empleado…)" value={f.modelo} onChange={onChange} className="border p-2 rounded" />

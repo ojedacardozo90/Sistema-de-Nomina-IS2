@@ -12,7 +12,7 @@ import AdminFilters from "./AdminFilters";
 import AdminTable from "./AdminTable";
 import AdminModal from "./AdminModal";
 import AdminPagination from "./AdminPagination";
-import AdminActions from "./AdminActions"; // ✅ agregado
+import AdminActions from "./AdminActions"; //  agregado
 
 export default function AdminPanel() {
   const [endpoint, setEndpoint] = useState("empleados");
@@ -28,9 +28,9 @@ export default function AdminPanel() {
   const [err, setErr] = useState(null);
   const [user, setUser] = useState(null);
 
-  // ============================
-  // 🔐 Validar permisos
-  // ============================
+  // ====
+  //  Validar permisos
+  // ====
   useEffect(() => {
     const boot = async () => {
       try {
@@ -51,9 +51,9 @@ export default function AdminPanel() {
     boot();
   }, []);
 
-  // ============================
-  // 🔄 Fetch listado
-  // ============================
+  // ====
+  //  Fetch listado
+  // ====
   const query = useMemo(() => {
     const params = { page, page_size: pageSize, search, ...filters };
     return buildQuery(params);
@@ -86,9 +86,9 @@ export default function AdminPanel() {
 
   const reload = () => loadData();
 
-  // ============================
-  // ⚙️ Acciones masivas básicas
-  // ============================
+  // ====
+  //  Acciones masivas básicas
+  // ====
   const eliminarSeleccionados = async () => {
     if (!selected.length) return alert("No hay elementos seleccionados.");
     if (!window.confirm("¿Eliminar registros seleccionados?")) return;
@@ -113,9 +113,9 @@ export default function AdminPanel() {
     setModalData(obj);
   };
 
-  // ============================
-  // ⚡ Acciones masivas personalizadas (AdminActions)
-  // ============================
+  // ====
+  //  Acciones masivas personalizadas (AdminActions)
+  // ====
   const handleBulkAction = async (action) => {
     if (!selected.length) return alert("Seleccioná al menos un registro.");
     try {
@@ -152,9 +152,9 @@ export default function AdminPanel() {
     }
   };
 
-  // ============================
-  // 🎨 UI
-  // ============================
+  // ====
+  //  UI
+  // ====
   return (
     <Layout>
       <div className="flex h-screen bg-gray-50">
@@ -193,10 +193,10 @@ export default function AdminPanel() {
               onClick={exportarExcel}
               className="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700"
             >
-              📊 Exportar
+               Exportar
             </button>
 
-            {/* ✅ Nuevo bloque: acciones específicas según módulo */}
+            {/*  Nuevo bloque: acciones específicas según módulo */}
             <AdminActions
            model={endpoint}
            selected={selected}

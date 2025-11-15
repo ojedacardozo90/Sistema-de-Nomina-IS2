@@ -1,48 +1,48 @@
-// ======================================================
-// 🌐 App principal - Sistema de Nómina IS2
+
+//  App principal - Sistema de Nómina IS2
 // Rutas y navegación con React Router DOM v6
-// ======================================================
+
 import Logout from "./pages/Logout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminPanel from "./pages/admin/AdminPanel";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-// 🖼️ Layout principal
+//  Layout principal
 import Layout from "./components/Layout";
 import Sidebar from "./components/Sidebar";
 
-// 🔑 Autenticación
+//  Autenticación
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import RoleRouter from "./pages/RoleRouter";
 
-// 📊 Dashboards
+//  Dashboards
 import Dashboard from "./pages/Dashboard";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardGerente from "./pages/DashboardGerente";
 import DashboardAsistente from "./pages/DashboardAsistente";
 import DashboardEmpleado from "./pages/DashboardEmpleado";
 
-// 👥 Empleados
+//  Empleados
 import EmpleadosList from "./pages/EmpleadosList";
 import EmpleadoForm from "./pages/EmpleadoForm";
 
-// 💡 Conceptos
+//  Conceptos
 import ConceptosList from "./pages/ConceptosList";
 import ConceptoForm from "./pages/ConceptoForm";
 
-// 💵 Liquidaciones
+//  Liquidaciones
 import LiquidacionesList from "./pages/LiquidacionesList";
 import LiquidacionForm from "./pages/LiquidacionForm";
 import CalculoNominaPage from "./pages/CalculoNominaPage";
 import CalcularTodasNominas from "./pages/CalcularTodasNominas";
 
-// 🕒 Asistencia
+//  Asistencia
 import Asistencia from "./pages/Asistencia";
 import FichadasList from "./pages/FichadasList";
 import NoAutorizado from "./pages/NoAutorizado";
 
-// 🧾 Otros módulos
+//  Otros módulos
 import ReportesAvanzados from "./pages/ReportesAvanzados";
 import Auditoria from "./pages/Auditoria";
 import UsuariosList from "./pages/UsuariosList";
@@ -56,13 +56,13 @@ import LiquidacionesAdmin from "./pages/admin/LiquidacionesAdmin";
 import EmpleadosAdmin from "./pages/admin/EmpleadosAdmin";
 import ConceptosAdmin from "./pages/admin/ConceptosAdmin";
 import LiquidacionesAdmin from "./pages/admin/LiquidacionesAdmin";
-// ======================================================
+
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* 🔑 Login y recuperación */}
+        {/*  Login y recuperación */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
@@ -71,12 +71,12 @@ export default function App() {
         <Route path="/admin/liquidaciones" element={<LiquidacionesAdmin />} />
         
         
-        {/* 🌐 Rutas protegidas con Layout */}
+        {/*  Rutas protegidas con Layout */}
         <Route element={<Layout sidebar={<Sidebar />} />}>
           {/* Redirección automática por rol */}
           <Route path="/" element={<RoleRouter />} />
 
-          {/* 🛠️ Panel de administración */}
+          {/*  Panel de administración */}
           <Route path="/admin" element={<AdminPanel />} /> {/* ⬅️ añadido */}
           
           <Route path="/admin/empleados" element={<EmpleadosAdmin />} />
@@ -136,9 +136,9 @@ export default function App() {
 }
 
 
-// ============================================================
+
 // Rutas del panel administrativo (equivalente al Django Admin)
-// ============================================================
+
 import UsuariosAdmin from "./pages/admin/UsuariosAdmin";
 import AsistenciasAdmin from "./pages/admin/AsistenciasAdmin";
 

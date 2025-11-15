@@ -15,7 +15,7 @@ export default function ValidateToken() {
         setEstado("Token válido. Redirigiendo...");
         setTimeout(() => navigate(`/reset-password/${uidb64}/${token}`), 2000);
       } catch {
-        setEstado("❌ Token inválido o expirado.");
+        setEstado(" Token inválido o expirado.");
       }
     };
     validar();

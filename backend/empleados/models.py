@@ -1,7 +1,5 @@
-# ============================================================
-# 👥 Modelos de Empleados y Familiares (TP IS2 - Nómina)
+# Modelos de Empleados y Familiares (TP IS2 - Nómina)
 # Cumple con la legislación MTESS sobre bonificación familiar.
-# ============================================================
 
 from django.db import models
 from django.conf import settings
@@ -9,9 +7,7 @@ from datetime import date
 from django.utils import timezone
 
 
-# ============================================================
-# 🔹 MODELO EMPLEADO
-# ============================================================
+# MODELO EMPLEADO
 class Empleado(models.Model):
     usuario = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -27,7 +23,7 @@ class Empleado(models.Model):
     fecha_ingreso = models.DateField()
     cargo = models.CharField(max_length=100, blank=True, null=True)
     salario_base = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    # 🔹 Campos adicionales sugeridos
+    # # Campos adicionales sugeridos
     fecha_nacimiento = models.DateField(null=True, blank=True)
     estado_civil = models.CharField(max_length=50, blank=True)
 
@@ -42,9 +38,7 @@ class Meta:
     verbose_name = "Empleado"
     verbose_name_plural = "Empleados"
 
-    # ============================================================
-    # 🔹 NUEVOS CAMPOS Sprint 6 (para dashboards y reportes)
-    # ============================================================
+    # NUEVOS CAMPOS Sprint 6 (para dashboards y reportes)
     AREA_CHOICES = [
         ("ADMIN", "Administración"),
         ("RRHH", "Recursos Humanos"),
@@ -73,9 +67,9 @@ class Meta:
         help_text="Tipo de contrato laboral (indefinido, temporal, etc.)."
     )
 
-    # ============================================================
-    # 🔸 Métodos existentes
-    # ============================================================
+    
+    # Métodos existentes
+    
     def __str__(self):
         return f"{self.nombre} {self.apellido} - {self.cedula}"
 
@@ -84,24 +78,23 @@ class Meta:
         """Retorna la antigüedad en años del empleado."""
         return (date.today().year - self.fecha_ingreso.year) if self.fecha_ingreso else 0
 
-    # ============================================================
-    # 🔸 Meta para orden y nombre legible
-    # ============================================================
+   
+    #  Meta para orden y nombre legible
     class Meta:
         ordering = ["apellido", "nombre"]
         verbose_name = "Empleado"
         verbose_name_plural = "Empleados"
 
 
-# ============================================================
-# 🔹 MODELO HIJO / DEPENDIENTE
-# ============================================================
+
+#  MODELO HIJO / DEPENDIENTE
+
 class Hijo(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name="hijos")
     nombre = models.CharField(max_length=150)
     fecha_nacimiento = models.DateField()
 
-    # ✅ Campos actualizados según requisitos legales
+    #  Campos actualizados según requisitos legales
     residente = models.BooleanField(default=True, help_text="Reside en Paraguay")
     certificado_nacimiento = models.FileField(
         upload_to="certificados/", null=True, blank=True,
@@ -125,9 +118,9 @@ class Meta:
         
         return f"{self.nombre} ({self.empleado.nombre})"
 
-    # ============================================================
-    # 🔸 Validaciones automáticas
-    # ============================================================
+    
+    #  Validaciones automáticas
+    
     def edad(self) -> int:
         """Calcula la edad actual del hijo."""
         hoy = date.today()
@@ -147,9 +140,9 @@ class Meta:
             return self.fecha_vencimiento_residencia >= timezone.now().date()
         return True  # si no tiene vencimiento cargado, se asume válida
 
-    # ============================================================
-    # 🔹 Propiedades para usar fuera del serializer
-    # ============================================================
+    
+    # Propiedades para usar fuera del serializer
+    
     @property
     def edad_actual(self):
         """Edad actual (propiedad accesible sin llamar al método)."""
@@ -160,18 +153,16 @@ class Meta:
         """Propiedad booleana que indica si el hijo es menor de edad."""
         return self.es_menor()
 
-    # ============================================================
-    # 🔸 Meta para orden y nombre legible
-    # ============================================================
+        #  Meta para orden y nombre legible
+    
     class Meta:
         ordering = ["nombre"]
         verbose_name = "Hijo"
         verbose_name_plural = "Hijos"
 
 
-# ============================================================
-# 🧾 HISTORIAL DE CARGOS/SALARIOS (para auditoría de cambios)
-# ============================================================
+#  HISTORIAL DE CARGOS/SALARIOS (para auditoría de cambios)
+
 class HistorialCargoSalario(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name="historial_cargos")
     cargo = models.CharField(max_length=100)

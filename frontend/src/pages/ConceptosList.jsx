@@ -1,10 +1,10 @@
-// ============================================================
-// 💼 ConceptosList — Gestión de Conceptos (IS2 Nómina)
-// ------------------------------------------------------------
+
+//  ConceptosList — Gestión de Conceptos (IS2 Nómina)
+
 // Muestra los conceptos de liquidación, con tabla y CRUD básico
 // • Corrige error de .map no es función
 // • Soporta respuesta con paginación ({ results: [...] })
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -14,9 +14,9 @@ export default function ConceptosList() {
   const [conceptos, setConceptos] = useState([]); // array garantizado
   const [loading, setLoading] = useState(true);
 
-  // ============================================================
-  // 🔄 Cargar conceptos desde API
-  // ============================================================
+  
+  //  Cargar conceptos desde API
+  
   useEffect(() => {
     const fetchConceptos = async () => {
       try {
@@ -27,7 +27,7 @@ export default function ConceptosList() {
           : response.data.results || [];
         setConceptos(data);
       } catch (error) {
-        console.error("❌ Error cargando conceptos:", error);
+        console.error(" Error cargando conceptos:", error);
         setConceptos([]); // seguridad extra
       } finally {
         setLoading(false);
@@ -36,17 +36,17 @@ export default function ConceptosList() {
     fetchConceptos();
   }, []);
 
-  // ============================================================
-  // ⏳ Estado de carga
-  // ============================================================
+  
+  //  Estado de carga
+  
   if (loading) return <p className="p-4">Cargando conceptos...</p>;
 
-  // ============================================================
-  // 🎨 Render principal
-  // ============================================================
+  
+  //  Render principal
+  
   return (
     <div className="p-6">
-      {/* 🔹 Título y botón superior */}
+      {/* # Título y botón superior */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-emerald-700">
           Gestión de Conceptos
@@ -59,7 +59,7 @@ export default function ConceptosList() {
         </Link>
       </div>
 
-      {/* 🔹 Tabla */}
+      {/* # Tabla */}
       <table className="w-full border-collapse border shadow-sm rounded">
         <thead>
           <tr className="bg-gray-100 text-gray-700">

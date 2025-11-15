@@ -1,6 +1,6 @@
-// ============================================================
-// 📈 Reportes Avanzados — filtros + export (NóminaPro)
-// ============================================================
+
+//  Reportes Avanzados — filtros + export (NóminaPro)
+
 import { useEffect, useState } from "react";
 import { reportesAvanzados, exportarAvanzadoExcel, exportarAvanzadoPDF } from "../utils/api";
 
@@ -51,7 +51,7 @@ export default function ReportesAvanzados() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">📈 Reportes Avanzados</h1>
+      <h1 className="text-2xl font-bold"> Reportes Avanzados</h1>
 
       {/* Filtros */}
       <div className="bg-white p-4 rounded shadow grid grid-cols-2 md:grid-cols-4 gap-3">

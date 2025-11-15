@@ -1,12 +1,12 @@
-// ============================================================
-// 💵 Cálculo individual de nómina — Sistema de Nómina IS2 (FP-UNA / FAP)
-// ============================================================
+
+//  Cálculo individual de nómina — Sistema de Nómina IS2 (FP-UNA / )
+
 
 import { useState, useEffect } from "react";
 import api from "../utils/api";
 import Layout from "../components/Layout";
 
-// 🧮 Formato de guaraníes
+// Formato de guaraníes
 const fmtGs = (n) =>
   typeof n === "number" ? n.toLocaleString("es-PY") + " Gs" : n || "-";
 

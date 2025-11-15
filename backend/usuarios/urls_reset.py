@@ -1,7 +1,7 @@
 # backend/usuarios/urls_reset.py
-# ============================================================
-# 🔐 Rutas para recuperación de contraseña
-# ============================================================
+#
+#  Rutas para recuperación de contraseña
+#
 
 from django.urls import path
 from . import views

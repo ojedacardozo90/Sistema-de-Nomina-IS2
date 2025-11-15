@@ -1,6 +1,6 @@
-// ======================================================
-// 🔑 Recuperar contraseña - Enlace a /usuarios/password-reset/
-// ======================================================
+
+//  Recuperar contraseña - Enlace a /usuarios/password-reset/
+
 
 import { useState } from "react";
 import { forgotPassword } from "../utils/api";
@@ -17,11 +17,11 @@ export default function ForgotPassword() {
     try {
       await forgotPassword(email);
       setMensaje(
-        "📧 Si tu correo está registrado, recibirás un enlace para restablecer tu contraseña."
+        "Si tu correo está registrado, recibirás un enlace para restablecer tu contraseña."
       );
     } catch (error) {
       console.error(error);
-      setMensaje("⚠️ No se pudo enviar el correo. Intenta de nuevo más tarde.");
+      setMensaje(" No se pudo enviar el correo. Intenta de nuevo más tarde.");
     } finally {
       setEnviando(false);
     }

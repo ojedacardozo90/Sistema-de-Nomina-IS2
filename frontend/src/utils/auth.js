@@ -1,6 +1,6 @@
-// ============================================================
-// 🔐 Auth Utils — Unificación de almacenamiento local
-// ============================================================
+
+//  Auth Utils — Unificación de almacenamiento local
+
 import api from "./api";
 
 const TOKEN_KEY = "access_token";
@@ -8,9 +8,9 @@ const REFRESH_KEY = "refresh_token";
 const USER_KEY = "usuario"; // coincide con la respuesta del backend
 const ROLE_KEY = "rol";
 
-// ========================
-// 📌 TOKEN
-// ========================
+// 
+// TOKEN
+// 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const saveToken = (access, refresh) => {
   localStorage.setItem(TOKEN_KEY, access);
@@ -21,9 +21,9 @@ export const clearToken = () => {
   localStorage.removeItem(REFRESH_KEY);
 };
 
-// ========================
-// 📌 USER
-// ========================
+// 
+// USER
+// 
 export const getUser = () => {
   const user = localStorage.getItem(USER_KEY);
   return user ? JSON.parse(user) : null;
@@ -31,15 +31,15 @@ export const getUser = () => {
 export const setUser = (user) =>
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 
-// ========================
-// 📌 ROLE
-// ========================
+// 
+// ROLE
+// 
 export const getRole = () => localStorage.getItem(ROLE_KEY);
 export const setRole = (role) => localStorage.setItem(ROLE_KEY, role);
 
-// ========================
-// 🧩 SESIÓN
-// ========================
+// 
+//  SESIÓN
+// 
 export const saveSession = (access, refresh, user) => {
   saveToken(access, refresh);
   setUser(user);
@@ -53,9 +53,9 @@ export const clearSession = () => {
   window.location.href = "/login";
 };
 
-// ============================================================
-// 🔄 Perfil (compatibilidad con RoleRouter y Login)
-// ============================================================
+
+//  Perfil (compatibilidad con RoleRouter y Login)
+
 
 
 

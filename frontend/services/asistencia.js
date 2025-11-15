@@ -1,11 +1,11 @@
 // src/services/asistencia.js
-// ============================================================
-// 🕒 Servicios de Asistencia (Axios + JWT via src/utils/api.js)
+
+//  Servicios de Asistencia (Axios + JWT via src/utils/api.js)
 // Endpoints esperados (backend Django):
 //   GET    /api/asistencia/fichadas/            -> listar
 //   POST   /api/asistencia/fichadas/marcar/     -> { tipo: "entrada" | "salida" }
 //   GET    /api/asistencia/asistencias/         -> resumen diario/mensual (opcional)
-// ============================================================
+
 
 import api from "../utils/api";
 

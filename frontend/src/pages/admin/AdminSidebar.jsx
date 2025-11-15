@@ -1,8 +1,8 @@
 // src/pages/admin/AdminSidebar.jsx
-// ======================================================
-// 🧭 Barra lateral del Panel Administrativo
+
+// Barra lateral del Panel Administrativo
 // Combina funcionalidad de navegación + estilo moderno
-// ======================================================
+
 
 const ITEMS = [
   { key: "empleados", label: "Empleados", endpoint: "empleados" },
@@ -18,10 +18,10 @@ export default function AdminSidebar({ current, onChange }) {
     <aside className="w-64 bg-gray-900 text-white h-screen sticky top-0 flex flex-col">
       {/* 🔧 Encabezado */}
       <div className="p-4 font-bold text-lg border-b border-gray-700">
-        ⚙️ Panel Administrativo
+         Panel Administrativo
       </div>
 
-      {/* 📋 Menú de navegación */}
+      {/*  Menú de navegación */}
       <nav className="flex-1 overflow-y-auto space-y-1 px-2 py-2">
         {ITEMS.map((it) => (
           <button

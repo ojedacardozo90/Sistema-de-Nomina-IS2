@@ -1,7 +1,7 @@
 # backend/nomina_cal/serializers.py
-# ============================================================
-# 🎯 Serializadores del módulo Nómina (TP IS2 - Ingeniería de Software II)
-# ============================================================
+#
+#  Serializadores del módulo Nómina (TP IS2 - Ingeniería de Software II)
+#
 
 from rest_framework import serializers
 from .models import Concepto, SalarioMinimo, Liquidacion, DetalleLiquidacion
@@ -12,9 +12,9 @@ from .models import Liquidacion, DetalleLiquidacion
 
 Usuario = get_user_model()
 
-# ============================================================
-# 🔐 Custom Token Serializer (para autenticación JWT extendida)
-# ============================================================
+#
+#  Custom Token Serializer (para autenticación JWT extendida)
+#
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
@@ -44,9 +44,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 
-# ============================================================
-# 🔹 SERIALIZER: Concepto Salarial
-# ============================================================
+#
+# # SERIALIZER: Concepto Salarial
+#
 class ConceptoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Concepto
@@ -77,9 +77,9 @@ class ConceptoSerializer(serializers.ModelSerializer):
         return data
 
 
-# ============================================================
-# 🔹 SERIALIZER: Salario Mínimo Legal Vigente
-# ============================================================
+#
+# # SERIALIZER: Salario Mínimo Legal Vigente
+#
 class SalarioMinimoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalarioMinimo
@@ -91,17 +91,17 @@ class SalarioMinimoSerializer(serializers.ModelSerializer):
         return value
 
 
-# ============================================================
-# 🔹 SERIALIZER: Detalle de Liquidación
-# ============================================================
-# ============================================================
-# 💰 LiquidacionSerializer — Serializador principal de nómina
-# ------------------------------------------------------------
+#
+# # SERIALIZER: Detalle de Liquidación
+#
+#
+#  LiquidacionSerializer — Serializador principal de nómina
+
 # Incluye:
 #   • Datos básicos del empleado (nombre, cédula, salario base)
 #   • Totales automáticos (ingresos, descuentos, neto a cobrar)
 #   • Detalles de liquidación anidados
-# ============================================================
+#
 
 
 
@@ -112,21 +112,21 @@ class DetalleLiquidacionSerializer(serializers.ModelSerializer):
 
 
 class LiquidacionSerializer(serializers.ModelSerializer):
-    # 🔹 Campos relacionados del empleado
+    # # Campos relacionados del empleado
     empleado_nombre = serializers.CharField(source="empleado.nombre", read_only=True)
     empleado_cedula = serializers.CharField(source="empleado.cedula", read_only=True)
     empleado_salario_base = serializers.ReadOnlyField(source="empleado.salario_base")
 
-    # 🔹 Campos calculados
+    # # Campos calculados
     total_descuentos = serializers.SerializerMethodField()
     total_neto = serializers.SerializerMethodField()
 
-    # 🔹 Detalles anidados
+    # # Detalles anidados
     detalles = DetalleLiquidacionSerializer(many=True, read_only=True)
 
-    # --------------------------------------------------------
-    # 📊 Métodos de cálculo
-    # --------------------------------------------------------
+    
+    #  Métodos de cálculo
+    
     def get_total_descuentos(self, obj):
         """Suma los descuentos asociados a la liquidación"""
         return sum([d.monto for d in obj.descuentos.all()]) if hasattr(obj, "descuentos") else 0
@@ -136,9 +136,9 @@ class LiquidacionSerializer(serializers.ModelSerializer):
         total_desc = self.get_total_descuentos(obj)
         return float(obj.total_ingresos or 0) - float(total_desc)
 
-    # --------------------------------------------------------
-    # ⚙️ Configuración del serializador
-    # --------------------------------------------------------
+    
+    #  Configuración del serializador
+    
     class Meta:
         model = Liquidacion
         fields = [
@@ -167,9 +167,9 @@ class LiquidacionSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    # ------------------------------------------------------------
-    # 🧩 Validaciones personalizadas
-    # ------------------------------------------------------------
+    
+    #  Validaciones personalizadas
+    
     def validate(self, data):
         mes = data.get("mes")
         anio = data.get("anio")
@@ -190,9 +190,9 @@ class LiquidacionSerializer(serializers.ModelSerializer):
                 )
         return data
 
-    # ------------------------------------------------------------
-    # 🆕 Representación extendida
-    # ------------------------------------------------------------
+    
+    # Representación extendida
+    
     def to_representation(self, instance):
         """
         Amplía la salida para que el frontend reciba
@@ -206,9 +206,9 @@ class LiquidacionSerializer(serializers.ModelSerializer):
         return rep
 
 
-# ============================================================
-# 🔹 SERIALIZER: Descuento
-# ============================================================
+#
+# # SERIALIZER: Descuento
+#
 from .models_descuento import Descuento
 
 

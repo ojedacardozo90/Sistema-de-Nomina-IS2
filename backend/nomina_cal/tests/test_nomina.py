@@ -1,8 +1,8 @@
 # backend/nomina_cal/tests/test_nomina.py
-# ============================================================
+#
 # Tests de Nómina (bonificación, IPS, neto y endpoint de reporte)
 # Ejecutar: python manage.py test nomina_cal
-# ============================================================
+#
 
 from decimal import Decimal
 from django.test import TestCase

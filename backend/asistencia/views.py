@@ -15,27 +15,20 @@ from usuarios.permissions import IsAdmin, IsGerenteRRHH, IsAsistenteRRHH
 from .models import Fichada, RegistroAsistencia
 from .serializers import FichadaSerializer, RegistroAsistenciaSerializer
 
-# ============================================================
-# 🔐 Permiso unificado para roles administrativos de RRHH
-# ============================================================
+# Permiso unificado para roles administrativos de RRHH
 class IsRRHH(BasePermission):
     """Permite acceso a roles RRHH: Admin, Gerente o Asistente."""
     def has_permission(self, request, view):
         rol = getattr(request.user, "rol", None)
         return rol in ["admin", "gerente_rrhh", "asistente_rrhh"]
-# ============================================================
-# 🔑 Clase base de permisos para ViewSets
-# ============================================================
+# Clase base de permisos para ViewSets
 class BasePerm(viewsets.ModelViewSet):
     """Controla permisos según tipo de operación."""
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
             return [IsRRHH()]
         return [IsAuthenticated()]
-
-# ============================================================
-# 🕒 ViewSet de Fichadas (Entradas/Salidas)
-# ============================================================
+# ViewSet de Fichadas (Entradas/Salidas)
 class FichadaViewSet(BasePerm):
     queryset = Fichada.objects.all().select_related("empleado")
     serializer_class = FichadaSerializer
@@ -66,10 +59,7 @@ class FichadaViewSet(BasePerm):
 
         reg.recalcular()
         return Response(FichadaSerializer(f).data, status=201)
-
-# ============================================================
-# 📅 ViewSet de RegistroAsistencia
-# ============================================================
+# ViewSet de RegistroAsistencia
 class RegistroAsistenciaViewSet(BasePerm):
     queryset = RegistroAsistencia.objects.all().select_related("empleado")
     serializer_class = RegistroAsistenciaSerializer
@@ -85,10 +75,7 @@ class RegistroAsistenciaViewSet(BasePerm):
         reg = get_object_or_404(RegistroAsistencia, empleado_id=emp_id, fecha=fecha)
         reg.recalcular()
         return Response(RegistroAsistenciaSerializer(reg).data)
-
-# ============================================================
-# 📆 Reporte mensual de asistencia (JSON)
-# ============================================================
+# Reporte mensual de asistencia (JSON)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated, IsRRHH])
 def reporte_mensual_asistencia(request):
@@ -130,10 +117,7 @@ def reporte_mensual_asistencia(request):
         "total_registros": total,
         "resumen": list(registros),
     }, status=200)
-
-# ============================================================
-# 📤 Exportar reporte mensual de asistencia a Excel
-# ============================================================
+#  Exportar reporte mensual de asistencia a Excel
 @api_view(["GET"])
 @permission_classes([IsAuthenticated, IsRRHH])
 def exportar_reporte_excel_asistencia(request):
@@ -186,9 +170,8 @@ def exportar_reporte_excel_asistencia(request):
     response["Content-Disposition"] = f'attachment; filename="reporte_asistencia_{mes}-{anio}.xlsx"'
     return response
 
-# ============================================================
-# 🧾 Exportar reporte mensual de asistencia a PDF
-# ============================================================
+# Exportar reporte mensual de asistencia a PDF
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated, IsRRHH])
 def exportar_reporte_pdf_asistencia(request):
@@ -232,10 +215,7 @@ def exportar_reporte_pdf_asistencia(request):
 
     buffer.seek(0)
     return HttpResponse(buffer, content_type="application/pdf")
-
-# ============================================================
-# 📊 Resumen visual HTML (Dashboard)
-# ============================================================
+# Resumen visual HTML (Dashboard)
 def resumen_visual_asistencia(request):
     """
     Vista HTML: /api/asistencia/asistencias/resumen-visual/?mes=10&anio=2025

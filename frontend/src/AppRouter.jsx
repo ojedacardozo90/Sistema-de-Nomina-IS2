@@ -1,5 +1,5 @@
 // frontend/src/AppRouter.jsx
-// ============================================================
+
 // 🚦 Rutas principales del Sistema de Nómina (React Router v6)
 // Incluye:
 // - Login
@@ -7,16 +7,16 @@
 // - Dashboard según rol
 // - Módulos: Empleados, Nóminas, Reportes, Retenciones
 // - Rutas privadas protegidas por token
-// ============================================================
+
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-// 🔹 Layout y utilidades
+// # Layout y utilidades
 import Layout from "./components/Layout";
 import { getToken } from "./utils/auth";
 
-// 🔹 Páginas
+// # Páginas
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
@@ -34,26 +34,26 @@ import Automatizacion from "./pages/Automatizacion";
 import CalculoNominaPage from "./pages/CalculoNominaPage";
 import CalcularTodasNominas from "./pages/CalcularTodasNominas";
 
-// ============================================================
-// 🔐 Componente de ruta privada
-// ============================================================
+
+//  Componente de ruta privada
+
 function PrivateRoute({ children }) {
   const token = getToken();
   return token ? children : <Navigate to="/login" />;
 }
 
-// ============================================================
-// 🚀 Definición de rutas
-// ============================================================
+
+//  Definición de rutas
+
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        {/* 🔹 Rutas públicas */}
+        {/* # Rutas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* 🔹 Rutas privadas dentro del Layout */}
+        {/* # Rutas privadas dentro del Layout */}
         <Route
           path="/"
           element={
@@ -82,7 +82,7 @@ export default function AppRouter() {
           <Route path="calcular-todas" element={<CalcularTodasNominas />} />
         </Route>
 
-        {/* 🔹 Cualquier ruta inválida redirige al login */}
+        {/* # Cualquier ruta inválida redirige al login */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

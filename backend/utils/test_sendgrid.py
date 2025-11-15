@@ -1,9 +1,9 @@
-# ============================================================
-# 🚀 test_sendgrid.py — Prueba independiente de SendGrid API
-# ------------------------------------------------------------
+#
+#  test_sendgrid.py — Prueba independiente de SendGrid API
+
 # Este script verifica que tu API Key y remitente verificado
 # funcionen correctamente, sin pasar por SMTP.
-# ============================================================
+#
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -27,18 +27,18 @@ TO_EMAIL = "ojeda.cardozo90@gmail.com"
 message = Mail(
     from_email=FROM_EMAIL,
     to_emails=TO_EMAIL,
-    subject="✅ Prueba directa vía API HTTP - Sistema de Nómina IS2",
+    subject=" Prueba directa vía API HTTP - Sistema de Nómina IS2",
     plain_text_content="Hola Raúl, este mensaje fue enviado correctamente usando la API HTTP de SendGrid.",
 )
 
-print("🔹 Usando API Key:", API_KEY[:10] + "..." if API_KEY else "No encontrada")
+print("# Usando API Key:", API_KEY[:10] + "..." if API_KEY else "No encontrada")
 
 try:
     sg = SendGridAPIClient(API_KEY)
     response = sg.send(message)
-    print("✅ Enviado correctamente")
+    print(" Enviado correctamente")
     print("🔸 Código de respuesta:", response.status_code)
     print("🔸 Detalles:", response.body)
     print("🔸 Headers:", response.headers)
 except Exception as e:
-    print("❌ Error al enviar:", e)
+    print(" Error al enviar:", e)

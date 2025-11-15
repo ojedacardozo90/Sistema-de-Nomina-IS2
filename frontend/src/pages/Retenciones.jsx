@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import api from "../utils/api"; // 👈 corregido
+import api from "../utils/api"; //  corregido
 import Layout from "../components/Layout";
-// ============================================================
-// 💰 Retenciones y Anticipos (Sprint 2 - IS2 Nómina)
+
+//  Retenciones y Anticipos (Sprint 2 - IS2 Nómina)
 // - Listar retenciones activas por empleado
 // - Crear nuevas retenciones
 // - Marcar retenciones como inactivas (soft delete)
-// ============================================================
+
 
 export default function Retenciones() {
   const [retenciones, setRetenciones] = useState([]);
@@ -19,7 +19,7 @@ export default function Retenciones() {
   const [empleados, setEmpleados] = useState([]);
   const [mensaje, setMensaje] = useState("");
 
-  // 🔹 Cargar datos iniciales
+  // # Cargar datos iniciales
   useEffect(() => {
     cargarRetenciones();
     cargarEmpleados();
@@ -27,53 +27,53 @@ export default function Retenciones() {
 
   const cargarRetenciones = async () => {
     try {
-      const res = await api.get("retenciones/"); // 👈 quitado /api/
+      const res = await api.get("retenciones/"); //  quitado /api/
       setRetenciones(res.data);
     } catch (err) {
-      console.error("❌ Error al cargar retenciones", err);
+      console.error(" Error al cargar retenciones", err);
     }
   };
 
   const cargarEmpleados = async () => {
     try {
-      const res = await api.get("empleados/"); // 👈 quitado /api/
+      const res = await api.get("empleados/"); //  quitado /api/
       setEmpleados(res.data);
     } catch (err) {
-      console.error("❌ Error al cargar empleados", err);
+      console.error(" Error al cargar empleados", err);
     }
   };
 
-  // 🔹 Guardar retención
+  // # Guardar retención
   const guardarRetencion = async (e) => {
     e.preventDefault();
     try {
-      await api.post("retenciones/", form); // 👈 quitado /api/
-      setMensaje("✅ Retención registrada correctamente");
+      await api.post("retenciones/", form); //  quitado /api/
+      setMensaje(" Retención registrada correctamente");
       setForm({ empleado: "", descripcion: "", monto: "", vigente: true });
       cargarRetenciones();
     } catch (err) {
-      console.error("❌ Error al guardar retención", err);
-      setMensaje("❌ Error al guardar retención");
+      console.error(" Error al guardar retención", err);
+      setMensaje(" Error al guardar retención");
     }
   };
 
-  // 🔹 Desactivar retención (soft delete)
+  // # Desactivar retención (soft delete)
   const desactivarRetencion = async (id) => {
     if (!window.confirm("¿Seguro que deseas desactivar esta retención?")) return;
     try {
-      await api.patch(`retenciones/${id}/`, { vigente: false }); // 👈 quitado /api/
-      setMensaje("⚠️ Retención desactivada");
+      await api.patch(`retenciones/${id}/`, { vigente: false }); //  quitado /api/
+      setMensaje(" Retención desactivada");
       cargarRetenciones();
     } catch (err) {
-      console.error("❌ Error al desactivar retención", err);
-      setMensaje("❌ Error al desactivar retención");
+      console.error(" Error al desactivar retención", err);
+      setMensaje(" Error al desactivar retención");
     }
   };
 
   return (
     <Layout>
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4">💰 Gestión de Retenciones</h1>
+        <h1 className="text-2xl font-bold mb-4"> Gestión de Retenciones</h1>
 
         {/* Formulario */}
         <form
@@ -146,7 +146,7 @@ export default function Retenciones() {
                   -{r.monto} Gs
                 </td>
                 <td className="border px-4 py-2">
-                  {r.vigente ? "✅ Activa" : "❌ Inactiva"}
+                  {r.vigente ? " Activa" : " Inactiva"}
                 </td>
                 <td className="border px-4 py-2">
                   {r.vigente && (
@@ -154,7 +154,7 @@ export default function Retenciones() {
                       onClick={() => desactivarRetencion(r.id)}
                       className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-400"
                     >
-                      ⚠️ Desactivar
+                       Desactivar
                     </button>
                   )}
                 </td>

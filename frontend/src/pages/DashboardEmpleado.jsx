@@ -1,9 +1,9 @@
-// ============================================================
-// 👤 Dashboard Empleado — NóminaPro (Sprint 6–7)
-// ------------------------------------------------------------
+
+//  Dashboard Empleado — NóminaPro (Sprint 6–7)
+
 // Backend: GET /nomina_cal/dashboard/empleado/
 // Respuesta esperada: { empleado, ultimas_liquidaciones: [{mes, anio, neto_cobrar}] }
-// ============================================================
+
 import HeaderDashboard from "../components/HeaderDashboard";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -67,14 +67,14 @@ export default function DashboardEmpleado() {
   if (error) return <div className="text-center text-red-600 mt-10 font-semibold">{error}</div>;
   if (!info) return <div className="text-center text-gray-600 mt-10">No se encontró información del empleado.</div>;
 
-  // ✅ Estructura con encabezado (HeaderDashboard)
+  //  Estructura con encabezado (HeaderDashboard)
   return (
     <div className="p-6">
       <HeaderDashboard titulo="Panel Personal del Empleado" />
 
       {/* Contenido principal */}
       <section className="mt-4 space-y-6">
-        <h1 className="text-2xl font-bold">👤 {info.empleado}</h1>
+        <h1 className="text-2xl font-bold"> {info.empleado}</h1>
 
         {/* KPIs */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

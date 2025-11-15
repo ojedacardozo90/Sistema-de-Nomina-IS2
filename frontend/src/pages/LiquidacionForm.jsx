@@ -15,9 +15,9 @@ export default function LiquidacionForm() {
   const [loading, setLoading] = useState(true);
   const [detalles, setDetalles] = useState([]);
 
-  // ============================
+  // ====
   // Cargar empleados + liquidación existente
-  // ============================
+  // ====
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,16 +45,16 @@ export default function LiquidacionForm() {
 
   if (loading) return <p>Cargando formulario...</p>;
 
-  // ============================
+  // ====
   // Manejo de cambios
-  // ============================
+  // ====
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ============================
+  // ====
   // Guardar liquidación
-  // ============================
+  // ====
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -72,9 +72,9 @@ export default function LiquidacionForm() {
     }
   };
 
-  // ============================
+  // ====
   // Calcular liquidación (backend)
-  // ============================
+  // ====
   const calcular = async () => {
     try {
       if (!id) {

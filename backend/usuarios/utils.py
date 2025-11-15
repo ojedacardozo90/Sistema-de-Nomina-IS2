@@ -1,8 +1,8 @@
-# ============================================================
-# 📧 Funciones auxiliares para envío de correos
+#
+# Funciones auxiliares para envío de correos
 # - Reset password
 # - Notificaciones generales
-# ============================================================
+#
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -25,7 +25,7 @@ def enviar_email_reset(user, token):
         "year": now().year,
     }
 
-    subject = "🔐 Restablecer tu contraseña - Sistema de Nómina IS2"
+    subject = " Restablecer tu contraseña - Sistema de Nómina IS2"
     text_message = render_to_string("emails/reset_password.txt", context)
     html_message = render_to_string("emails/reset_password.html", context)
 
@@ -39,7 +39,7 @@ def enviar_email_reset(user, token):
         email.attach_alternative(html_message, "text/html")
         email.send()
     except Exception as e:
-        logger.error(f"❌ Error al enviar correo de reset a {user.email}: {e}")
+        logger.error(f" Error al enviar correo de reset a {user.email}: {e}")
 
 
 def enviar_email_generico(user, subject, template_txt, template_html, context_extra=None):
@@ -67,4 +67,4 @@ def enviar_email_generico(user, subject, template_txt, template_html, context_ex
         email.attach_alternative(html_message, "text/html")
         email.send()
     except Exception as e:
-        logger.error(f"❌ Error al enviar correo a {user.email}: {e}")
+        logger.error(f" Error al enviar correo a {user.email}: {e}")

@@ -1,14 +1,11 @@
-# ============================================================
-# 🎯 Serializadores de Empleados e Hijos (TP IS2 - Nómina)
-# ============================================================
+
+# Serializadores de Empleados e Hijos (TP IS2 - Nómina)
+
 
 from rest_framework import serializers
 from .models import Empleado, Hijo
+# SERIALIZER: Hijo
 
-
-# ============================================================
-# 🔹 SERIALIZER: Hijo
-# ============================================================
 class HijoSerializer(serializers.ModelSerializer):
     edad = serializers.SerializerMethodField()
     es_menor = serializers.SerializerMethodField()
@@ -35,9 +32,9 @@ class HijoSerializer(serializers.ModelSerializer):
         return obj.es_menor()
 
 
-# ============================================================
-# 🔹 SERIALIZER: Empleado
-# ============================================================
+
+# SERIALIZER: Empleado
+
 class EmpleadoSerializer(serializers.ModelSerializer):
     hijos = HijoSerializer(many=True, read_only=True)
     antiguedad = serializers.SerializerMethodField()
@@ -64,7 +61,7 @@ class EmpleadoSerializer(serializers.ModelSerializer):
             "hijos",
         ]
         read_only_fields = ["antiguedad", "hijos"]
-        depth = 1  # 🔹 Muestra los detalles del usuario vinculado
+        depth = 1  # # Muestra los detalles del usuario vinculado
 
     def get_antiguedad(self, obj):
         return obj.antiguedad

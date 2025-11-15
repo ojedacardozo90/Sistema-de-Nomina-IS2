@@ -71,5 +71,5 @@ def calcular_liquidacion(liquidacion):
     liquidacion.updated_at = datetime.now()
     liquidacion.save()
     liquidacion.refresh_from_db()
-    logger.info(f"✅ Liquidación recalculada: {empleado} | Neto={liquidacion.neto_cobrar}")
+    logger.info(f" Liquidación recalculada: {empleado} | Neto={liquidacion.neto_cobrar}")
     return liquidacion

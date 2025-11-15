@@ -1,10 +1,10 @@
-// ============================================================
-// 🕒 FichadasList — Gestión idéntica al admin (listar/filtrar/eliminar/marcar)
+
+//  FichadasList — Gestión idéntica al admin (listar/filtrar/eliminar/marcar)
 // Endpoints esperados:
 //   • GET    /asistencia/fichadas/
 //   • POST   /asistencia/fichadas/marcar/  (body: { tipo: "entrada"|"salida" })
 //   • DELETE /asistencia/fichadas/:id/
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -31,9 +31,9 @@ export default function FichadasList() {
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // =========================
+  // =
   // Cargar fichadas
-  // =========================
+  // =
   const load = async () => {
     setLoading(true);
     try {
@@ -41,7 +41,7 @@ export default function FichadasList() {
       const data = Array.isArray(res.data) ? res.data : [];
       setRows(data);
     } catch (err) {
-      console.error("❌ Error cargando fichadas:", err);
+      console.error(" Error cargando fichadas:", err);
       setRows([]); // evitar crash
     } finally {
       setLoading(false);
@@ -52,36 +52,36 @@ export default function FichadasList() {
     load();
   }, []);
 
-  // =========================
+  // =
   // Marcar entrada / salida
-  // =========================
+  // =
   const marcar = async (tipo) => {
     try {
       await api.post("/asistencia/fichadas/marcar/", { tipo });
       await load();
     } catch (err) {
-      console.error("❌ Error marcando fichada:", err);
+      console.error(" Error marcando fichada:", err);
       alert("No se pudo marcar la fichada.");
     }
   };
 
-  // =========================
+  // =
   // Eliminar fichada
-  // =========================
+  // =
   const onDelete = async (id) => {
     if (!window.confirm("¿Eliminar esta fichada?")) return;
     try {
       await api.delete(`/asistencia/fichadas/${id}/`);
       await load();
     } catch (err) {
-      console.error("❌ Error eliminando fichada:", err);
+      console.error(" Error eliminando fichada:", err);
       alert("No se pudo eliminar la fichada.");
     }
   };
 
-  // =========================
+  // =
   // Filtro local (como admin)
-  // =========================
+  // =
   const filtered = rows.filter((f) => {
     const empleadoTxt = textoEmpleado(f);
     return (
@@ -94,14 +94,14 @@ export default function FichadasList() {
     );
   });
 
-  // =========================
+  // =
   // Render
-  // =========================
+  // =
   return (
     <Layout>
       <div className="p-6 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <h1 className="text-2xl font-bold">🕒 Fichadas</h1>
+          <h1 className="text-2xl font-bold"> Fichadas</h1>
 
           <div className="flex gap-2">
             <button

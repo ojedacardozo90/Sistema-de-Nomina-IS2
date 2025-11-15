@@ -1,7 +1,7 @@
-# ============================================================
-# 🧮 Servicio de cálculo de nómina (bonificación, IPS, descuentos)
+#
+# Servicio de cálculo de nómina (bonificación, IPS, descuentos)
 # Mantiene la lógica fuera de views/admin y evita importaciones circulares
-# ============================================================
+#
 
 from datetime import date
 from decimal import Decimal, ROUND_HALF_UP
@@ -16,9 +16,9 @@ from empleados.models import Empleado
 from nomina_cal.models_descuento import Descuento
 
 
-# ============================================================
-# 🔹 Funciones auxiliares
-# ============================================================
+#
+# # Funciones auxiliares
+#
 
 def _edad_menor_18(fnac: date, ref: date) -> bool:
     """Calcula si la persona tiene menos de 18 años al momento de referencia."""
@@ -32,9 +32,9 @@ def _salario_minimo_vigente(fecha_ref: date) -> Decimal:
     return sm.monto if sm else Decimal("0.00")
 
 
-# ============================================================
+#
 # 🔸 Cálculo principal del período
-# ============================================================
+#
 @transaction.atomic
 def calcular_liquidaciones_periodo(periodo) -> int:
     """
@@ -49,9 +49,9 @@ def calcular_liquidaciones_periodo(periodo) -> int:
     ref = date(periodo.anio, periodo.mes, 1)
     smm = _salario_minimo_vigente(ref)
 
-    # ------------------------------------------------------------
+    
     # Conceptos base del sistema
-    # ------------------------------------------------------------
+    
     c_sueldo, _ = Concepto.objects.get_or_create(
         descripcion="Sueldo Base",
         defaults={"es_debito": False, "afecta_ips": True, "para_aguinaldo": True, "es_recurrente": True},
@@ -65,9 +65,9 @@ def calcular_liquidaciones_periodo(periodo) -> int:
         defaults={"es_debito": True, "afecta_ips": True, "para_aguinaldo": False, "es_recurrente": True},
     )
 
-    # ------------------------------------------------------------
+    
     # Iterar empleados activos
-    # ------------------------------------------------------------
+    
     count = 0
     for emp in Empleado.objects.filter(activo=True):
         liq, _ = Liquidacion.objects.get_or_create(empleado=emp, mes=periodo.mes, anio=periodo.anio)
@@ -82,14 +82,14 @@ def calcular_liquidaciones_periodo(periodo) -> int:
         ingresos = Decimal(emp.salario_base or 0)
         descuentos = Decimal("0.00")
 
-        # --------------------------------------------------------
+        
         # Sueldo base
-        # --------------------------------------------------------
+        
         DetalleLiquidacion.objects.create(liquidacion=liq, concepto=c_sueldo, monto=emp.salario_base or 0)
 
-        # --------------------------------------------------------
+        
         # Bonificación familiar (tope 3 SMM; máx 4 hijos)
-        # --------------------------------------------------------
+        
         bonif_total = Decimal("0.00")
 
         if smm > 0 and (emp.salario_base or 0) <= smm * Decimal("3"):
@@ -127,17 +127,17 @@ def calcular_liquidaciones_periodo(periodo) -> int:
                 DetalleLiquidacion.objects.create(liquidacion=liq, concepto=c_bonif, monto=bonif_total)
                 ingresos += bonif_total
 
-        # --------------------------------------------------------
+        
         # IPS (9% del salario base)
-        # --------------------------------------------------------
+        
         desc_ips = ((emp.salario_base or 0) * Decimal("0.09")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
         if desc_ips > 0:
             DetalleLiquidacion.objects.create(liquidacion=liq, concepto=c_ips, monto=desc_ips)
             descuentos += desc_ips
 
-        # --------------------------------------------------------
+        
         # Descuentos adicionales (vigentes)
-        # --------------------------------------------------------
+        
         for d in Descuento.objects.filter(empleado=emp, activo=True):
             if d.es_vigente(periodo.mes, periodo.anio):
                 concepto_extra, _ = Concepto.objects.get_or_create(
@@ -147,9 +147,9 @@ def calcular_liquidaciones_periodo(periodo) -> int:
                 DetalleLiquidacion.objects.create(liquidacion=liq, concepto=concepto_extra, monto=d.monto)
                 descuentos += d.monto
 
-        # --------------------------------------------------------
+        
         # Totales finales
-        # --------------------------------------------------------
+        
         liq.total_ingresos = ingresos
         liq.total_descuentos = descuentos
         liq.neto_cobrar = ingresos - descuentos

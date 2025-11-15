@@ -1,12 +1,12 @@
-# ============================================================
-# 🔐 Permisos personalizados según rol del usuario (Sistema Nómina IS2)
-# ============================================================
+#
+#  Permisos personalizados según rol del usuario (Sistema Nómina IS2)
+#
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-# ============================================================
-# 🔹 Función auxiliar
-# ============================================================
+#
+# # Función auxiliar
+#
 def get_user_role(user):
     """Obtiene el rol de un usuario, retornando 'admin' si es superusuario."""
     if not user or not user.is_authenticated:
@@ -16,9 +16,9 @@ def get_user_role(user):
     return getattr(user, "rol", None)
 
 
-# ============================================================
-# 🔹 Permisos individuales
-# ============================================================
+#
+# # Permisos individuales
+#
 class IsAdmin(BasePermission):
     """Permite acceso solo a usuarios con rol ADMIN."""
     def has_permission(self, request, view):
@@ -49,9 +49,9 @@ class ReadOnly(BasePermission):
         return request.method in SAFE_METHODS
 
 
-# ============================================================
-# 🔹 Permisos combinados (OR lógico)
-# ============================================================
+#
+# # Permisos combinados (OR lógico)
+#
 class IsAdminOrAsistente(BasePermission):
     """Permite acceso a ADMIN o ASISTENTE RRHH."""
     def has_permission(self, request, view):
@@ -73,9 +73,9 @@ class IsGerenteOrAsistente(BasePermission):
         return rol in ["gerente_rrhh", "asistente_rrhh"]
 
 
-# ============================================================
-# 🔹 Permiso combinado con lectura libre
-# ============================================================
+#
+# # Permiso combinado con lectura libre
+#
 class IsAdminOrReadOnly(BasePermission):
     """
     Permite acceso completo solo a ADMIN.

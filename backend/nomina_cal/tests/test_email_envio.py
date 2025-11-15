@@ -9,16 +9,16 @@ User = get_user_model()
 
 class EnvioReciboTest(APITestCase):
     def setUp(self):
-        # 🔹 Usuario autenticado (simula RRHH)
+        # # Usuario autenticado (simula RRHH)
         user = User.objects.create_user(username="rrhh", password="12345", is_staff=True)
         self.client.force_authenticate(user=user)
 
-        # 🔹 Crear empleado y liquidación simulada
+        # # Crear empleado y liquidación simulada
         emp = Empleado.objects.create(
             nombre="Ana",
             apellido="Rojas",
             cedula="123",
-            email="ana@fap.mil.py",
+            email="ana@.mil.py",
             fecha_ingreso="2020-01-01"
         )
         self.liq = Liquidacion.objects.create(

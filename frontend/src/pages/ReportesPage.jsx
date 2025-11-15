@@ -27,7 +27,7 @@ export default function ReportesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">📊 Reportes de Liquidaciones</h1>
+      <h1 className="text-2xl font-bold mb-4"> Reportes de Liquidaciones</h1>
 
       {/* Filtros */}
       <div className="bg-white p-4 rounded shadow space-y-2 mb-4">

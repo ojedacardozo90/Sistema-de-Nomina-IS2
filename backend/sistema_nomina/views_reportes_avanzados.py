@@ -1,6 +1,6 @@
-# ============================================================
-# 📊 Reportes Avanzados: filtros + exportaciones (Excel/PDF)
-# ============================================================
+#
+#  Reportes Avanzados: filtros + exportaciones (Excel/PDF)
+#
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser

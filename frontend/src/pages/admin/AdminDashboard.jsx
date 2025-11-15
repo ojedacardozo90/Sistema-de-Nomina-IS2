@@ -51,10 +51,10 @@ export default function AdminDashboard() {
     <Layout>
       <div className="p-6 space-y-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">
-          📊 Panel de Control — Administración
+           Panel de Control — Administración
         </h1>
 
-        {/* ===================== TARJETAS KPI ===================== */}
+        {/* === TARJETAS KPI === */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
             icon={<FileText className="text-blue-600" size={24} />}
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
           />
         </div>
 
-        {/* ===================== GRÁFICO ===================== */}
+        {/* === GRÁFICO === */}
         <div className="bg-white shadow rounded-lg p-5">
           <h2 className="text-lg font-semibold mb-3 text-gray-700">
             Evolución Mensual de la Nómina
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        {/* ===================== LOGS RECIENTES ===================== */}
+        {/* === LOGS RECIENTES === */}
         <div className="bg-white shadow rounded-lg p-5">
           <h2 className="text-lg font-semibold mb-3 text-gray-700">
             🕓 Actividad Reciente (Auditoría)
@@ -124,9 +124,9 @@ export default function AdminDashboard() {
   );
 }
 
-// ============================================================
-// 🔹 Componente KPI reutilizable
-// ============================================================
+
+// # Componente KPI reutilizable
+
 function KpiCard({ titulo, valor, icon }) {
   return (
     <div className="bg-white shadow p-4 rounded flex items-center justify-between">

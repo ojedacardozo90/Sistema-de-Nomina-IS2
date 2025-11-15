@@ -1,6 +1,6 @@
-// ======================================================
-// 🔐 Restablecer Contraseña — /usuarios/password-reset-confirm/
-// ======================================================
+
+//  Restablecer Contraseña — /usuarios/password-reset-confirm/
+
 
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -19,16 +19,16 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmar) {
-      setMensaje("⚠️ Las contraseñas no coinciden.");
+      setMensaje(" Las contraseñas no coinciden.");
       return;
     }
     setProcesando(true);
     try {
       await resetPassword(uid, token, password);
-      setMensaje("✅ Contraseña restablecida correctamente. Ya podés iniciar sesión.");
+      setMensaje(" Contraseña restablecida correctamente. Ya podés iniciar sesión.");
     } catch (error) {
       console.error(error);
-      setMensaje("❌ Error al restablecer la contraseña. Enlace inválido o expirado.");
+      setMensaje(" Error al restablecer la contraseña. Enlace inválido o expirado.");
     } finally {
       setProcesando(false);
     }

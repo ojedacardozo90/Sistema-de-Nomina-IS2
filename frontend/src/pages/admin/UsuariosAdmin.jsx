@@ -1,16 +1,16 @@
 // frontend/src/pages/admin/UsuariosAdmin.jsx
-// ============================================================
-// 👥 UsuariosAdmin — Administración de cuentas de usuario
-// ------------------------------------------------------------
+
+//  UsuariosAdmin — Administración de cuentas de usuario
+
 // Replica la app `auth.User` del Django Admin
 // Funcionalidades:
 //   • Listado, búsqueda y ordenamiento
 //   • Alta, edición y eliminación
 //   • Activación / desactivación masiva
 //   • Asignación de roles (ADMIN / GERENTE_RRHH / ASISTENTE_RRHH / EMPLEADO)
-// ------------------------------------------------------------
+
 // Endpoint backend: /api/usuarios/usuarios/
-// ============================================================
+
 
 import { useMemo, useState } from "react";
 import AdminLayout from "./AdminLayout";
@@ -65,9 +65,9 @@ function UsuariosAdminPage() {
   const [selected, setSelected] = useState([]);
   const editing = !!values?.id;
 
-  // ------------------------------------------------------------
-  // 🧩 Columnas visibles en la tabla
-  // ------------------------------------------------------------
+  
+  //  Columnas visibles en la tabla
+  
   const columns = useMemo(
     () => [
       { field: "username", label: "Usuario", sortable: true },
@@ -81,7 +81,7 @@ function UsuariosAdminPage() {
       {
         field: "is_active",
         label: "Activo",
-        render: (v) => (v ? "✅" : "❌"),
+        render: (v) => (v ? "" : ""),
       },
       {
         field: "last_login",
@@ -105,9 +105,9 @@ function UsuariosAdminPage() {
     [openHistorial]
   );
 
-  // ------------------------------------------------------------
-  // 🧾 Campos del formulario modal
-  // ------------------------------------------------------------
+  
+  //  Campos del formulario modal
+  
   const fields = [
     { name: "username", label: "Usuario" },
     { name: "email", label: "Correo electrónico" },
@@ -126,9 +126,9 @@ function UsuariosAdminPage() {
     { name: "password", label: "Contraseña (solo al crear)", type: "password" },
   ];
 
-  // ------------------------------------------------------------
-  // 🔍 Filtros disponibles
-  // ------------------------------------------------------------
+  
+  // Filtros disponibles
+  
   const filterItems = [
     {
       name: "rol",
@@ -144,9 +144,9 @@ function UsuariosAdminPage() {
     },
   ];
 
-  // ------------------------------------------------------------
-  // ⚙️ Acciones principales
-  // ------------------------------------------------------------
+  
+  //  Acciones principales
+  
   const onNew = () => {
     setValues({ is_active: true });
     setOpen(true);
@@ -191,9 +191,9 @@ function UsuariosAdminPage() {
     },
   ];
 
-  // ------------------------------------------------------------
-  // 🎨 Render principal
-  // ------------------------------------------------------------
+  
+  //  Render principal
+  
   return (
     <AdminLayout
       title="Usuarios"

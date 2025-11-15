@@ -10,4 +10,4 @@ class EmpleadoTest(TestCase):
         data = {"nombre": "Carlos", "apellido": "Benítez", "ci": "998811", "cargo": "Técnico", "salario_base": 3500000}
         response = self.client.post("/api/empleados/", data, format="json")
         self.assertEqual(response.status_code, 201)
-        print("✅ CRUD Empleado OK — Registro creado correctamente")
+        print(" CRUD Empleado OK — Registro creado correctamente")

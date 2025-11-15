@@ -1,11 +1,11 @@
-// ============================================================
-// 🧾 Dashboard Asistente RRHH — NóminaPro (Sprint 6–7)
-// ------------------------------------------------------------
+
+//  Dashboard Asistente RRHH — NóminaPro (Sprint 6–7)
+
 // Backend actual devuelve:
 //  • total_nominas, monto_total, promedio_nomina
 //  • ultimas_nominas: [{id, empleado__nombre, mes, anio, neto_cobrar}, ...]
 // Endpoint: GET /nomina_cal/dashboard/asistente/
-// ============================================================
+
 import HeaderDashboard from "../components/HeaderDashboard";
 
 import { useEffect, useState } from "react";
@@ -79,9 +79,9 @@ export default function DashboardAsistente() {
       </div>
     );
 
-  // ============================================================
-  // ✅ Render con encabezado principal
-  // ============================================================
+  
+  //  Render con encabezado principal
+  
   return (
     <div className="p-6">
       <HeaderDashboard titulo="Dashboard Asistente RRHH" />

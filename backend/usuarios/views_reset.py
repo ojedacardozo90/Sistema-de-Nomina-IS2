@@ -1,6 +1,6 @@
-# ============================================================
-# 🔐 Reset de Contraseña con Token (TP IS2 - Nómina)
-# ============================================================
+#
+#  Reset de Contraseña con Token (TP IS2 - Nómina)
+#
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -13,9 +13,9 @@ from .emails import enviar_reset_password_email
 
 Usuario = get_user_model()
 
-# ============================================================
-# 📩 1) Solicitud de reset (genera token y envía email)
-# ============================================================
+#
+#  1) Solicitud de reset (genera token y envía email)
+#
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def reset_password_request(request):
@@ -37,9 +37,9 @@ def reset_password_request(request):
     return Response({"detail": "Se envió un correo con instrucciones de recuperación."}, status=status.HTTP_200_OK)
 
 
-# ============================================================
-# 🔑 2) Confirmación de reset (valida token y cambia password)
-# ============================================================
+#
+#  2) Confirmación de reset (valida token y cambia password)
+#
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def reset_password_confirm(request, token):

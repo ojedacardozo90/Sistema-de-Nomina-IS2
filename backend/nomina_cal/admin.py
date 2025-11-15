@@ -1,7 +1,7 @@
-# ============================================================
-# 🧭 ADMINISTRACIÓN DEL MÓDULO NÓMINA (TP IS2 – Ingeniería de Software II)
+
+# ADMINISTRACIÓN DEL MÓDULO NÓMINA (TP IS2 – Ingeniería de Software II)
 # Cumple Sprint 2–5: Gestión, cálculo IPS, bonificaciones, reportes y autocompletado dinámico
-# ============================================================
+
 
 from django.contrib import admin, messages
 from django.utils.html import format_html
@@ -20,9 +20,9 @@ from .models_descuento import Descuento
 
 #from .utils import calcular_liquidacion
 
-# ============================================================
-# 🔹 ADMIN: CONCEPTO SALARIAL
-# ============================================================
+
+# ADMIN: CONCEPTO SALARIAL
+#
 @admin.register(Concepto)
 class ConceptoAdmin(admin.ModelAdmin):
     list_display = (
@@ -39,9 +39,9 @@ class ConceptoAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
 
-# ============================================================
-# 🔹 ADMIN: SALARIO MÍNIMO LEGAL
-# ============================================================
+#
+# # ADMIN: SALARIO MÍNIMO LEGAL
+#
 @admin.register(SalarioMinimo)
 class SalarioMinimoAdmin(admin.ModelAdmin):
     list_display = ("monto", "vigente_desde", "vigente")
@@ -50,9 +50,9 @@ class SalarioMinimoAdmin(admin.ModelAdmin):
     search_fields = ("vigente_desde",)
 
 
-# ============================================================
-# 🔹 ADMIN: DESCUENTOS
-# ============================================================
+#
+# # ADMIN: DESCUENTOS
+#
 @admin.register(Descuento)
 class DescuentoAdmin(admin.ModelAdmin):
     list_display = (
@@ -71,9 +71,9 @@ class DescuentoAdmin(admin.ModelAdmin):
     date_hierarchy = "fecha_inicio"
 
 
-# ============================================================
-# 🔹 ADMIN: DETALLE DE LIQUIDACIÓN
-# ============================================================
+#
+# # ADMIN: DETALLE DE LIQUIDACIÓN
+#
 @admin.register(DetalleLiquidacion)
 class DetalleLiquidacionAdmin(admin.ModelAdmin):
     list_display = ("liquidacion", "concepto", "monto", "created_at")
@@ -83,24 +83,24 @@ class DetalleLiquidacionAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
 
 
-# ============================================================
-# 🔹 INLINE: Detalles dentro de Liquidación
-# ============================================================
+#
+# # INLINE: Detalles dentro de Liquidación
+#
 class DetalleInline(admin.TabularInline):
     model = DetalleLiquidacion
     extra = 0
     readonly_fields = ("concepto", "monto", "created_at", "updated_at")
 
 
-# ============================================================
-# 🔹 FILTRO PERSONALIZADO: IPS aplicado
-# ============================================================
+#
+# # FILTRO PERSONALIZADO: IPS aplicado
+#
 class IPSFilter(SimpleListFilter):
     title = "Con IPS aplicado"
     parameter_name = "con_ips"
 
     def lookups(self, request, model_admin):
-        return (("si", "✅ Con IPS"), ("no", "❌ Sin IPS"))
+        return (("si", " Con IPS"), ("no", " Sin IPS"))
 
     def queryset(self, request, queryset):
         if self.value() == "si":
@@ -110,9 +110,9 @@ class IPSFilter(SimpleListFilter):
         return queryset
 
 
-# ============================================================
-# 🔹 ADMIN: LIQUIDACIÓN
-# ============================================================
+#
+# # ADMIN: LIQUIDACIÓN
+#
 @admin.register(Liquidacion)
 class LiquidacionAdmin(admin.ModelAdmin):
     list_display = (
@@ -127,8 +127,8 @@ class LiquidacionAdmin(admin.ModelAdmin):
         "estado_bonificacion",
         "resumen_mes",
         "cerrada",
-        "enviado_email",  # 👈 nuevo campo
-        "fecha_envio",    # 👈 nuevo campo
+        "enviado_email",  #  nuevo campo
+        "fecha_envio",    #  nuevo campo
         
     )
     list_filter = ("anio", "mes", "cerrada", IPSFilter)
@@ -151,10 +151,10 @@ class LiquidacionAdmin(admin.ModelAdmin):
     ordering = ("-anio", "-mes")
     
 
-        # ============================================================
-    # 📧 ENVIAR RECIBOS POR CORREO (PDF)
-    # ============================================================
-    @admin.action(description="📤 Enviar recibos seleccionados por correo")
+    #
+    # ENVIAR RECIBOS POR CORREO (PDF)
+    #
+    @admin.action(description=" Enviar recibos seleccionados por correo")
     def enviar_recibos_email(self, request, queryset):
         """Envía los recibos PDF por correo a los empleados seleccionados."""
         enviados = 0
@@ -175,29 +175,29 @@ class LiquidacionAdmin(admin.ModelAdmin):
                     enviados += 1
             except Exception as e:
                 errores += 1
-                self.message_user(request, f"⚠️ Error al enviar a {liq}: {e}", level=messages.ERROR)
+                self.message_user(request, f" Error al enviar a {liq}: {e}", level=messages.ERROR)
 
-        msg = f"✅ {enviados} recibos enviados correctamente."
+        msg = f" {enviados} recibos enviados correctamente."
         if sin_correo:
-            msg += f" ⚠️ {sin_correo} empleados sin correo."
+            msg += f"  {sin_correo} empleados sin correo."
         if errores:
-            msg += f" ❌ {errores} errores de envío."
+            msg += f"  {errores} errores de envío."
         self.message_user(request, msg, level=messages.SUCCESS)
 
 
 
-    # ============================================================
-    # 🧩 NUEVO MÉTODO PARA AUTOCOMPLETAR SUELDO BASE
-    # ============================================================
+    #
+    #  NUEVO MÉTODO PARA AUTOCOMPLETAR SUELDO BASE
+    #
     def save_model(self, request, obj, form, change):
         if not change or obj.sueldo_base == 0:
             obj.sueldo_base = obj.empleado.salario_base or 0
         super().save_model(request, obj, form, change)
 
-    # ============================================================
-    # ⚙️ ACCIONES PERSONALIZADAS
-    # ============================================================
-    @admin.action(description="🧮 Calcular ahora")
+    #
+    #  ACCIONES PERSONALIZADAS
+    #
+    @admin.action(description="Calcular ahora")
     def calcular_ahora(self, request, queryset):
         contador = 0
         for liq in queryset:
@@ -205,24 +205,24 @@ class LiquidacionAdmin(admin.ModelAdmin):
                 calcular_liquidacion(liq)
                 contador += 1
             except Exception as e:
-                self.message_user(request, f"⚠️ Error en {liq}: {e}", level=messages.ERROR)
+                self.message_user(request, f" Error en {liq}: {e}", level=messages.ERROR)
         self.message_user(
             request,
-            f"✅ {contador} liquidaciones recalculadas correctamente.",
+            f" {contador} liquidaciones recalculadas correctamente.",
             level=messages.SUCCESS,
         )
 
-    @admin.action(description="🔒 Cerrar liquidación seleccionada")
+    @admin.action(description=" Cerrar liquidación seleccionada")
     def cerrar_liquidacion(self, request, queryset):
         for liq in queryset:
             liq.cerrada = True
             liq.save()
-        self.message_user(request, "🔒 Liquidación cerrada correctamente.", level=messages.SUCCESS)
+        self.message_user(request, " Liquidación cerrada correctamente.", level=messages.SUCCESS)
 
-    # ============================================================
-    # 📤 EXPORTAR SELECCIONADAS (Excel / PDF)
-    # ============================================================
-    @admin.action(description="📊 Exportar seleccionadas a Excel")
+    #
+    #  EXPORTAR SELECCIONADAS (Excel / PDF)
+    #
+    @admin.action(description=" Exportar seleccionadas a Excel")
     def exportar_excel_seleccionadas(self, request, queryset):
         wb = openpyxl.Workbook()
         ws = wb.active
@@ -242,7 +242,7 @@ class LiquidacionAdmin(admin.ModelAdmin):
         response["Content-Disposition"] = 'attachment; filename="liquidaciones_seleccionadas.xlsx"'
         return response
 
-    @admin.action(description="📄 Exportar seleccionadas a PDF")
+    @admin.action(description=" Exportar seleccionadas a PDF")
     def exportar_pdf_seleccionadas(self, request, queryset):
         buffer = io.BytesIO()
         p = canvas.Canvas(buffer)
@@ -265,19 +265,19 @@ class LiquidacionAdmin(admin.ModelAdmin):
         buffer.seek(0)
         return HttpResponse(buffer, content_type="application/pdf")
 
-    # ============================================================
-    # 🔎 INDICADORES VISUALES Y FORMATOS
-    # ============================================================
+    #
+    #  INDICADORES VISUALES Y FORMATOS
+    #
     def estado_ips(self, obj):
         detalle = obj.detalles.filter(concepto__descripcion__icontains="IPS").exists()
-        icono = "✅" if detalle else "❌"
+        icono = "" if detalle else ""
         texto = "Sí" if detalle else "No"
         return format_html("{} <b>{}</b>", icono, texto)
     estado_ips.short_description = "IPS 9% Aplicado"
 
     def estado_bonificacion(self, obj):
         detalle = obj.detalles.filter(concepto__descripcion__icontains="hijo").exists()
-        icono = "✅" if detalle else "❌"
+        icono = "" if detalle else ""
         texto = "Sí" if detalle else "No"
         return format_html("{} <b>{}</b>", icono, texto)
     estado_bonificacion.short_description = "Bonif. por Hijos"
@@ -293,12 +293,12 @@ class LiquidacionAdmin(admin.ModelAdmin):
     def mostrar_neto_coloreado(self, obj):
         color = "#16a085" if obj.neto_cobrar > 0 else "#e74c3c"
         valor = f"{float(obj.neto_cobrar):,.0f} Gs"
-        return format_html('<b><span style="color:{};">💰 {}</span></b>', color, valor)
+        return format_html('<b><span style="color:{};"> {}</span></b>', color, valor)
     mostrar_neto_coloreado.short_description = "Neto a Cobrar"
 
-    # ============================================================
-    # 🧮 RESUMEN POR MES Y GENERAL
-    # ============================================================
+    #
+    # RESUMEN POR MES Y GENERAL
+    #
     def resumen_mes(self, obj):
         total_mes = (
             Liquidacion.objects.filter(mes=obj.mes, anio=obj.anio)
@@ -307,11 +307,11 @@ class LiquidacionAdmin(admin.ModelAdmin):
         )
         total_formateado = "{:,.0f}".format(float(total_mes))
         return format_html('<span style="color:#2c3e50;"><b>{} Gs</b></span>', total_formateado)
-    resumen_mes.short_description = "💼 Total del Mes"
+    resumen_mes.short_description = " Total del Mes"
 
-    # ============================================================
-    # 📊 RESUMEN GLOBAL EN PANTALLA (QUERYSET FILTRADO)
-    # ============================================================
+    #
+    #  RESUMEN GLOBAL EN PANTALLA (QUERYSET FILTRADO)
+    #
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(request, extra_context)
         try:
@@ -331,8 +331,8 @@ class LiquidacionAdmin(admin.ModelAdmin):
             pass
         return response
 
-    # ============================================================
-    # 🧠 NUEVO: CARGAR SCRIPT JS DE AUTOCOMPLETADO DINÁMICO
-    # ============================================================
+    #
+    #  NUEVO: CARGAR SCRIPT JS DE AUTOCOMPLETADO DINÁMICO
+    #
     class Media:
         js = ("nomina_cal/js/autocompletar_sueldo.js",)

@@ -1,13 +1,13 @@
 Archivo: README.md
 
-# 💼 Sistema de Nómina – TP Ingeniería de Software II
+#  Sistema de Nómina – TP Ingeniería de Software II
 
 Proyecto desarrollado para la asignatura **Ingeniería de Software II**, cuyo objetivo es implementar un sistema modular y escalable de **gestión de nómina y cálculo de salarios** para la empresa ficticia **INGESOFT**.  
 El sistema está compuesto por un **backend en Django (Python)** y un **frontend en React**, con base de datos **PostgreSQL**.
 
 ---
 
-## 🧩 1. Estructura del Proyecto
+##  1. Estructura del Proyecto
 
 
 
@@ -32,7 +32,7 @@ Is2-payroll-app/
 
 ---
 
-## ⚙️ 2. Requisitos Previos
+##  2. Requisitos Previos
 
 - **Python 3.12+**
 - **Node.js 18+**
@@ -42,7 +42,7 @@ Is2-payroll-app/
 
 ---
 
-## 🐍 3. Configuración del Backend (Django)
+## 3. Configuración del Backend (Django)
 
 ### 3.1 Clonar el repositorio o copiar el proyecto
 ```bash
@@ -73,7 +73,7 @@ DATABASES = {
 }
 
 
-⚠️ El usuario y contraseña deben existir previamente en tu PostgreSQL.
+ El usuario y contraseña deben existir previamente en tu PostgreSQL.
 
 3.5 Crear la base de datos y migraciones
 python manage.py makemigrations
@@ -87,9 +87,9 @@ python manage.py runserver
 
 
 El backend estará disponible en:
-👉 http://127.0.0.1:8000/api/
+ http://127.0.0.1:8000/api/
 
-⚛️ 4. Configuración del Frontend (React)
+4. Configuración del Frontend (React)
 4.1 Ingresar al directorio del frontend
 cd ../frontend
 
@@ -107,28 +107,28 @@ npm run dev
 
 
 El sistema estará disponible en:
-👉 http://localhost:5173
+ http://localhost:5173
 
-👥 5. Roles del Sistema
+ 5. Roles del Sistema
 Rol	Descripción principal
 Administrador	Crea usuarios, gestiona empleados y liquidaciones
 Gerente RRHH	Supervisa reportes, genera estadísticas
 Asistente RRHH	Carga empleados, conceptos y descuentos
 Empleado	Visualiza su liquidación mensual
-📊 6. Funcionalidades Principales
+ 6. Funcionalidades Principales
 
-✅ Autenticación JWT
+ Autenticación JWT
 
-✅ Gestión de empleados e hijos
+ Gestión de empleados e hijos
 
-✅ Conceptos salariales (créditos/débitos)
+ Conceptos salariales (créditos/débitos)
 
-✅ Liquidaciones mensuales automáticas
+ Liquidaciones mensuales automáticas
 
-✅ Cálculo IPS, aguinaldo, vacaciones, bonificaciones
+ Cálculo IPS, aguinaldo, vacaciones, bonificaciones
 
-✅ Descuentos adicionales
+ Descuentos adicionales
 
-✅ Reportes en Excel y PDF
+ Reportes en Excel y PDF
 
-✅ Dashboards dinámicos por rol
+ Dashboards dinámicos por rol

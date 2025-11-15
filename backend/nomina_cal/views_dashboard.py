@@ -1,8 +1,8 @@
-# ============================================================
-# 📊 views_dashboard.py — Dashboards IS2 Grupo 1
-# ------------------------------------------------------------
+#
+#  views_dashboard.py — Dashboards IS2 Grupo 1
+
 # Sprint 6–7: Paneles dinámicos por rol (Admin, Gerente, Asistente, Empleado)
-# ============================================================
+#
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,9 +14,9 @@ from empleados.models import Empleado
 from nomina_cal.models import Liquidacion, DetalleLiquidacion
 from usuarios.models import Usuario
 
-# ============================================================
-# 🧩 PERMISO SIMPLE PARA ADMIN O GERENTE RRHH
-# ============================================================
+#
+#  PERMISO SIMPLE PARA ADMIN O GERENTE RRHH
+#
 class IsAdminOrRRHH(IsAuthenticated):
     def has_permission(self, request, view):
         user = request.user
@@ -28,17 +28,17 @@ class IsAdminOrRRHH(IsAuthenticated):
             )
         )
 
-# ============================================================
-# 📊 DASHBOARD ADMINISTRADOR GENERAL
-# ============================================================
+#
+#  DASHBOARD ADMINISTRADOR GENERAL
+#
 class ReporteGeneralAdminView(APIView):
     permission_classes = [IsAdminOrRRHH]
 
     def get(self, request):
         try:
-            # ------------------------------------------------------------
-            # 🧮 Totales básicos
-            # ------------------------------------------------------------
+            
+            # Totales básicos
+            
             total_empleados = Empleado.objects.filter(activo=True).count()
             total_liquidaciones = Liquidacion.objects.count()
 
@@ -51,9 +51,9 @@ class ReporteGeneralAdminView(APIView):
                 or 0
             )
 
-            # ------------------------------------------------------------
-            # 📈 Evolución últimos 6 meses
-            # ------------------------------------------------------------
+            
+            #  Evolución últimos 6 meses
+            
             hoy = now().date()
             meses_data = []
             for i in range(5, -1, -1):
@@ -72,18 +72,18 @@ class ReporteGeneralAdminView(APIView):
                     }
                 )
 
-            # ------------------------------------------------------------
-            # 🧾 Top empleados con mayor salario neto
-            # ------------------------------------------------------------
+            
+            #  Top empleados con mayor salario neto
+            
             top_empleados = (
                 Liquidacion.objects.values("empleado__nombre")
                 .annotate(total=Sum("neto_cobrar"))
                 .order_by("-total")[:5]
             )
 
-            # ------------------------------------------------------------
-            # 📊 Respuesta JSON estructurada
-            # ------------------------------------------------------------
+            
+            #  Respuesta JSON estructurada
+            
             data = {
                 "ok": True,
                 "kpis": {
@@ -99,14 +99,14 @@ class ReporteGeneralAdminView(APIView):
             return Response(data, status=200)
 
         except Exception as e:
-            print("⚠️ Error Dashboard Admin:", e)
+            print(" Error Dashboard Admin:", e)
             return Response(
                 {"ok": False, "error": str(e)}, status=500
             )
 
-# ============================================================
-# 📊 DASHBOARD GERENTE RRHH — Sprint 6–7 (versión React)
-# ============================================================
+#
+#  DASHBOARD GERENTE RRHH — Sprint 6–7 (versión React)
+#
 
 
 class DashboardGerenteView(APIView):
@@ -147,16 +147,16 @@ class DashboardGerenteView(APIView):
             return Response(data, status=200)
 
         except Exception as e:
-            print("⚠️ Error Dashboard Gerente:", e)
+            print(" Error Dashboard Gerente:", e)
             return Response(
                 {"error": f"Error interno del servidor: {str(e)}"},
                 status=500,
             )
 
 
-# ============================================================
-# 📊 DASHBOARD ASISTENTE RRHH — Sprint 7
-# ============================================================
+#
+#  DASHBOARD ASISTENTE RRHH — Sprint 7
+#
 
 class DashboardAsistenteView(APIView):
     permission_classes = [IsAuthenticated]
@@ -189,13 +189,13 @@ class DashboardAsistenteView(APIView):
             return Response(data, status=200)
 
         except Exception as e:
-            print("⚠️ Error Dashboard Asistente:", e)
+            print(" Error Dashboard Asistente:", e)
             return Response({"error": str(e)}, status=500)
 
 
-# ============================================================
-# 📊 DASHBOARD EMPLEADO (Individual)
-# ============================================================
+#
+#  DASHBOARD EMPLEADO (Individual)
+#
 class DashboardEmpleadoView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -215,12 +215,12 @@ class DashboardEmpleadoView(APIView):
             "ultimas_liquidaciones": list(liquidaciones),
         }
         return Response(data)
-# ============================================================
-# 📊 Reporte General de Nómina (Panel Admin)
-# ------------------------------------------------------------
+#
+#  Reporte General de Nómina (Panel Admin)
+
 # Devuelve totales, empleados y detalle mensual de nóminas
 # para alimentar el Dashboard del frontend.
-# ============================================================
+#
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

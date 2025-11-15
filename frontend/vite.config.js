@@ -1,6 +1,6 @@
-// ============================================================
-// ⚙️ Vite Config - Proxy para Backend Django (IS2 Nómina)
-// ============================================================
+
+//  Vite Config - Proxy para Backend Django (IS2 Nómina)
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 

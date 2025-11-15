@@ -1,12 +1,11 @@
-# ============================================================
-# 👥 Vistas de Empleados e Hijos - Sistema de Nómina IS2
-# ------------------------------------------------------------
+
+#  Vistas de Empleados e Hijos - Sistema de Nómina IS2
 # API REST:
 #   • CRUD de empleados e hijos
 #   • Filtros por rol de usuario
 #   • Exportaciones (Excel / PDF)
 #   • Historial de cargos/salarios
-# ============================================================
+
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -26,11 +25,7 @@ from usuarios.permissions import (
 )
 from .models import Empleado, Hijo
 from .serializers import EmpleadoSerializer, HijoSerializer
-
-
-# ============================================================
-# 🔹 1️⃣ ViewSet: Empleado
-# ============================================================
+#  ViewSet: Empleado
 class EmpleadoViewSet(viewsets.ModelViewSet):
     """
     CRUD de empleados.
@@ -68,9 +63,7 @@ class EmpleadoViewSet(viewsets.ModelViewSet):
         return Response(list(historial))
 
 
-# ============================================================
-# 🔹 2️⃣ ViewSet: Hijo / Dependiente
-# ============================================================
+#  ViewSet: Hijo / Dependiente
 class HijoViewSet(viewsets.ModelViewSet):
     """
     CRUD de dependientes (hijos).
@@ -97,9 +90,9 @@ class HijoViewSet(viewsets.ModelViewSet):
         return super().get_queryset()
 
 
-# ============================================================
-# 📊 3️⃣ Exportaciones (Excel / PDF)
-# ============================================================
+
+# Exportaciones (Excel / PDF)
+
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def exportar_empleados_excel(request):

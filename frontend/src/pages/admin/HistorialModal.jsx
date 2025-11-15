@@ -1,10 +1,10 @@
-// ============================================================
+
 // 🕘 HistorialModal — Registro de auditoría por objeto
-// ------------------------------------------------------------
+
 // Replica el "Historial de cambios" del Django Admin
 // Utiliza tu app auditoria para mostrar los logs de cambios
 // Endpoint: /api/auditoria/logs/?obj=model&id=pk
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import api from "../../utils/api";

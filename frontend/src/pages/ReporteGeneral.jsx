@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import api from "../utils/api"; 
 import Layout from "../components/Layout";
 
-// ============================================================
+
 // 📑 Nóminas (Sprint 3 - IS2 Nómina)
-// ============================================================
+
 
 export default function Nominas() {
   const [nominas, setNominas] = useState([]);
@@ -16,22 +16,22 @@ export default function Nominas() {
 
   const cargarNominas = async () => {
     try {
-      const res = await api.get("nomina/"); // 👈 corregido
+      const res = await api.get("nomina/"); //  corregido
       setNominas(res.data);
     } catch (err) {
-      console.error("❌ Error al cargar nóminas", err);
+      console.error(" Error al cargar nóminas", err);
     }
   };
 
   const calcularTodas = async () => {
     if (!window.confirm("¿Seguro que deseas recalcular todas las nóminas?")) return;
     try {
-      await api.post("nomina/calcular_todas/"); // 👈 corregido
-      setMensaje("✅ Todas las nóminas recalculadas");
+      await api.post("nomina/calcular_todas/"); //  corregido
+      setMensaje(" Todas las nóminas recalculadas");
       cargarNominas();
     } catch (err) {
-      console.error("❌ Error al calcular todas", err);
-      setMensaje("❌ Error al calcular todas las nóminas");
+      console.error(" Error al calcular todas", err);
+      setMensaje(" Error al calcular todas las nóminas");
     }
   };
 
@@ -50,13 +50,13 @@ export default function Nominas() {
 
         <div className="flex gap-4 mb-6">
           <button onClick={calcularTodas} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500">
-            ⚡ Calcular Todas
+             Calcular Todas
           </button>
           <button onClick={descargarExcel} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
-            📊 Exportar Excel
+             Exportar Excel
           </button>
           <button onClick={descargarPDF} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
-            📄 Exportar PDF
+             Exportar PDF
           </button>
         </div>
 

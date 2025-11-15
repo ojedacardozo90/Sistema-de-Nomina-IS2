@@ -1,9 +1,9 @@
-// ============================================================
-// 🧮 Componente genérico AdminTable
-// ------------------------------------------------------------
+
+// Componente genérico AdminTable
+
 // Replica las funciones principales del Django Admin
 // para cualquier modelo del backend.
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import api from "../utils/api";

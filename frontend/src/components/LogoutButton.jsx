@@ -7,8 +7,8 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    clearToken(); // 🔹 eliminamos access + refresh
-    navigate("/login"); // 🔹 volvemos al login
+    clearToken(); // # eliminamos access + refresh
+    navigate("/login"); // # volvemos al login
   };
 
   return (

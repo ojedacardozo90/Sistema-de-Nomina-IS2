@@ -1,10 +1,7 @@
-# ============================================================
 # auditlog_context.py — Contexto de request (Thread Local)
-# ------------------------------------------------------------
+
 # Permite que las señales accedan al usuario, IP y User-Agent
 # sin romper la arquitectura REST ni depender del middleware.
-# ============================================================
-
 import threading
 
 _local = threading.local()

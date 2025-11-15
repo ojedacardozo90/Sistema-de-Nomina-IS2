@@ -1,22 +1,22 @@
-// ============================================================
-// 📄 Listado de Liquidaciones — Sistema de Nómina IS2
+
+//  Listado de Liquidaciones — Sistema de Nómina IS2
 // Con botón para enviar recibo por correo (SendGrid)
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import { listarLiquidaciones, enviarRecibo } from "../utils/api";
 
-// ============================================================
-// 📦 COMPONENTE PRINCIPAL
-// ============================================================
+
+// COMPONENTE PRINCIPAL
+
 export default function LiquidacionesList() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState(null);
 
-  // ===============================
-  // 🔹 Cargar liquidaciones al montar
-  // ===============================
+  // =
+  // # Cargar liquidaciones al montar
+  // =
   useEffect(() => {
     listarLiquidaciones()
       .then((res) => {
@@ -24,21 +24,21 @@ export default function LiquidacionesList() {
       })
       .catch((err) => {
         console.error("Error al cargar:", err);
-        alert("❌ Error al cargar las liquidaciones");
+        alert(" Error al cargar las liquidaciones");
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // ===============================
-  // 📩 Enviar recibo individual
-  // ===============================
+  // =
+  //  Enviar recibo individual
+  // =
   const handleEnviar = async (id) => {
     if (!window.confirm("¿Deseas enviar el recibo por correo?")) return;
     setSendingId(id);
     try {
       const data = await enviarRecibo(id);
-      alert(data.mensaje || "✅ Recibo enviado correctamente.");
-      // ✅ Actualizar estado visual
+      alert(data.mensaje || " Recibo enviado correctamente.");
+      //  Actualizar estado visual
       setItems((prev) =>
         prev.map((l) =>
           l.id === id ? { ...l, enviado_email: true } : l
@@ -46,15 +46,15 @@ export default function LiquidacionesList() {
       );
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.error || "❌ Error al enviar el recibo.");
+      alert(err.response?.data?.error || " Error al enviar el recibo.");
     } finally {
       setSendingId(null);
     }
   };
 
-  // ===============================
-  // 🧾 Renderizado
-  // ===============================
+  // =
+  //  Renderizado
+  // =
   if (loading)
     return (
       <div className="p-6 text-center text-gray-600">
@@ -96,7 +96,7 @@ export default function LiquidacionesList() {
               <td className="py-2 px-3">{liq.salario_neto} Gs</td>
               <td className="py-2 px-3 text-center">
                 {liq.enviado_email ? (
-                  <span className="text-green-600 font-medium">📨 Enviado</span>
+                  <span className="text-green-600 font-medium">Enviado</span>
                 ) : (
                   <button
                     onClick={() => handleEnviar(liq.id)}

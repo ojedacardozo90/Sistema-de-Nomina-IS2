@@ -1,10 +1,10 @@
-// ============================================================
-// 👤 UsuariosList.jsx — Gestión completa de usuarios
-// Sistema de NóminaPro (IS2 - FPUNA)
-// ------------------------------------------------------------
+
+//  UsuariosList.jsx — Gestión completa de usuarios
+// Sistema de NóminaPro (IS2 - )
+
 // • Lista, crea, edita y elimina usuarios
 // • Con roles, estado, búsqueda y control de acceso
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -13,9 +13,9 @@ import Layout from "../components/Layout";
 import { Link } from "react-router-dom";
 import UsuarioForm from "./UsuarioForm";
 
-// ============================================================
-// 📋 Componente principal
-// ============================================================
+
+//  Componente principal
+
 export default function UsuariosList() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,9 +24,9 @@ export default function UsuariosList() {
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // ============================================================
-  // 🔹 Cargar usuarios desde backend
-  // ============================================================
+  
+  // # Cargar usuarios desde backend
+  
   const fetchUsuarios = async () => {
     setLoading(true);
     try {
@@ -45,9 +45,9 @@ export default function UsuariosList() {
     fetchUsuarios();
   }, []);
 
-  // ============================================================
-  // 🔹 Filtrar usuarios (búsqueda)
-  // ============================================================
+  
+  // # Filtrar usuarios (búsqueda)
+  
   const filtered = usuarios.filter(
     (u) =>
       (u.email || "").toLowerCase().includes(query.toLowerCase()) ||
@@ -56,30 +56,30 @@ export default function UsuariosList() {
       (u.last_name || "").toLowerCase().includes(query.toLowerCase())
   );
 
-  // ============================================================
-  // 🧩 Eliminar usuario
-  // ============================================================
+  
+  //  Eliminar usuario
+  
   const handleDelete = async (id) => {
     if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
     try {
       await api.delete(`/usuarios/usuarios/${id}/`);
       await fetchUsuarios();
-      alert("Usuario eliminado correctamente ✅");
+      alert("Usuario eliminado correctamente ");
     } catch (err) {
       console.error("Error al eliminar usuario:", err);
-      alert("No se pudo eliminar el usuario ❌");
+      alert("No se pudo eliminar el usuario ");
     }
   };
 
-  // ============================================================
-  // 🧭 Render principal
-  // ============================================================
+  
+  // Render principal
+  
   return (
     <Layout>
       <div className="p-6 space-y-6">
         {/* Encabezado */}
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">👤 Gestión de Usuarios</h1>
+          <h1 className="text-2xl font-bold"> Gestión de Usuarios</h1>
           <button
             onClick={() => {
               setEditing(null);

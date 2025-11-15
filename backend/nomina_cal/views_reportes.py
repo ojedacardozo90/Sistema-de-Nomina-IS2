@@ -1,8 +1,8 @@
 # backend/nomina_cal/views_reportes.py
-# ============================================================
-# 📊 Reportes de Nómina — Sistema de Nómina IS2
+#
+#  Reportes de Nómina — Sistema de Nómina IS2
 # JSON (general), PDF y Excel
-# ============================================================
+#
 from datetime import date
 from decimal import Decimal
 from django.http import HttpResponse, JsonResponse
@@ -16,9 +16,9 @@ from reportlab.lib.pagesizes import A4
 from .models import Liquidacion
 from empleados.models import Empleado
 
-# -----------------------------
+
 # Utilidades
-# -----------------------------
+
 def _to_dec(x):
     try:
         return Decimal(x or 0)
@@ -30,9 +30,9 @@ def _periodo_param(request):
     anio = int(request.GET.get("anio", date.today().year))
     return mes, anio
 
-# -----------------------------
+
 # JSON: /api/nomina_cal/reportes/general/
-# -----------------------------
+
 @login_required
 def reporte_general(request):
     mes, anio = _periodo_param(request)
@@ -66,9 +66,9 @@ def reporte_general(request):
 
     return JsonResponse({"resumen": resumen, "detalle": detalle}, status=200)
 
-# -----------------------------
+
 # PDF: /api/nomina_cal/reportes/pdf/
-# -----------------------------
+
 @login_required
 def reporte_pdf(request):
     mes, anio = _periodo_param(request)
@@ -125,9 +125,9 @@ def reporte_pdf(request):
     response["Content-Disposition"] = f'inline; filename="reporte_{mes}_{anio}.pdf"'
     return response
 
-# -----------------------------
+
 # Excel: /api/nomina_cal/reportes/excel/
-# -----------------------------
+
 @login_required
 def reporte_excel(request):
     mes, anio = _periodo_param(request)

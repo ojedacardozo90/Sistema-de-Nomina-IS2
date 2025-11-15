@@ -1,12 +1,12 @@
-# ============================================================
-# ✅ TESTS DE INTEGRACIÓN - MÓDULO NÓMINA CAL (Sprint 5–6)
-# ------------------------------------------------------------
+#
+#  TESTS DE INTEGRACIÓN - MÓDULO NÓMINA CAL (Sprint 5–6)
+
 # Verifica:
 #   • Cálculo total de liquidaciones
 #   • Cierre de nómina
 #   • Señal de envío automático de recibos
 #   • Generación de PDF
-# ============================================================
+#
 
 from django.test import TestCase, override_settings
 from django.core import mail
@@ -39,9 +39,9 @@ class NominaIntegracionTestCase(TestCase):
             cerrada=False,
         )
 
-    # --------------------------------------------------------
-    # 🔹 1. Cálculo de totales
-    # --------------------------------------------------------
+    
+    # # 1. Cálculo de totales
+    
     def test_calculo_totales(self):
         self.liquidacion.calcular_totales()
         self.liquidacion.refresh_from_db()
@@ -52,9 +52,9 @@ class NominaIntegracionTestCase(TestCase):
             self.liquidacion.neto_cobrar
         )
 
-    # --------------------------------------------------------
-    # 🔹 2. Cierre de liquidación
-    # --------------------------------------------------------
+    
+    # # 2. Cierre de liquidación
+    
     def test_cerrar_liquidacion(self):
         self.liquidacion.calcular_totales()
         self.liquidacion.cerrar()
@@ -63,9 +63,9 @@ class NominaIntegracionTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.liquidacion.save()  # No debe permitir modificar cerrada
 
-    # --------------------------------------------------------
-    # 🔹 3. Señal post_save → Envío de recibo automático
-    # --------------------------------------------------------
+    
+    # # 3. Señal post_save → Envío de recibo automático
+    
     def test_signal_envio_recibo(self):
         # Activa señal y genera PDF
         self.liquidacion.calcular_totales()
@@ -80,9 +80,9 @@ class NominaIntegracionTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn("Recibo de salario", mail.outbox[0].subject)
 
-    # --------------------------------------------------------
-    # 🔹 4. Generación de PDF de recibo
-    # --------------------------------------------------------
+    
+    # # 4. Generación de PDF de recibo
+    
     def test_generar_recibo_pdf(self):
         pdf_bytes = generar_recibo_pdf(self.liquidacion)
         self.assertTrue(isinstance(pdf_bytes, (bytes, bytearray)))

@@ -1,9 +1,9 @@
-// ============================================================
-// 🧠 useHistorial — Hook para gestionar el HistorialModal
-// ------------------------------------------------------------
+
+//  useHistorial — Hook para gestionar el HistorialModal
+
 // Proporciona un estado reutilizable para abrir/cerrar el
 // historial desde cualquier tabla del Admin Panel.
-// ============================================================
+
 
 import { useState } from "react";
 import HistorialModal from "./HistorialModal";

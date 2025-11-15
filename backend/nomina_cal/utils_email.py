@@ -1,7 +1,7 @@
-# ============================================================
-# 📧 utils_email.py — Generación y envío de Recibos (IS2 Grupo 1)
+#
+# utils_email.py — Generación y envío de Recibos (IS2 Grupo 1)
 # Sistema de Nómina — Ingeniería de Software II
-# ============================================================
+#
 
 import io
 from datetime import date
@@ -20,9 +20,9 @@ from reportlab.platypus import (
 )
 from django.conf import settings
 
-# ============================================================
-# 🧾 GENERADOR DE PDF PROFESIONAL (membrete IS2 Grupo 1)
-# ============================================================
+#
+#  GENERADOR DE PDF PROFESIONAL (membrete IS2 Grupo 1)
+#
 def generar_recibo_pdf(liquidacion):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4,
@@ -32,9 +32,9 @@ def generar_recibo_pdf(liquidacion):
     styles = getSampleStyleSheet()
     elements = []
 
-    # ------------------------------------------------------------
-    # 🟦 Encabezado
-    # ------------------------------------------------------------
+    
+    # Encabezado
+    
     encabezado = """
     <para align=center>
     <b><font size=14 color="#0b5394">SISTEMA DE NÓMINA — IS2 GRUPO 1</font></b><br/>
@@ -45,9 +45,9 @@ def generar_recibo_pdf(liquidacion):
     elements.append(Paragraph(encabezado, styles["Normal"]))
     elements.append(Spacer(1, 12))
 
-    # ------------------------------------------------------------
-    # 👤 Datos del empleado
-    # ------------------------------------------------------------
+    
+    #  Datos del empleado
+    
     empleado = liquidacion.empleado
     info = [
         ["Empleado:", f"{empleado.nombre}"],
@@ -69,9 +69,9 @@ def generar_recibo_pdf(liquidacion):
     elements.append(tabla_info)
     elements.append(Spacer(1, 14))
 
-    # ------------------------------------------------------------
-    # 💵 Detalle de conceptos
-    # ------------------------------------------------------------
+    
+    #  Detalle de conceptos
+    
     data = [["Concepto", "Monto (Gs)"]]
     for det in liquidacion.detalles.all():
         data.append([det.concepto.descripcion, f"{det.monto:,.0f}"])
@@ -91,9 +91,9 @@ def generar_recibo_pdf(liquidacion):
     elements.append(tabla)
     elements.append(Spacer(1, 14))
 
-    # ------------------------------------------------------------
-    # 📊 Totales
-    # ------------------------------------------------------------
+    
+    #  Totales
+    
     total_ing = f"{liquidacion.total_ingresos:,.0f}"
     total_desc = f"{liquidacion.total_descuentos:,.0f}"
     neto = f"{liquidacion.neto_cobrar:,.0f}"
@@ -114,9 +114,9 @@ def generar_recibo_pdf(liquidacion):
     elements.append(tabla_tot)
     elements.append(Spacer(1, 20))
 
-    # ------------------------------------------------------------
+    
     # ✍️ Pie de página
-    # ------------------------------------------------------------
+    
     pie = """
     <para align=center>
     <font size=9 color="#777777">
@@ -131,9 +131,9 @@ def generar_recibo_pdf(liquidacion):
     buffer.seek(0)
     return buffer
 
-# ============================================================
-# ✉️ FUNCIÓN DE ENVÍO DE CORREO
-# ============================================================
+#
+# FUNCIÓN DE ENVÍO DE CORREO
+#
 def enviar_recibo_email(liquidacion):
     empleado = liquidacion.empleado
     email = getattr(empleado, "email", None)

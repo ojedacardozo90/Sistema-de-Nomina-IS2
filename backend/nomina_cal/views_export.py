@@ -1,11 +1,11 @@
 # backend/nomina_cal/views_export.py
-# ============================================================
-# 📤 EXPORTACIONES DE REPORTES (IS2 - Sistema de Nómina)
-# ------------------------------------------------------------
+#
+#  EXPORTACIONES DE REPORTES (IS2 - Sistema de Nómina)
+
 # Genera reportes coherentes con los dashboards:
 #   • PDF (resumen general de nómina)
 #   • Excel (detalles por área y tipo de contrato)
-# ============================================================
+#
 
 from django.http import HttpResponse
 from django.utils import timezone
@@ -21,9 +21,9 @@ from openpyxl import Workbook
 from empleados.models import Empleado
 from .models import Liquidacion
 
-# ============================================================
-# 🧾 EXPORTACIÓN A PDF
-# ============================================================
+#
+#  EXPORTACIÓN A PDF
+#
 class ExportPDFView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -32,7 +32,7 @@ class ExportPDFView(APIView):
         mes = int(request.GET.get("mes", 0)) or hoy.month
         anio = int(request.GET.get("anio", 0)) or hoy.year
 
-        # 🔹 Totales por área
+        # # Totales por área
         data = (
             Liquidacion.objects.filter(mes=mes, anio=anio)
             .values("empleado__area")
@@ -44,7 +44,7 @@ class ExportPDFView(APIView):
         response["Content-Disposition"] = f'attachment; filename="reporte_nomina_{mes}_{anio}.pdf"'
 
         pdf = canvas.Canvas(response, pagesize=A4)
-        pdf.setTitle("Reporte de Nómina - FP-UNA / FAP")
+        pdf.setTitle("Reporte de Nómina - FP-UNA / ")
         pdf.setFont("Helvetica-Bold", 14)
         pdf.drawString(2 * cm, 28 * cm, "Fuerza Aérea Paraguaya - Sistema de Nómina")
         pdf.setFont("Helvetica", 10)
@@ -73,9 +73,9 @@ class ExportPDFView(APIView):
         return response
 
 
-# ============================================================
-# 📊 EXPORTACIÓN A EXCEL
-# ============================================================
+#
+#  EXPORTACIÓN A EXCEL
+#
 class ExportExcelView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -84,7 +84,7 @@ class ExportExcelView(APIView):
         mes = int(request.GET.get("mes", 0)) or hoy.month
         anio = int(request.GET.get("anio", 0)) or hoy.year
 
-        # 🔹 Query coherente con dashboards
+        # # Query coherente con dashboards
         qs = (
             Liquidacion.objects.filter(mes=mes, anio=anio)
             .values(
@@ -101,7 +101,7 @@ class ExportExcelView(APIView):
         ws = wb.active
         ws.title = "Nómina"
 
-        # 🧭 Encabezados
+        # Encabezados
         ws.append(["Nombre", "Apellido", "Área", "Tipo Contrato", "Neto a Cobrar (Gs)"])
 
         for row in qs:
@@ -124,12 +124,12 @@ from rest_framework.response import Response
 class ReciboPDFView(APIView):
     def get(self, request, pk):
         return Response({"ok": True, "mensaje": "Vista ReciboPDFView pendiente de implementación"})
-# ============================================================
-# 📄 VISTA TEMPORAL: ReciboPDFView (placeholder)
-# ------------------------------------------------------------
+#
+#  VISTA TEMPORAL: ReciboPDFView (placeholder)
+
 # Esta vista solo evita errores hasta implementar la versión
 # completa en utils_email.py con generar_recibo_pdf(liq)
-# ============================================================
+#
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

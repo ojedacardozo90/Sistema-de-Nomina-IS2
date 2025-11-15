@@ -1,17 +1,17 @@
-// ============================================================
-// 📈 Reportes — Gráficos analíticos de nómina (versión extendida)
-// ------------------------------------------------------------
+
+//  Reportes — Gráficos analíticos de nómina (versión extendida)
+
 // Muestra:
 //   • Gráfico de evolución mensual de totales
 //   • Filtros por mes y año
 //   • Exportaciones PDF / Excel
 //   • Totales de nómina en cabecera
-// ------------------------------------------------------------
+
 // Endpoints utilizados:
 //   • GET /api/nomina_cal/analytics/kpis/?mes=AAAA-MM
 //   • GET /api/nomina_cal/reportes/pdf/?mes=&anio=
 //   • GET /api/nomina_cal/reportes/excel/?mes=&anio=
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -27,9 +27,9 @@ import {
 } from "recharts";
 
 export default function Reportes() {
-  // ==============================
-  // 🔹 Estados principales
-  // ==============================
+  // 
+  // # Estados principales
+  // 
   const [data, setData] = useState([]);
   const [kpis, setKpis] = useState(null);
   const [anio, setAnio] = useState(new Date().getFullYear());
@@ -37,9 +37,9 @@ export default function Reportes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ============================================================
-  // 📊 Cargar datos del backend
-  // ============================================================
+  
+  //  Cargar datos del backend
+  
   const cargarKpis = async () => {
     setLoading(true);
     setError(null);
@@ -50,7 +50,7 @@ export default function Reportes() {
       setData(res.data.evolucion || []);
       setKpis(res.data.kpis || null);
     } catch (err) {
-      console.error("❌ Error al cargar KPIs:", err);
+      console.error(" Error al cargar KPIs:", err);
       setError("No se pudieron cargar los datos de los reportes.");
     } finally {
       setLoading(false);
@@ -61,9 +61,9 @@ export default function Reportes() {
     cargarKpis();
   }, [anio, mes]);
 
-  // ============================================================
-  // 📤 Exportar reportes (PDF / Excel)
-  // ============================================================
+  
+  //  Exportar reportes (PDF / Excel)
+  
   const exportarPDF = () =>
     window.open(
       `${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}/nomina_cal/reportes/pdf/?mes=${mes}&anio=${anio}`,
@@ -76,9 +76,9 @@ export default function Reportes() {
       "_blank"
     );
 
-  // ============================================================
-  // ⏳ Indicadores de carga / error
-  // ============================================================
+  
+  //  Indicadores de carga / error
+  
   if (loading)
     return (
       <Layout>
@@ -102,17 +102,17 @@ export default function Reportes() {
       </Layout>
     );
 
-  // ============================================================
-  // 🎨 Render principal
-  // ============================================================
+  
+  //  Render principal
+  
   return (
     <Layout>
       <div className="p-6 space-y-6">
-        <h1 className="text-2xl font-bold">📈 Reportes de Nómina</h1>
+        <h1 className="text-2xl font-bold"> Reportes de Nómina</h1>
 
-        {/* =====================================================
-             🎯 Filtros y exportaciones
-           ===================================================== */}
+        {/* =====
+              Filtros y exportaciones
+           ===== */}
         <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 shadow rounded gap-3">
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-600">Año:</label>
@@ -143,20 +143,20 @@ export default function Reportes() {
               onClick={exportarPDF}
               className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
             >
-              📄 Exportar PDF
+               Exportar PDF
             </button>
             <button
               onClick={exportarExcel}
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
-              📊 Exportar Excel
+               Exportar Excel
             </button>
           </div>
         </div>
 
-        {/* =====================================================
-             🔹 KPIs (totales y promedios)
-           ===================================================== */}
+        {/* =====
+             # KPIs (totales y promedios)
+           ===== */}
         {kpis && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <KpiCard
@@ -174,9 +174,9 @@ export default function Reportes() {
           </div>
         )}
 
-        {/* =====================================================
-             📉 Gráfico de evolución mensual
-           ===================================================== */}
+        {/* =====
+              Gráfico de evolución mensual
+           ===== */}
         <div className="bg-white shadow rounded p-4">
           <h2 className="text-lg font-semibold mb-2">
             Evolución de la Nómina ({anio})
@@ -214,9 +214,9 @@ export default function Reportes() {
   );
 }
 
-// ============================================================
+
 // 🔸 Componente reutilizable para KPIs
-// ============================================================
+
 function KpiCard({ titulo, valor }) {
   return (
     <div className="bg-white shadow p-4 rounded text-center">

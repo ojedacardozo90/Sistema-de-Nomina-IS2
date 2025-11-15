@@ -1,14 +1,14 @@
-// ============================================================
-// 🧾 UsuarioForm.jsx — Formulario para crear o editar usuario
-// Sistema NóminaPro (IS2 - FPUNA)
-// ------------------------------------------------------------
+
+//  UsuarioForm.jsx — Formulario para crear o editar usuario
+// Sistema NóminaPro (IS2 - )
+
 // Compatible con backend: /api/usuarios/usuarios/
 // Incluye:
 //   - Creación y edición de usuario
 //   - Roles (ADMIN, GERENTE, ASISTENTE, EMPLEADO)
 //   - Activar/desactivar usuario
 //   - Validación de contraseña y manejo de errores
-// ============================================================
+
 
 import { useState } from "react";
 import api from "../utils/api";
@@ -28,9 +28,9 @@ export default function UsuarioForm({ usuario, onClose }) {
 
   const [loading, setLoading] = useState(false);
 
-  // ============================================================
-  // 🔹 Manejo de cambios en inputs
-  // ============================================================
+  
+  // # Manejo de cambios en inputs
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({
@@ -39,40 +39,40 @@ export default function UsuarioForm({ usuario, onClose }) {
     });
   };
 
-  // ============================================================
-  // 🧩 Enviar formulario (crear o actualizar)
-  // ============================================================
+  
+  //  Enviar formulario (crear o actualizar)
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       if (usuario) {
         await api.put(`/usuarios/usuarios/${usuario.id}/`, form);
-        alert("✅ Usuario actualizado correctamente");
+        alert(" Usuario actualizado correctamente");
       } else {
         await api.post("/usuarios/usuarios/", form);
-        alert("✅ Usuario creado correctamente");
+        alert(" Usuario creado correctamente");
       }
       onClose();
     } catch (err) {
       console.error("Error al guardar usuario:", err);
       if (err.response?.data) {
-        alert("❌ Error: " + JSON.stringify(err.response.data));
+        alert(" Error: " + JSON.stringify(err.response.data));
       } else {
-        alert("❌ Error desconocido al guardar el usuario");
+        alert(" Error desconocido al guardar el usuario");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // ============================================================
-  // 🎨 Render del formulario
-  // ============================================================
+  
+  //  Render del formulario
+  
   return (
     <div className="bg-gray-50 p-5 rounded border mb-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-3">
-        {usuario ? "✏️ Editar Usuario" : "🆕 Nuevo Usuario"}
+        {usuario ? "✏️ Editar Usuario" : "Nuevo Usuario"}
       </h2>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-3">

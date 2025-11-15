@@ -1,10 +1,10 @@
-# ============================================================
-# ✅ PRUEBA REAL DE NÓMINA (10 EMPLEADOS)
-# Sistema de Nómina IS2 - FPUNA / FAP
-# ------------------------------------------------------------
+#
+#  PRUEBA REAL DE NÓMINA (10 EMPLEADOS)
+# Sistema de Nómina IS2 -  / 
+
 # Genera 10 empleados, calcula IPS, bonificación por hijo
 # y genera PDF de recibos.
-# ============================================================
+#
 
 from django.test import TestCase
 from empleados.models import Empleado
@@ -15,7 +15,7 @@ class NominaReal10Test(TestCase):
 
     def setUp(self):
         """Crea datos iniciales"""
-        print("\n🧾 INICIO DE PRUEBA REAL DE NÓMINA (10 EMPLEADOS)")
+        print("\n INICIO DE PRUEBA REAL DE NÓMINA (10 EMPLEADOS)")
 
         self.salario_minimo = 2681266  # Gs
 
@@ -62,11 +62,11 @@ class NominaReal10Test(TestCase):
             total_general += total
 
             # Mostrar resultado
-            print(f"✅ {e.nombre} | Base: {e.salario_base:,} | IPS: {int(ips):,} | Bono: {int(bono):,} | Neto: {int(total):,}")
+            print(f" {e.nombre} | Base: {e.salario_base:,} | IPS: {int(ips):,} | Bono: {int(bono):,} | Neto: {int(total):,}")
 
             # Generar recibo PDF
             path = generar_pdf_recibo(e, periodo, total)
-            print(f"📄 Recibo generado: {path}")
+            print(f" Recibo generado: {path}")
 
-        print(f"\n💰 Total general de nómina: {int(total_general):,} Gs.")
-        print("✅ PRUEBA FINALIZADA CON ÉXITO\n")
+        print(f"\n Total general de nómina: {int(total_general):,} Gs.")
+        print(" PRUEBA FINALIZADA CON ÉXITO\n")

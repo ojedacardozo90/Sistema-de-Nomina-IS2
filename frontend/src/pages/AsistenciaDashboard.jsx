@@ -1,7 +1,7 @@
-// ============================================================
-// 📊 Dashboard de Asistencia Mensual — Sistema de Nómina IS2
+
+//  Dashboard de Asistencia Mensual — Sistema de Nómina IS2
 // FP-UNA / Fuerza Aérea Paraguaya
-// ============================================================
+
 
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
@@ -28,9 +28,9 @@ export default function AsistenciaDashboard() {
   const [totales, setTotales] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // ============================================================
-  // 🔹 Obtener datos del backend
-  // ============================================================
+  
+  // # Obtener datos del backend
+  
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -57,7 +57,7 @@ export default function AsistenciaDashboard() {
         minutos: sum("minutos_trabajados"),
       });
     } catch (err) {
-      console.error("❌ Error al obtener el reporte de asistencia:", err);
+      console.error(" Error al obtener el reporte de asistencia:", err);
       alert("No se pudo obtener el reporte de asistencia mensual.");
     } finally {
       setLoading(false);
@@ -68,9 +68,9 @@ export default function AsistenciaDashboard() {
     fetchData();
   }, [mes, anio]);
 
-  // ============================================================
+  
   // 💾 Descarga de reportes (Excel / PDF)
-  // ============================================================
+  
   const handleExport = async (formato) => {
     try {
       if (formato === "excel") {
@@ -81,14 +81,14 @@ export default function AsistenciaDashboard() {
         descargar(blob, `reporte_asistencia_${mes}_${anio}.pdf`);
       }
     } catch (err) {
-      console.error(`❌ Error al exportar ${formato}:`, err);
+      console.error(` Error al exportar ${formato}:`, err);
       alert("No se pudo descargar el reporte. Verifica el backend.");
     }
   };
 
-  // ============================================================
-  // 📤 Utilidad de descarga
-  // ============================================================
+  
+  //  Utilidad de descarga
+  
   function descargar(blob, nombreArchivo) {
     const url = window.URL.createObjectURL(new Blob([blob]));
     const link = document.createElement("a");
@@ -100,17 +100,17 @@ export default function AsistenciaDashboard() {
     window.URL.revokeObjectURL(url);
   }
 
-  // ============================================================
+  
   // 🔸 Render principal
-  // ============================================================
+  
   return (
     <Layout>
       <div className="p-6 space-y-6">
         <h1 className="text-3xl font-bold text-emerald-700">
-          🧮 Dashboard de Asistencia — {mes}/{anio}
+          Dashboard de Asistencia — {mes}/{anio}
         </h1>
 
-        {/* 📅 Filtros + Exportación */}
+        {/*  Filtros + Exportación */}
         <div className="flex flex-wrap gap-4 items-end justify-between">
           <div className="flex gap-4">
             <div>
@@ -144,7 +144,7 @@ export default function AsistenciaDashboard() {
               onClick={fetchData}
               className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700"
             >
-              🔄 Actualizar
+               Actualizar
             </button>
           </div>
 
@@ -154,18 +154,18 @@ export default function AsistenciaDashboard() {
               onClick={() => handleExport("excel")}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
-              📊 Exportar Excel
+               Exportar Excel
             </button>
             <button
               onClick={() => handleExport("pdf")}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
             >
-              🧾 Exportar PDF
+               Exportar PDF
             </button>
           </div>
         </div>
 
-        {/* 📈 Gráfico */}
+        {/*  Gráfico */}
         {loading ? (
           <p className="text-gray-500">Cargando datos...</p>
         ) : data.length > 0 ? (
@@ -199,14 +199,14 @@ export default function AsistenciaDashboard() {
               </ResponsiveContainer>
             </div>
 
-            {/* 🧾 Totales globales */}
+            {/*  Totales globales */}
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mt-6 shadow-sm">
               <h2 className="text-xl font-semibold text-emerald-700 mb-2">
                 Totales Generales
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 text-gray-800">
                 <div>
-                  ✅ <strong>Presentes:</strong> {totales.presentes}
+                   <strong>Presentes:</strong> {totales.presentes}
                 </div>
                 <div>
                   ⏰ <strong>Tardanzas:</strong> {totales.tardanzas}
@@ -215,10 +215,10 @@ export default function AsistenciaDashboard() {
                   🚫 <strong>Ausencias:</strong> {totales.ausencias}
                 </div>
                 <div>
-                  ⚠️ <strong>Incompletos:</strong> {totales.incompletos}
+                   <strong>Incompletos:</strong> {totales.incompletos}
                 </div>
                 <div>
-                  🕒 <strong>Minutos:</strong> {totales.minutos}
+                   <strong>Minutos:</strong> {totales.minutos}
                 </div>
               </div>
             </div>
