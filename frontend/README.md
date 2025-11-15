@@ -1,6 +1,6 @@
 ---
 
-## 📂 frontend/README.md
+## frontend/README.md
 
 ```markdown
 # Sistema de Gestión de Nómina – Frontend
@@ -75,5 +75,4 @@ Sprint 4 → Reportes Excel/PDF
 
 Sprint 5 → Sistema completo
 
-yaml
-Copiar código
+
